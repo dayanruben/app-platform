@@ -2,6 +2,8 @@
 
 ## Introduction
 
+![App Platform](images/app-platform-logo.png){ align=left width="250"  }
+
 The App Platform is a lightweight application framework for state and memory management suitable
 for Kotlin Multiplatform projects, in particular Android, iOS, JVM, native and Web (1). It makes the
 dependency inversion (2) and dependency injection (DI) design patterns first class principles to develop
