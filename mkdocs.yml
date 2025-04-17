@@ -83,3 +83,8 @@ nav:
   - 'Testing': testing.md
   - 'FAQ': faq.md
   - 'Changelog': changelog.md
+
+plugins:
+  - social:
+      cards_layout_options:
+        logo: docs/images/app-platform-logo.png
