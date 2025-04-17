@@ -57,7 +57,7 @@ interface Scope {
 ## Creating a `Scope`
 
 A `Scope` is created through the builder function. The
-[Builder](https://github.com/amzn/app-platform/blob/274ff2261edb13127dbf0b20429fa42970d62cb8/scope/public/src/commonMain/kotlin/software/amazon/app/platform/scope/Scope.kt#L57)
+[Builder](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/scope/public/src/commonMain/kotlin/software/amazon/app/platform/scope/Scope.kt#L57)
 allows you to add services before the Scope is finalized:
 
 ```kotlin
@@ -81,8 +81,8 @@ rootScope.buildChild("user scope") {
     This `Scope` is never destroyed and stays alive for the entire app lifetime.
 
     The sample application has a child scope for the logged in user. This `Scope` is created during
-    [login](https://github.com/amzn/app-platform/blob/d6ba0eef2de5042944d20a8c77ecb99fbfef317a/sample/user/impl/src/commonMain/kotlin/software/amazon/app/platform/sample/user/UserManagerImpl.kt#L47-L52)
-    and [destroyed](https://github.com/amzn/app-platform/blob/d6ba0eef2de5042944d20a8c77ecb99fbfef317a/sample/user/impl/src/commonMain/kotlin/software/amazon/app/platform/sample/user/UserManagerImpl.kt#L68)
+    [login](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/user/impl/src/commonMain/kotlin/software/amazon/app/platform/sample/user/UserManagerImpl.kt#L47-L52)
+    and [destroyed](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/user/impl/src/commonMain/kotlin/software/amazon/app/platform/sample/user/UserManagerImpl.kt#L68)
     during logout.
 
     ```kotlin
@@ -126,7 +126,7 @@ fun `my test`() = runTestWithScope { scope ->
 ??? example "Sample"
 
     Classes implementing the `Scoped` interface usually make use of the `runTestWithScope` function in their tests.
-    Notice in [this sample](https://github.com/amzn/app-platform/blob/9fe3102900b9899d2ed9e78317a0e29d8ef40c37/sample/user/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/user/SessionTimeoutTest.kt#L36-L48)
+    Notice in [this sample](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/user/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/user/SessionTimeoutTest.kt#L36-L48)
     how `SessionTimeout`, which implements the `Scoped` interface, is registered in the `Scope`.
 
     ```kotlin hl_lines="7"
@@ -418,8 +418,8 @@ called for all `Scoped` instances.
 ??? example "Sample"
 
     The sample application implements this mechanism for the
-    [`AppScope`](https://github.com/amzn/app-platform/blob/6af11a7c555acbca1c887416c8e8a99107195d3b/sample/app/src/commonMain/kotlin/software/amazon/app/platform/sample/DemoApplication.kt#L31-L33)
-    and the [`UserScope`](https://github.com/amzn/app-platform/blob/6af11a7c555acbca1c887416c8e8a99107195d3b/sample/user/impl/src/commonMain/kotlin/software/amazon/app/platform/sample/user/UserManagerImpl.kt#L58-L60).
+    [`AppScope`](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/commonMain/kotlin/software/amazon/app/platform/sample/DemoApplication.kt#L31-L33)
+    and the [`UserScope`](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/user/impl/src/commonMain/kotlin/software/amazon/app/platform/sample/user/UserManagerImpl.kt#L58-L60).
 
 ### `onExit`
 
@@ -486,9 +486,9 @@ highlighted above.
 
     The sample application has a common class [DemoApplication](https://github.com/amzn/app-platform/blob/main/sample/app/src/commonMain/kotlin/software/amazon/app/platform/sample/DemoApplication.kt)
     that is responsible for creating the app scope. The Android app instantiates `DemoApplication` in the
-    [`Application` class](https://github.com/amzn/app-platform/blob/f024cb1b5a89c93cfc9ae63d7e570432b8d52d8a/sample/app/src/androidMain/kotlin/software/amazon/app/platform/sample/AndroidApplication.kt#L19).
-    The iOS sample creates the `DemoApplication` in the [`UIApplicationDelegate`](https://github.com/amzn/app-platform/blob/f024cb1b5a89c93cfc9ae63d7e570432b8d52d8a/sample/iosApp/iosApp/iOSApp.swift#L6).
-    On Desktop `DemoApplication` is created part of the [`main()` function](https://github.com/amzn/app-platform/blob/f024cb1b5a89c93cfc9ae63d7e570432b8d52d8a/sample/app/src/desktopMain/kotlin/software/amazon/app/platform/sample/Main.kt#L8).
+    [`Application` class](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/androidMain/kotlin/software/amazon/app/platform/sample/AndroidApplication.kt#L19).
+    The iOS sample creates the `DemoApplication` in the [`UIApplicationDelegate`](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/iosApp/iosApp/iOSApp.swift#L6).
+    On Desktop `DemoApplication` is created part of the [`main()` function](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/desktopMain/kotlin/software/amazon/app/platform/sample/Main.kt#L8).
 
 ### `RootScopeProvider`
 
@@ -510,7 +510,7 @@ class MainActivity : Activity() {
 ??? example "Sample"
 
     The sample application implements `RootScopeProvider` in the Android
-    [`Application` class](https://github.com/amzn/app-platform/blob/f024cb1b5a89c93cfc9ae63d7e570432b8d52d8a/sample/app/src/androidMain/kotlin/software/amazon/app/platform/sample/AndroidApplication.kt#L19)
-    and the iOS [`UIApplicationDelegate`](https://github.com/amzn/app-platform/blob/f024cb1b5a89c93cfc9ae63d7e570432b8d52d8a/sample/iosApp/iosApp/iOSApp.swift#L6).
+    [`Application` class](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/androidMain/kotlin/software/amazon/app/platform/sample/AndroidApplication.kt#L19)
+    and the iOS [`UIApplicationDelegate`](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/iosApp/iosApp/iOSApp.swift#L6).
     On Desktop there is no concept of a singleton application object by default, but in the sample app we created an
     equivalent with [`DesktopApp`](https://github.com/amzn/app-platform/blob/main/sample/app/src/desktopMain/kotlin/software/amazon/app/platform/sample/DesktopApp.kt).

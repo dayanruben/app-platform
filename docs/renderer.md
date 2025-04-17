@@ -67,7 +67,7 @@ class LoginRenderer : ViewRenderer<Model>() {
 !!! warning
 
     Note that `ComposeRenderer` like `ViewRenderer` implements the common `Renderer` interface, but calling the
-    `render(model)` function [is an error](https://github.com/amzn/app-platform/blob/39b30e35f5fcd04c8265e19c23c36bdda39fd803/renderer-compose-multiplatform/public/src/commonMain/kotlin/software/amazon/app/platform/renderer/ComposeRenderer.kt#L52-L58).
+    `render(model)` function [is an error](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/renderer-compose-multiplatform/public/src/commonMain/kotlin/software/amazon/app/platform/renderer/ComposeRenderer.kt#L52-L58).
     Instead, `ComposeRenderer` defines its own function to preserve the composable context:
 
     ```kotlin
@@ -216,9 +216,9 @@ class MainActivity : ComponentActivity() {
 
 ??? example "Sample"
 
-    The sample app uses `ComposeAndroidRendererFactory` in [Android application](https://github.com/amzn/app-platform/blob/083fd808b539e36f3ab633f82d6ee2294d432c61/sample/app/src/androidMain/kotlin/software/amazon/app/platform/sample/MainActivity.kt#L30-L35)
-    and `ComposeRendererFactory` for [iOS](https://github.com/amzn/app-platform/blob/083fd808b539e36f3ab633f82d6ee2294d432c61/sample/app/src/iosMain/kotlin/software/amazon/app/platform/sample/MainViewController.kt#L40)
-    and [Desktop](https://github.com/amzn/app-platform/blob/083fd808b539e36f3ab633f82d6ee2294d432c61/sample/app/src/desktopMain/kotlin/software/amazon/app/platform/sample/DesktopApp.kt#L36).
+    The sample app uses `ComposeAndroidRendererFactory` in [Android application](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/androidMain/kotlin/software/amazon/app/platform/sample/MainActivity.kt#L30-L35)
+    and `ComposeRendererFactory` for [iOS](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/iosMain/kotlin/software/amazon/app/platform/sample/MainViewController.kt#L40)
+    and [Desktop](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/app/src/desktopMain/kotlin/software/amazon/app/platform/sample/DesktopApp.kt#L36).
 
 ### Creating `Renderers`
 

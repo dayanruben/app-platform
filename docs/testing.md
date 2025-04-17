@@ -104,7 +104,7 @@ This avoids duplication.
 
     The sample app uses `:testing` modules to implement and share fakes across modules, e.g.
     [`:sample:user:testing`](https://github.com/amzn/app-platform/tree/main/sample/user/testing). In other modules
-    fakes are created next to the tests ad-hoc, e.g. [`FakeUserPagePresenter`](https://github.com/amzn/app-platform/blob/7ad00b1199bf150230dc34d7c37967c4a0fa1708/sample/navigation/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/navigation/NavigationPresenterImplTest.kt#L51-L58)
+    fakes are created next to the tests ad-hoc, e.g. [`FakeUserPagePresenter`](https://github.com/amzn/app-platform/blob/0f3e242ae08bb242fbd7080d33caa069c8fae2b4/sample/navigation/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/navigation/NavigationPresenterImplTest.kt#L51-L58)
     and [`FakeAnimationHelper`](https://github.com/amzn/app-platform/blob/main/sample/user/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/user/FakeAnimationHelper.kt).
 
     ```kotlin
