@@ -35,8 +35,8 @@ writing Kotlin Multiplatform effectively.
 
 ## Overview
 
-App Platform is built on top of several other frameworks. While all of them are optional, they help significantly
-to recommended best practices.
+App Platform combines several features as a single framework. While all of them are optional, together they help
+to implement recommended best practices and design patterns.
 
 ### Module Structure
 
