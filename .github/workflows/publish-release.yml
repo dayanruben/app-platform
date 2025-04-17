@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-release:
-    runs-on: macos-latest
+    runs-on: macos-latest-xlarge
     if: github.repository == 'amzn/app-platform'
     timeout-minutes: 25
 
