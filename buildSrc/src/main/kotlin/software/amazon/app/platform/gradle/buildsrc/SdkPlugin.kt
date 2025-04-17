@@ -31,6 +31,14 @@ internal object SdkPlugin {
         artifactId()
       }
     mavenPublish.coordinates(artifactId = artifactId)
+    mavenPublish.pom { pom ->
+      pom.name.set(
+        "App Platform ${
+        artifactId.split('-')
+          .joinToString(separator = " ", prefix = "", postfix = "") { it.capitalize() }
+      }"
+      )
+    }
   }
 
   private fun Project.configureBinaryCompatibility() {

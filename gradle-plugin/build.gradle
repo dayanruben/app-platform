@@ -15,6 +15,12 @@ ktfmt {
     removeUnusedImports.set(true)
 }
 
+mavenPublishing {
+    pom {
+        name = "App Platform Gradle Plugin"
+    }
+}
+
 gradlePlugin {
     plugins {
         appPlatformPlugin {
