@@ -363,5 +363,3 @@ We recommend reading the provided resources in-order:
 * [Ryan Harter](https://ryanharter.com/blog/2020/06/replacing-mocks/) calls out easy traps when using mocks.
 * [Pravin Sonawane](https://medium.com/@june.pravin/mocking-is-not-practical-use-fakes-e30cc6eaaf4e) makes similar arguments and highlights how mocks encourage testing the “how” rather than focusing on the “what” (inputs and outputs).
 * Google blog [Don’t overuse mocks](https://testing.googleblog.com/2013/05/testing-on-toilet-dont-overuse-mocks.html) highlights some downsides of mocks and presents real or fake implementations as alternative.
-
-
