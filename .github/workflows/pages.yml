@@ -36,8 +36,7 @@ jobs:
           cp CHANGELOG.md docs/changelog.md
       - run: |
           pip install mkdocs-material
-          pip install cairosvg
-          pip install PIL
+          pip install "mkdocs-material[imaging]"
       - run: mkdocs gh-deploy --config-file mkdocs.yml --force
 
   deploy_mkdocs:
