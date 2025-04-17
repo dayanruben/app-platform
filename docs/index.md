@@ -1,11 +1,8 @@
-```yaml
 ---
-icon: material/web
-  social:
-    cards_layout_options:
-      title: Application framework for KMP
+social:
+  cards_layout_options:
+    title: Application framework for KMP
 ---
-```
 
 # App Platform
 
