@@ -34,7 +34,10 @@ jobs:
           python-version: 3.9
       - run: |
           cp CHANGELOG.md docs/changelog.md
-      - run: pip install mkdocs-material
+      - run: |
+          pip install mkdocs-material
+          pip install cairosvg
+          pip install PIL
       - run: mkdocs gh-deploy --config-file mkdocs.yml --force
 
   deploy_mkdocs:
