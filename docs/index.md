@@ -75,7 +75,7 @@ and Desktop.
 
 ### Integration
 
-The Gradle plugin comes with a convenient DSL to take care of many necessary configurations, e.g. it sets
+The [Gradle plugin](setup.md) comes with a convenient DSL to take care of many necessary configurations, e.g. it sets
 up the *Compose* compiler for *Molecule* and *Compose Multiplatform*. It configures KSP and integrates
 *kotlin-inject-anvil* for each platform. It sets the Android namespace and artifact ID when the module
 structure is enabled.
