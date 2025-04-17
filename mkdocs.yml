@@ -88,3 +88,4 @@ plugins:
   - social:
       cards_layout_options:
         logo: docs/images/app-platform-logo.png
+        title: Application framework for KMP
