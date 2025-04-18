@@ -177,7 +177,7 @@ graph TD
   navigation-platform["`:navigation-platform`"]
   delivery-app["`**:delivery-app**
   *DeliveryAppLocationProvider*`"]
-  navigation-app["**`:navigation-app**
+  navigation-app["`**:navigation-app**
   *NavigationAppLocationProvider*`"]
 
   delivery-platform --> delivery-app
