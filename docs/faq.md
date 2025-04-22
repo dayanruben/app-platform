@@ -43,3 +43,11 @@ us to migrate off of App Platform and to Circuit.
 !!! note "Help needed"
 
     Help from the community for a more in-depth comparison is needed.
+
+
+#### Is App Platform used in production by Amazon?
+
+App Platform was developed within the Amazon Delivery organization and is used to share code between several
+applications and platforms. Public products include the [in-vehicle delivery app](https://www.youtube.com/watch?v=0T_zvUEqsD4),
+[Amazon Flex for Android and iOS](https://flex.amazon.com/) and the Linux based
+[Vision-Assisted Package Retrieval](https://www.aboutamazon.com/news/transportation/amazon-vapr-delivery-van-packages).
