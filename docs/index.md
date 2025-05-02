@@ -25,7 +25,10 @@ platform strengths and changing app or device specific behavior when needed. The
 writing Kotlin Multiplatform effectively.
 
 === "Demo"
-    ![Demo video](images/demo.mov){ width="300" }
+    <video src="docs/images/demo.mov" width="300" controls></video>
+
+=== "Demo 2"
+    <video src="images/demo.mov" width="300" controls></video>
 
 === "Android"
     ![Android screenshot](images/Android.png){ width="300" }
