@@ -24,8 +24,8 @@ App Platform pushes for code reuse by sharing APIs and implementations, while ma
 platform strengths and changing app or device specific behavior when needed. The framework helps you to get started
 writing Kotlin Multiplatform effectively.
 
-=== "Demo"
-    <video src="images/demo.mov" width="300" controls></video>
+=== "Web (clickable)"
+    <iframe src="web/index.html" width="300px" height="600px" frameborder="1"></iframe>
 
 === "Android"
     ![Android screenshot](images/Android.png){ width="300" }
@@ -35,9 +35,6 @@ writing Kotlin Multiplatform effectively.
 
 === "Desktop"
     ![Desktop screenshot](images/Desktop.png){ width="300" }
-
-=== "Web (clickable)"
-    <iframe src="web/index.html" width="300px" height="600px" frameborder="1"></iframe>
 
 ## Overview
 
