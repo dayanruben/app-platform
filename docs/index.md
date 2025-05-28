@@ -37,7 +37,7 @@ writing Kotlin Multiplatform effectively.
     ![Desktop screenshot](images/Desktop.png){ width="300" }
 
 === "Web (clickable)"
-    <iframe src="partials/embedded.html" width="300px" height="600px" frameborder="0"></iframe>
+    <iframe src="web/index.html" width="300px" height="600px" frameborder="0"></iframe>
 
 ## Overview
 
