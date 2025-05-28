@@ -138,6 +138,15 @@ internal sealed interface Platform {
     override val target: KotlinNativeTarget by lazy { project.kmpExtension.iosX64() }
   }
 
+  private class Wasm(private val project: Project) : Platform {
+    override val unitTestTaskName: String = "wasmJsTest"
+
+    override fun configurePlatform() {
+      @Suppress("OPT_IN_USAGE")
+      project.kmpExtension.wasmJs { browser { outputModuleName.set(project.safePathString) } }
+    }
+  }
+
   companion object {
 
     private val projectsUsingCompose =
@@ -160,6 +169,8 @@ internal sealed interface Platform {
         add(IosSimulatorArm64(project = this@allPlatforms))
         add(IosArm64(project = this@allPlatforms))
         add(IosX64(project = this@allPlatforms))
+
+        add(Wasm(project = this@allPlatforms))
 
         // Compose Multiplatform does not support Linux, so exclude these modules.
         if (projectsUsingCompose.none { path.startsWith(it) }) {

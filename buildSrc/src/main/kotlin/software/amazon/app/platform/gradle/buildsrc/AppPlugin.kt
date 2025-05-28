@@ -6,6 +6,8 @@ import org.gradle.api.Project
 import org.gradle.util.internal.VersionNumber
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import software.amazon.app.platform.gradle.AppPlatformPlugin
 import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.composeMultiplatform
 import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.kmpExtension
@@ -24,6 +26,7 @@ public open class AppPlugin : Plugin<Project> {
     target.configureAndroidSettings()
     target.makeSingleVariant()
     target.addDependencies()
+    target.configureWasm()
 
     target.plugins.withId(Plugins.COMPOSE_MULTIPLATFORM) { target.configureDesktopApp() }
   }
@@ -47,6 +50,24 @@ public open class AppPlugin : Plugin<Project> {
     // "api" dependency to the project.
     allExportedDependencies().forEach { dependency ->
       kmpExtension.sourceSets.getByName("commonMain").dependencies { api(dependency) }
+    }
+  }
+
+  @OptIn(ExperimentalWasmDsl::class)
+  private fun Project.configureWasm() {
+    // For development use the Gradle task 'wasmJsBrowserDevelopmentRun'.
+    //
+    // Release builds are built with 'wasmJsBrowserDistribution'. To test the release run
+    // 'npx http-server' from the folder 'sample/app/build/dist/wasmJs/productionExecutable'.
+    kmpExtension.wasmJs {
+      browser {
+        outputModuleName.set(project.safePathString)
+        commonWebpackConfig {
+          it.outputFileName = "sample-app.js"
+          it.devServer = it.devServer ?: KotlinWebpackConfig.DevServer()
+        }
+      }
+      binaries.executable()
     }
   }
 

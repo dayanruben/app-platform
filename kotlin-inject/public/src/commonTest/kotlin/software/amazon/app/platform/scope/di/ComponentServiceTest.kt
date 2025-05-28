@@ -5,6 +5,9 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isSameInstanceAs
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+import software.amazon.app.platform.internal.IgnoreWasm
+import software.amazon.app.platform.internal.Platform
+import software.amazon.app.platform.internal.platform
 import software.amazon.app.platform.scope.Scope
 
 class ComponentServiceTest {
@@ -19,6 +22,7 @@ class ComponentServiceTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `if a DI component cannot be found then an exception is thrown with a helpful error message`() {
     val parentComponent = ParentComponentImpl()
     val childComponent = ChildComponentImpl()
@@ -31,7 +35,8 @@ class ComponentServiceTest {
     val kotlinReflectWarning =
       when (platform) {
         Platform.JVM -> " (Kotlin reflection is not available)"
-        Platform.Native -> ""
+        Platform.Native,
+        Platform.Web -> ""
       }
 
     assertThat(exception)

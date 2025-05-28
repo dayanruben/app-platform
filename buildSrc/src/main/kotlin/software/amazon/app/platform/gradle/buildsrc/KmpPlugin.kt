@@ -52,7 +52,7 @@ public open class KmpPlugin : Plugin<Project> {
       target.compilations.configureEach { compilation ->
         compilation.compileTaskProvider.configure { task ->
           with(task.compilerOptions) {
-            if ("test" in task.name.lowercase()) {
+            if ("test" in task.name.lowercase() || path == ":internal:testing") {
               freeCompilerArgs.add("-Xexpect-actual-classes")
               freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
             }
@@ -63,9 +63,14 @@ public open class KmpPlugin : Plugin<Project> {
             // compilation only code from one module is found.
             //
             // There is currently no DSL to set the KLib name. For more details see
-            // https://youtrack.jetbrains.com/issue/KT-38719.
-            freeCompilerArgs.add("-module-name")
-            freeCompilerArgs.add("$safePathString.${compilation.compilationName}")
+            // https://youtrack.jetbrains.com/issue/KT-38719
+            // https://youtrack.jetbrains.com/issue/KT-38892
+            if (target.targetName != "js" && target.targetName != "wasmJs") {
+              // Note this doesn't work on JS/WASMJS yet due to
+              // https://youtrack.jetbrains.com/issue/KT-71362
+              freeCompilerArgs.add("-module-name")
+              freeCompilerArgs.add("$safePathString.${compilation.compilationName}")
+            }
 
             extraWarnings.set(true)
 
@@ -127,6 +132,17 @@ public open class KmpPlugin : Plugin<Project> {
 
         kmpExtension.sourceSets.named("apple$suffix").configure { it.dependsOn(appleAndDesktop) }
         kmpExtension.sourceSets.named("desktop$suffix").configure { it.dependsOn(appleAndDesktop) }
+
+        val noWasmJs = kmpExtension.sourceSets.create("noWasmJs$suffix")
+        noWasmJs.dependsOn(common)
+
+        appleAndDesktop.dependsOn(noWasmJs)
+        kmpExtension.sourceSets.named("native$suffix").configure { it.dependsOn(noWasmJs) }
+        if (suffix == "Main") {
+          kmpExtension.sourceSets.named("android$suffix").configure { it.dependsOn(noWasmJs) }
+        } else {
+          kmpExtension.sourceSets.named("androidUnit$suffix").configure { it.dependsOn(noWasmJs) }
+        }
       }
     }
   }

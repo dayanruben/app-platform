@@ -15,15 +15,15 @@ import kotlin.test.assertFailsWith
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import software.amazon.app.platform.IgnoreNative
-import software.amazon.app.platform.currentThreadName
+import software.amazon.app.platform.internal.IgnoreNative
+import software.amazon.app.platform.internal.IgnoreWasm
+import software.amazon.app.platform.internal.currentThreadName
 import software.amazon.app.platform.presenter.BaseModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,6 +31,7 @@ class LaunchMoleculePresenterTest {
 
   @Test
   @IgnoreNative
+  @IgnoreWasm
   fun `the first present call happens inline and the second present call happens on the background thread`() =
     runTest {
       val inputFlow = MutableStateFlow("1")
@@ -74,7 +75,7 @@ class LaunchMoleculePresenterTest {
 
   @Test
   fun `launching a presenter on a canceled scope throws an error`() = runTest {
-    val coroutineScope = CoroutineScope(Dispatchers.IO)
+    val coroutineScope = CoroutineScope(Dispatchers.Default)
     coroutineScope.cancel()
     assertThat(coroutineScope.isActive).isFalse()
 

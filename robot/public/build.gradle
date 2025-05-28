@@ -13,5 +13,6 @@ dependencies {
 
     androidMainApi libs.androidx.test.espresso
 
-    commonTestApi project(':scope:testing')
+    commonTestImplementation project(':internal:testing')
+    commonTestImplementation project(':scope:testing')
 }

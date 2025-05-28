@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import software.amazon.app.platform.internal.IgnoreWasm
 
-@Suppress("OPT_IN_USAGE")
 class TestMoleculeScopeTest {
 
   @Test
@@ -67,6 +67,7 @@ class TestMoleculeScopeTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `failures in a coroutine are reported`() {
     assertFailure {
         runTest {

@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.runTest
+import software.amazon.app.platform.internal.IgnoreWasm
 import software.amazon.app.platform.presenter.BaseModel
 
 class TestPresenterTest {
@@ -60,6 +61,7 @@ class TestPresenterTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `failures in a presenter are reported in the first emission`() {
     class Model : BaseModel
 
@@ -88,6 +90,7 @@ class TestPresenterTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `failures in a presenter are reported in later emissions`() {
     class Model : BaseModel
 
