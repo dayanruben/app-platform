@@ -58,9 +58,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: wasm-files
+          path: docs/web
       - run: |
           cp CHANGELOG.md docs/changelog.md
-          cp -r sample/app/build/dist/wasmJs/productionExecutable docs/web
       - run: |
           pip install mkdocs-material
           pip install "mkdocs-material[imaging]"
