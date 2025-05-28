@@ -8,6 +8,8 @@ import assertk.assertions.isTrue
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+import software.amazon.app.platform.internal.Platform
+import software.amazon.app.platform.internal.platform
 import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.di.addDiComponent
 
@@ -19,11 +21,20 @@ class RobotTest {
 
     val message =
       exception.message?.replace("RobotTest\$TestRobot", "RobotTest.TestRobot").toString()
-    assertThat(message)
-      .contains(
-        "Could not find Robot of type class software.amazon.app.platform." +
-          "robot.RobotTest.TestRobot"
-      )
+
+    when (platform) {
+      Platform.JVM,
+      Platform.Native -> {
+        assertThat(message)
+          .contains(
+            "Could not find Robot of type class software.amazon.app.platform." +
+              "robot.RobotTest.TestRobot"
+          )
+      }
+      Platform.Web -> {
+        assertThat(message).contains("Could not find Robot of type class TestRobot")
+      }
+    }
     assertThat(message).contains("Did you forget to add the @ContributesRobot annotation?")
   }
 

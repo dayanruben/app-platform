@@ -7,6 +7,8 @@ import assertk.assertions.isSameInstanceAs
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+import software.amazon.app.platform.internal.Platform
+import software.amazon.app.platform.internal.platform
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.Scope
@@ -27,12 +29,18 @@ class BaseRendererFactoryTest {
     val message =
       exception.message?.replace('\$', '.')?.replace(" (Kotlin reflection is not available)", "")
 
-    assertThat(message)
-      .isEqualTo(
-        "No renderer was provided for class " +
-          "software.amazon.app.platform.renderer.BaseRendererFactoryTest.TestModel. " +
-          "Did you add @ContributesRenderer?"
-      )
+    val errorMessage =
+      when (platform) {
+        Platform.JVM,
+        Platform.Native ->
+          "No renderer was provided for class " +
+            "software.amazon.app.platform.renderer.BaseRendererFactoryTest.TestModel. " +
+            "Did you add @ContributesRenderer?"
+        Platform.Web ->
+          "No renderer was provided for class TestModel. Did you add @ContributesRenderer?"
+      }
+
+    assertThat(message).isEqualTo(errorMessage)
   }
 
   @Test

@@ -12,5 +12,6 @@ dependencies {
     commonMainApi project(':presenter:public')
     commonMainApi project(':scope:public')
 
-    commonTestApi project(':scope:testing')
+    commonTestImplementation project(':internal:testing')
+    commonTestImplementation project(':scope:testing')
 }

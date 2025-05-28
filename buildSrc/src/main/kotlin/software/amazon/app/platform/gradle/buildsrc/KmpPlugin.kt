@@ -132,6 +132,17 @@ public open class KmpPlugin : Plugin<Project> {
 
         kmpExtension.sourceSets.named("apple$suffix").configure { it.dependsOn(appleAndDesktop) }
         kmpExtension.sourceSets.named("desktop$suffix").configure { it.dependsOn(appleAndDesktop) }
+
+        val noWasmJs = kmpExtension.sourceSets.create("noWasmJs$suffix")
+        noWasmJs.dependsOn(common)
+
+        appleAndDesktop.dependsOn(noWasmJs)
+        kmpExtension.sourceSets.named("native$suffix").configure { it.dependsOn(noWasmJs) }
+        if (suffix == "Main") {
+          kmpExtension.sourceSets.named("android$suffix").configure { it.dependsOn(noWasmJs) }
+        } else {
+          kmpExtension.sourceSets.named("androidUnit$suffix").configure { it.dependsOn(noWasmJs) }
+        }
       }
     }
   }
