@@ -161,14 +161,6 @@ internal sealed interface Platform {
       // environments (locally and CI)
       add(AndroidPlatform(project = this@allPlatforms))
 
-      // TODO: Remove this eventually after fully supporting WASM in all modules. This is
-      //  temporary.
-      val wasmPaths =
-        setOf(":internal", ":kotlin-inject", ":presenter", ":renderer", ":robot", ":scope")
-      if (wasmPaths.any { path.startsWith(it) }) {
-        add(Wasm(project = this@allPlatforms))
-      }
-
       // Android-only modules have "android" in their name and don't need other
       // platforms.
       if ("android" !in path.lowercase()) {
@@ -177,6 +169,8 @@ internal sealed interface Platform {
         add(IosSimulatorArm64(project = this@allPlatforms))
         add(IosArm64(project = this@allPlatforms))
         add(IosX64(project = this@allPlatforms))
+
+        add(Wasm(project = this@allPlatforms))
 
         // Compose Multiplatform does not support Linux, so exclude these modules.
         if (projectsUsingCompose.none { path.startsWith(it) }) {

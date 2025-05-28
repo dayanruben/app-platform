@@ -248,6 +248,21 @@ jobs:
           echo "Using simulator $DESTINATION_DEVICE"
           /usr/bin/xcodebuild -project sample/iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug OBJROOT=build/ios SYMROOT=build/ios -destination id=$DESTINATION_DEVICE -allowProvisioningDeviceRegistration -allowProvisioningUpdates
 
+  build-wasm-sample-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup-action
+        with:
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Build wasm binary
+        run: ./gradlew :sample:app:wasmJsBrowserDistribution
+
   binary-compatibility-check:
     runs-on: ubuntu-latest
     timeout-minutes: 25
