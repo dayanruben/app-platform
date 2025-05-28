@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import software.amazon.app.platform.internal.IgnoreWasm
 import software.amazon.app.platform.scope.coroutine.coroutineScope
 import software.amazon.app.platform.scope.coroutine.launch
 
-@Suppress("OPT_IN_USAGE")
 class TestScopeTest {
 
   @Test
@@ -65,6 +65,7 @@ class TestScopeTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `the test scope is destroyed automatically`() {
     lateinit var scope: Scope
 
@@ -77,6 +78,7 @@ class TestScopeTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `a failure in the clean up routine causes the test to fail`() {
     assertFailure {
         runTest {

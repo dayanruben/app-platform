@@ -9,9 +9,9 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runCurrent
+import software.amazon.app.platform.internal.IgnoreWasm
 import software.amazon.app.platform.scope.coroutine.coroutineScope
 
-@Suppress("OPT_IN_USAGE")
 class RunTestWithScopeTest {
 
   @Test
@@ -58,6 +58,7 @@ class RunTestWithScopeTest {
     }
 
   @Test
+  @IgnoreWasm
   fun `onEnterScope and onExitScope will be called when registering the scoped`() {
     val scoped = MyScoped()
     assertThat(scoped.onEnterScopeCalled).isFalse()
@@ -78,6 +79,7 @@ class RunTestWithScopeTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `onExitScope will not be called when calling onEnterScope manually`() {
     val scoped = MyScoped()
     assertThat(scoped.onEnterScopeCalled).isFalse()
@@ -98,6 +100,7 @@ class RunTestWithScopeTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `onEnterScope and onExitScope will be called when registering the scoped through runTestWithScoped`() {
     val scoped = MyScoped()
     assertThat(scoped.onEnterScopeCalled).isFalse()

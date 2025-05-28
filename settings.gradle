@@ -38,6 +38,7 @@ develocity {
 
 rootProject.name = 'app-platform'
 
+include ':internal:testing'
 include ':kotlin-inject:impl'
 include ':kotlin-inject:public'
 include ':kotlin-inject-extensions:contribute:impl-code-generators'

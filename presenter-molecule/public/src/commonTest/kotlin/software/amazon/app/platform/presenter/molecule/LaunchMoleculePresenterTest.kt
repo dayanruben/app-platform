@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import software.amazon.app.platform.IgnoreNative
-import software.amazon.app.platform.currentThreadName
+import software.amazon.app.platform.internal.IgnoreNative
+import software.amazon.app.platform.internal.currentThreadName
 import software.amazon.app.platform.presenter.BaseModel
 
 @OptIn(ExperimentalCoroutinesApi::class)

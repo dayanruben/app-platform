@@ -138,6 +138,15 @@ internal sealed interface Platform {
     override val target: KotlinNativeTarget by lazy { project.kmpExtension.iosX64() }
   }
 
+  private class Wasm(private val project: Project) : Platform {
+    override val unitTestTaskName: String = "wasmJsTest"
+
+    override fun configurePlatform() {
+      @Suppress("OPT_IN_USAGE")
+      project.kmpExtension.wasmJs { browser { outputModuleName.set(project.safePathString) } }
+    }
+  }
+
   companion object {
 
     private val projectsUsingCompose =
@@ -151,6 +160,13 @@ internal sealed interface Platform {
       // Always add Android. It's our most important platform and buildable in all
       // environments (locally and CI)
       add(AndroidPlatform(project = this@allPlatforms))
+
+      // TODO: Remove this eventually after fully supporting WASM in all modules. This is
+      //  temporary.
+      val wasmPaths = setOf(":internal:", ":scope:")
+      if (wasmPaths.any { path.startsWith(it) }) {
+        add(Wasm(project = this@allPlatforms))
+      }
 
       // Android-only modules have "android" in their name and don't need other
       // platforms.
