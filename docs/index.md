@@ -36,6 +36,9 @@ writing Kotlin Multiplatform effectively.
 === "Desktop"
     ![Desktop screenshot](images/Desktop.png){ width="300" }
 
+=== "Web (clickable)"
+    <iframe src="partials/embedded.html" width="300px" height="600px" frameborder="0"></iframe>
+
 ## Overview
 
 App Platform combines several features as a single framework. While all of them are optional, together they help
