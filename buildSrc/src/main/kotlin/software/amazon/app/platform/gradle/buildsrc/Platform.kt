@@ -163,7 +163,7 @@ internal sealed interface Platform {
 
       // TODO: Remove this eventually after fully supporting WASM in all modules. This is
       //  temporary.
-      val wasmPaths = setOf(":internal:", ":scope:")
+      val wasmPaths = setOf(":internal", ":kotlin-inject", ":presenter", ":scope")
       if (wasmPaths.any { path.startsWith(it) }) {
         add(Wasm(project = this@allPlatforms))
       }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import software.amazon.app.platform.internal.IgnoreWasm
 
 class FakeMoleculeScopeFactoryTest {
 
@@ -27,6 +28,7 @@ class FakeMoleculeScopeFactoryTest {
   }
 
   @Test
+  @IgnoreWasm
   fun `a created MoleculeScope does not need to be canceled for the test to complete`() {
     // Basically this test should not hang.
     var didRun = false
