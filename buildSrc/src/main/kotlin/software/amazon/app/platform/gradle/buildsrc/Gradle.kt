@@ -18,7 +18,7 @@ internal val Project.libs: VersionCatalog
   get() = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 internal val Project.ci
-  get() = providers.gradleProperty("CI").isPresent
+  get() = providers.gradleProperty("CI").isPresent || System.getenv("CI") != null
 
 internal val Project.javaVersion
   get() = JavaVersion.toVersion(libs.findVersion("jvm.compatibility").get().requiredVersion)
