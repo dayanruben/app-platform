@@ -48,6 +48,16 @@ public open class KmpPlugin : Plugin<Project> {
       .languageSettings
       .optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
 
+    kmpExtension.compilerOptions {
+      freeCompilerArgs.add("-Xannotation-default-target=param-property")
+
+      // Unfortunately, we cannot set this to true. It produces warnings for generated code,
+      // which cannot be excluded.
+      extraWarnings.set(false)
+
+      allWarningsAsErrors.set(appPlatformBuildSrc.isKotlinWarningsAsErrors())
+    }
+
     kmpExtension.targets.configureEach { target ->
       target.compilations.configureEach { compilation ->
         compilation.compileTaskProvider.configure { task ->
@@ -71,20 +81,6 @@ public open class KmpPlugin : Plugin<Project> {
               freeCompilerArgs.add("-module-name")
               freeCompilerArgs.add("$safePathString.${compilation.compilationName}")
             }
-
-            extraWarnings.set(true)
-
-            // This warnings is reported in generated code.
-            freeCompilerArgs.add("-Xsuppress-warning=REDUNDANT_VISIBILITY_MODIFIER")
-
-            // This is a false positive. It reports warnings for lambdas where the
-            // "it" parameter isn't used and suggests to rename it to '_'.
-            freeCompilerArgs.add("-Xsuppress-warning=UNUSED_ANONYMOUS_PARAMETER")
-
-            // False positive for lambda with Unit as return type.
-            freeCompilerArgs.add("-Xsuppress-warning=REDUNDANT_RETURN_UNIT_TYPE")
-
-            allWarningsAsErrors.set(appPlatformBuildSrc.isKotlinWarningsAsErrors())
           }
         }
       }

@@ -5,6 +5,7 @@ public abstract interface class software/amazon/app/platform/scope/RootScopeProv
 public abstract interface class software/amazon/app/platform/scope/Scope {
 	public static final field Companion Lsoftware/amazon/app/platform/scope/Scope$Companion;
 	public abstract fun buildChild (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lsoftware/amazon/app/platform/scope/Scope;
+	public static synthetic fun buildChild$default (Lsoftware/amazon/app/platform/scope/Scope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lsoftware/amazon/app/platform/scope/Scope;
 	public abstract fun children ()Ljava/util/Set;
 	public abstract fun destroy ()V
 	public abstract fun getName ()Ljava/lang/String;
@@ -38,8 +39,8 @@ public final class software/amazon/app/platform/scope/ScopeKt {
 
 public abstract interface class software/amazon/app/platform/scope/Scoped {
 	public static final field Companion Lsoftware/amazon/app/platform/scope/Scoped$Companion;
-	public abstract fun onEnterScope (Lsoftware/amazon/app/platform/scope/Scope;)V
-	public abstract fun onExitScope ()V
+	public fun onEnterScope (Lsoftware/amazon/app/platform/scope/Scope;)V
+	public fun onExitScope ()V
 }
 
 public final class software/amazon/app/platform/scope/Scoped$Companion {

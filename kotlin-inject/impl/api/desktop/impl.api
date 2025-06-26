@@ -1,5 +1,5 @@
 public abstract interface class software/amazon/app/platform/presenter/PresenterCoroutineScopeComponent {
-	public abstract fun providePresenterCoroutineScope (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;)Lkotlinx/coroutines/CoroutineScope;
+	public fun providePresenterCoroutineScope (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;)Lkotlinx/coroutines/CoroutineScope;
 }
 
 public final class software/amazon/app/platform/presenter/PresenterCoroutineScopeComponent$DefaultImpls {
@@ -7,8 +7,8 @@ public final class software/amazon/app/platform/presenter/PresenterCoroutineScop
 }
 
 public abstract interface class software/amazon/app/platform/scope/coroutine/AppScopeCoroutineScopeComponent {
-	public abstract fun provideAppCoroutineScope (Lsoftware/amazon/app/platform/scope/coroutine/CoroutineScopeScoped;)Lkotlinx/coroutines/CoroutineScope;
-	public abstract fun provideAppScopeCoroutineScopeScoped (Lkotlinx/coroutines/CoroutineDispatcher;)Lsoftware/amazon/app/platform/scope/coroutine/CoroutineScopeScoped;
+	public fun provideAppCoroutineScope (Lsoftware/amazon/app/platform/scope/coroutine/CoroutineScopeScoped;)Lkotlinx/coroutines/CoroutineScope;
+	public fun provideAppScopeCoroutineScopeScoped (Lkotlinx/coroutines/CoroutineDispatcher;)Lsoftware/amazon/app/platform/scope/coroutine/CoroutineScopeScoped;
 }
 
 public final class software/amazon/app/platform/scope/coroutine/AppScopeCoroutineScopeComponent$DefaultImpls {
@@ -17,9 +17,9 @@ public final class software/amazon/app/platform/scope/coroutine/AppScopeCoroutin
 }
 
 public abstract interface class software/amazon/app/platform/scope/coroutine/CoroutineDispatcherComponent {
-	public abstract fun provideDefaultCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
-	public abstract fun provideIoCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
-	public abstract fun provideMainCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun provideDefaultCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun provideIoCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun provideMainCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 }
 
 public final class software/amazon/app/platform/scope/coroutine/CoroutineDispatcherComponent$DefaultImpls {

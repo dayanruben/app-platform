@@ -1,5 +1,5 @@
 public abstract interface class software/amazon/app/platform/robot/Robot {
-	public abstract fun close ()V
+	public fun close ()V
 }
 
 public final class software/amazon/app/platform/robot/Robot$DefaultImpls {

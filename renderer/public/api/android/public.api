@@ -20,6 +20,7 @@ public abstract interface class software/amazon/app/platform/renderer/RendererCo
 public abstract interface class software/amazon/app/platform/renderer/RendererFactory {
 	public abstract fun createRenderer (Lkotlin/reflect/KClass;)Lsoftware/amazon/app/platform/renderer/Renderer;
 	public abstract fun getRenderer (Lkotlin/reflect/KClass;I)Lsoftware/amazon/app/platform/renderer/Renderer;
+	public static synthetic fun getRenderer$default (Lsoftware/amazon/app/platform/renderer/RendererFactory;Lkotlin/reflect/KClass;IILjava/lang/Object;)Lsoftware/amazon/app/platform/renderer/Renderer;
 }
 
 public final class software/amazon/app/platform/renderer/RendererFactory$DefaultImpls {

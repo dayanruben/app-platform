@@ -6,6 +6,9 @@ appPlatformBuildSrc {
     enableDi true
     enableMolecule true
     enablePublishing true
+
+    // Had to be disabled because KSP2 is disabled, which produces warnings for the Kotlin compilation.
+    kotlinWarningsAsErrors false
 }
 
 dependencies {

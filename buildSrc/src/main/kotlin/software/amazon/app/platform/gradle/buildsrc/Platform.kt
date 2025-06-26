@@ -43,9 +43,7 @@ internal sealed interface Platform {
     override val unitTestTaskName: String = "testDebugUnitTest"
 
     override fun configurePlatform() {
-      project.kmpExtension.androidTarget().compilations.configureEach {
-        it.kotlinOptions.jvmTarget = project.javaVersion.toString()
-      }
+      project.kmpExtension.androidTarget().compilerOptions { jvmTarget.set(project.javaTarget) }
 
       project.android.sourceSets.getByName("main").apply {
         project
@@ -66,9 +64,7 @@ internal sealed interface Platform {
     override val unitTestTaskName: String = "desktopTest"
 
     override fun configurePlatform() {
-      project.kmpExtension.jvm("desktop").compilations.configureEach {
-        it.kotlinOptions.jvmTarget = project.javaVersion.toString()
-      }
+      project.kmpExtension.jvm("desktop").compilerOptions { jvmTarget.set(project.javaTarget) }
 
       with(project.extensions.getByType(JavaPluginExtension::class.java)) {
         sourceCompatibility = project.javaVersion

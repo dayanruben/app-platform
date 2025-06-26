@@ -19,6 +19,7 @@ public final class software/amazon/app/platform/presenter/molecule/MoleculeScope
 public abstract interface class software/amazon/app/platform/presenter/molecule/MoleculeScopeFactory {
 	public abstract fun createMoleculeScope ()Lsoftware/amazon/app/platform/presenter/molecule/MoleculeScope;
 	public abstract fun createMoleculeScopeFromCoroutineScope (Lkotlinx/coroutines/CoroutineScope;Lkotlin/coroutines/CoroutineContext;)Lsoftware/amazon/app/platform/presenter/molecule/MoleculeScope;
+	public static synthetic fun createMoleculeScopeFromCoroutineScope$default (Lsoftware/amazon/app/platform/presenter/molecule/MoleculeScopeFactory;Lkotlinx/coroutines/CoroutineScope;Lkotlin/coroutines/CoroutineContext;ILjava/lang/Object;)Lsoftware/amazon/app/platform/presenter/molecule/MoleculeScope;
 }
 
 public final class software/amazon/app/platform/presenter/molecule/MoleculeScopeFactory$DefaultImpls {
