@@ -37,6 +37,7 @@ class Compilation internal constructor(val kotlinCompilation: KotlinCompilation)
 
     if (!useKsp2) {
       kotlinCompilation.languageVersion = "1.9"
+      kotlinCompilation.allWarningsAsErrors = false
     }
 
     kotlinCompilation.configureKsp(useKsp2 = useKsp2) {
