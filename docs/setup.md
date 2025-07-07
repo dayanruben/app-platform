@@ -72,11 +72,21 @@ are explained in more detail in many of the following sections.
 
 To import snapshot builds use following repository:
 
-```gradle
-maven {
-  url = 'https://central.sonatype.com/repository/maven-snapshots/'
-}
-```
+=== "build.gradle"
+
+    ```groovy
+    maven {
+      url = 'https://central.sonatype.com/repository/maven-snapshots/'
+    }
+    ```
+
+=== "build.gradle.kts"
+
+    ```kotlin
+    maven {
+      url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+    }
+    ```
 
 !!! warning
 
