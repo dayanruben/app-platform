@@ -42,6 +42,10 @@ theme:
     - toc.follow
     - toc.integrate
     - content.tabs.link
+    - content.action.edit
+
+  icon:
+    edit: material/pencil
 
 markdown_extensions:
   - smarty
