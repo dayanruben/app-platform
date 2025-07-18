@@ -16,9 +16,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 @Component
 @MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
-abstract class WasmJsAppComponent(
-    @get:Provides val rootScopeProvider: RootScopeProvider,
-) :
-    WasmJsAppComponentMerged {
-    abstract val templateProviderFactory: TemplateProvider.Factory
+abstract class WasmJsAppComponent(@get:Provides val rootScopeProvider: RootScopeProvider) :
+  WasmJsAppComponentMerged {
+  abstract val templateProviderFactory: TemplateProvider.Factory
 }

@@ -9,8 +9,8 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 /**
- * Default implementation of [ExampleRepository] that holds an integer [StateFlow]
- * and allows its value to be updated.
+ * Default implementation of [ExampleRepository] that holds an integer [StateFlow] and allows its
+ * value to be updated.
  *
  * Useful for testing reactive state flow usage with presenters or other consumers.
  */
@@ -18,11 +18,11 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class ExampleRepositoryImpl : ExampleRepository {
-    private val _exampleStateFlow = MutableStateFlow(0)
-    override val exampleStateFlow: StateFlow<Int> = _exampleStateFlow.asStateFlow()
+  private val _exampleStateFlow = MutableStateFlow(0)
+  override val exampleStateFlow: StateFlow<Int> = _exampleStateFlow.asStateFlow()
 
-    override fun setExampleFlowValue(value: Int) {
-        println("value: $value")
-        _exampleStateFlow.value = value
-    }
+  override fun setExampleFlowValue(value: Int) {
+    println("value: $value")
+    _exampleStateFlow.value = value
+  }
 }

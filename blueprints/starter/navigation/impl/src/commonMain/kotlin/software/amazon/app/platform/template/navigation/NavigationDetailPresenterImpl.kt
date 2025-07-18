@@ -16,23 +16,19 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
 @ContributesBinding(AppScope::class)
-class NavigationDetailPresenterImpl(
-    private val exampleRepository: ExampleRepository,
-) : NavigationDetailPresenter {
-    @Composable
-    override fun present(input: Unit): Model {
-        val exampleValue by exampleRepository.exampleStateFlow.collectAsState()
-        var exampleCount by remember { mutableStateOf(0) }
+class NavigationDetailPresenterImpl(private val exampleRepository: ExampleRepository) :
+  NavigationDetailPresenter {
+  @Composable
+  override fun present(input: Unit): Model {
+    val exampleValue by exampleRepository.exampleStateFlow.collectAsState()
+    var exampleCount by remember { mutableStateOf(0) }
 
-        LaunchedEffect(exampleValue) {
-            // Add a delay, otherwise the state is not updating properly on iOS.
-            delay(1.milliseconds)
-            exampleCount++
-        }
-
-        return Model(
-            exampleValue = exampleValue,
-            exampleCount = exampleCount,
-        )
+    LaunchedEffect(exampleValue) {
+      // Add a delay, otherwise the state is not updating properly on iOS.
+      delay(1.milliseconds)
+      exampleCount++
     }
+
+    return Model(exampleValue = exampleValue, exampleCount = exampleCount)
+  }
 }

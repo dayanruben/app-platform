@@ -16,21 +16,17 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 @ContributesTo(AppScope::class)
 @SingleIn(AppScope::class)
 interface AppComponent {
-    /** All [Scoped] instances part of the app scope. */
-    @ForScope(AppScope::class)
-    val appScopedInstances: Set<Scoped>
+  /** All [Scoped] instances part of the app scope. */
+  @ForScope(AppScope::class) val appScopedInstances: Set<Scoped>
 
-    /** The coroutine scope that runs as long as the app scope is alive. */
-    @ForScope(AppScope::class)
-    val appScopeCoroutineScopeScoped: CoroutineScopeScoped
+  /** The coroutine scope that runs as long as the app scope is alive. */
+  @ForScope(AppScope::class) val appScopeCoroutineScopeScoped: CoroutineScopeScoped
 
-    /**
-     * Provide at least one implementation in the scope, otherwise kotlin-inject will complain. The
-     * template app actually does have a [Scoped] instance (ExampleValueGenerator) in the app scope,
-     * so the following is not needed, but will provide here since once ExampleValueGenerator is removed
-     * kotlin-inject will complain until replaces with another [Scoped] instance.
-     */
-    @Provides @IntoSet
-    @ForScope(AppScope::class)
-    fun provideEmptyScoped(): Scoped = Scoped.NO_OP
+  /**
+   * Provide at least one implementation in the scope, otherwise kotlin-inject will complain. The
+   * template app actually does have a [Scoped] instance (ExampleValueGenerator) in the app scope,
+   * so the following is not needed, but will provide here since once ExampleValueGenerator is
+   * removed kotlin-inject will complain until replaces with another [Scoped] instance.
+   */
+  @Provides @IntoSet @ForScope(AppScope::class) fun provideEmptyScoped(): Scoped = Scoped.NO_OP
 }

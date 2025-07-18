@@ -18,6 +18,6 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 @MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
 abstract class AndroidAppComponent(
-    @get:Provides val application: Application,
-    @get:Provides val rootScopeProvider: RootScopeProvider,
+  @get:Provides val application: Application,
+  @get:Provides val rootScopeProvider: RootScopeProvider,
 ) : AndroidAppComponentMerged

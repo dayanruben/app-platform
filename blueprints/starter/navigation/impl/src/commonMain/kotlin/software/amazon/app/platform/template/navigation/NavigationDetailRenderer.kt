@@ -12,40 +12,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import software.amazon.app.platform.template.navigation.NavigationDetailPresenter.Model
 import software.amazon.app.platform.inject.ContributesRenderer
 import software.amazon.app.platform.renderer.ComposeRenderer
+import software.amazon.app.platform.template.navigation.NavigationDetailPresenter.Model
 
 @ContributesRenderer
 class NavigationDetailRenderer : ComposeRenderer<Model>() {
-    @Composable
-    override fun Compose(model: Model) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Hello, welcome to amzn/app-platform Template App",
-                style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
-            Text(
-                text = "Every 3 seconds a new exampleValue is generated: ${model.exampleValue}",
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
-            Text(
-                text = "Total number of exampleValues shown: ${model.exampleCount}",
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
-        }
+  @Composable
+  override fun Compose(model: Model) {
+    Column(
+      modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+      verticalArrangement = Arrangement.Center,
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      Text(
+        text = "Hello, welcome to amzn/app-platform Template App",
+        style = MaterialTheme.typography.headlineMedium,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(16.dp),
+      )
+      Text(
+        text = "Every 3 seconds a new exampleValue is generated: ${model.exampleValue}",
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(16.dp),
+      )
+      Text(
+        text = "Total number of exampleValues shown: ${model.exampleCount}",
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(16.dp),
+      )
     }
+  }
 }
-
