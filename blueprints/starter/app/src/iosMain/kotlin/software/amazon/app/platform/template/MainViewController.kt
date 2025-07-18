@@ -20,29 +20,28 @@ import software.amazon.app.platform.scope.di.diComponent
  */
 @Suppress("unused")
 fun mainViewController(rootScopeProvider: RootScopeProvider): UIViewController =
-    ComposeUIViewController {
-        // Create a single instance.
-        val templateProvider =
-            remember {
-                rootScopeProvider.rootScope
-                    .diComponent<IosAppComponent>()
-                    .templateProviderFactory
-                    .createTemplateProvider()
-            }
-
-        DisposableEffect(Unit) {
-            onDispose {
-                // Cancel the provider when it's no longer needed.
-                templateProvider.cancel()
-            }
-        }
-
-        // Only a single factory is needed.
-        val factory = remember { ComposeRendererFactory(rootScopeProvider) }
-
-        // Render templates using our Renderer runtime.
-        val template by templateProvider.templates.collectAsState()
-
-        val renderer = factory.getRenderer(template::class)
-        renderer.renderCompose(template)
+  ComposeUIViewController {
+    // Create a single instance.
+    val templateProvider = remember {
+      rootScopeProvider.rootScope
+        .diComponent<IosAppComponent>()
+        .templateProviderFactory
+        .createTemplateProvider()
     }
+
+    DisposableEffect(Unit) {
+      onDispose {
+        // Cancel the provider when it's no longer needed.
+        templateProvider.cancel()
+      }
+    }
+
+    // Only a single factory is needed.
+    val factory = remember { ComposeRendererFactory(rootScopeProvider) }
+
+    // Render templates using our Renderer runtime.
+    val template by templateProvider.templates.collectAsState()
+
+    val renderer = factory.getRenderer(template::class)
+    renderer.renderCompose(template)
+  }

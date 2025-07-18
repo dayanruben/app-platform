@@ -1,12 +1,12 @@
 package software.amazon.app.platform.template
 
+import kotlin.reflect.KClass
 import me.tatarka.inject.annotations.Provides
 import platform.UIKit.UIApplication
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.MergeComponent
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import kotlin.reflect.KClass
 
 /**
  * The final iOS app component. Note that [uiApplication] is an iOS specific type and classes living
@@ -17,10 +17,10 @@ import kotlin.reflect.KClass
 @MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
 abstract class IosAppComponent(
-    @get:Provides val uiApplication: UIApplication,
-    @get:Provides val rootScopeProvider: RootScopeProvider,
+  @get:Provides val uiApplication: UIApplication,
+  @get:Provides val rootScopeProvider: RootScopeProvider,
 ) {
-    abstract val templateProviderFactory: TemplateProvider.Factory
+  abstract val templateProviderFactory: TemplateProvider.Factory
 }
 
 /**
@@ -29,15 +29,15 @@ abstract class IosAppComponent(
  */
 @MergeComponent.CreateComponent
 expect fun KClass<IosAppComponent>.createComponent(
-    uiApplication: UIApplication,
-    rootScopeProvider: RootScopeProvider,
+  uiApplication: UIApplication,
+  rootScopeProvider: RootScopeProvider,
 ): IosAppComponent
 
 /** This function is called from Swift to create a new component instance. */
 @Suppress("unused")
 fun createIosAppComponent(
-    application: UIApplication,
-    rootScopeProvider: RootScopeProvider,
+  application: UIApplication,
+  rootScopeProvider: RootScopeProvider,
 ): AppComponent {
-    return IosAppComponent::class.createComponent(application, rootScopeProvider) as AppComponent
+  return IosAppComponent::class.createComponent(application, rootScopeProvider) as AppComponent
 }

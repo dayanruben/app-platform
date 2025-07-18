@@ -16,23 +16,23 @@ import software.amazon.app.platform.scope.RootScopeProvider
  * templates.
  */
 class MainActivity : ComponentActivity() {
-    private val rootScopeProvider
-        get() = application as RootScopeProvider
+  private val rootScopeProvider
+    get() = application as RootScopeProvider
 
-    private val viewModel by viewModels<MainActivityViewModel>()
+  private val viewModel by viewModels<MainActivityViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
 
-        val rendererFactory =
-            ComposeAndroidRendererFactory.createForComposeUi(rootScopeProvider = rootScopeProvider)
+    val rendererFactory =
+      ComposeAndroidRendererFactory.createForComposeUi(rootScopeProvider = rootScopeProvider)
 
-        setContent {
-            val template by viewModel.templates.collectAsState()
+    setContent {
+      val template by viewModel.templates.collectAsState()
 
-            val renderer = rendererFactory.getComposeRenderer(template)
-            renderer.renderCompose(template)
-        }
+      val renderer = rendererFactory.getComposeRenderer(template)
+      renderer.renderCompose(template)
     }
+  }
 }

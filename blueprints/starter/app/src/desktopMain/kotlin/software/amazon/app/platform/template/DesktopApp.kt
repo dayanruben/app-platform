@@ -15,7 +15,6 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 /**
  * Responsible for creating the app component [component] and producing templates. Call [destroy] to
  * clean up any resources.
- *
  */
 class DesktopApp(private val component: (RootScopeProvider) -> AppComponent) : RootScopeProvider {
 

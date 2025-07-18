@@ -9,18 +9,20 @@ import software.amazon.app.platform.scope.Scope
  * This is helpful to get access to the root scope from Android components such as activities.
  */
 open class AndroidApplication : Application(), RootScopeProvider {
-    private val application = software.amazon.app.platform.template.Application()
+  private val application = software.amazon.app.platform.template.Application()
 
-    override val rootScope: Scope
-        get() = application.rootScope
+  override val rootScope: Scope
+    get() = application.rootScope
 
-    override fun onCreate() {
-        application.create(component(application))
-        super.onCreate()
-    }
+  override fun onCreate() {
+    application.create(component(application))
+    super.onCreate()
+  }
 
-    /** Create the [AppComponent]. In UI tests we use a different instance. */
-    protected open fun component(application: software.amazon.app.platform.template.Application): AppComponent {
-        return AndroidAppComponent::class.create(this, application)
-    }
+  /** Create the [AppComponent]. In UI tests we use a different instance. */
+  protected open fun component(
+    application: software.amazon.app.platform.template.Application
+  ): AppComponent {
+    return AndroidAppComponent::class.create(this, application)
+  }
 }

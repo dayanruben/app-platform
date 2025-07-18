@@ -10,13 +10,13 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 @Inject
 @ContributesBinding(AppScope::class)
 class NavigationPresenterImpl(
-    private val navigationHeaderPresenter: NavigationHeaderPresenter,
-    private val navigationDetailPresenter: NavigationDetailPresenter,
+  private val navigationHeaderPresenter: NavigationHeaderPresenter,
+  private val navigationDetailPresenter: NavigationDetailPresenter,
 ) : NavigationPresenter {
-    @Composable
-    override fun present(input: Unit): BaseModel {
-        val navigationBarModel = navigationHeaderPresenter.present(Unit)
-        val navigationDetailModel = navigationDetailPresenter.present(Unit)
-        return AppTemplate.HeaderDetailTemplate(navigationBarModel, navigationDetailModel)
-    }
+  @Composable
+  override fun present(input: Unit): BaseModel {
+    val navigationBarModel = navigationHeaderPresenter.present(Unit)
+    val navigationDetailModel = navigationDetailPresenter.present(Unit)
+    return AppTemplate.HeaderDetailTemplate(navigationBarModel, navigationDetailModel)
+  }
 }
