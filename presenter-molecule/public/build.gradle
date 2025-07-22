@@ -9,6 +9,7 @@ appPlatformBuildSrc {
 
 dependencies {
     commonMainApi project(':presenter:public')
+    commonMainApi libs.androidx.annotations
     commonTestImplementation project(':internal:testing')
     commonTestImplementation project(':presenter-molecule:testing')
 }
