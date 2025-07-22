@@ -3,6 +3,7 @@ package software.amazon.app.platform.sample.user
 import androidx.compose.runtime.Composable
 import me.tatarka.inject.annotations.Inject
 import software.amazon.app.platform.presenter.BaseModel
+import software.amazon.app.platform.presenter.molecule.backgesture.BackHandlerPresenter
 import software.amazon.app.platform.presenter.template.ModelDelegate
 import software.amazon.app.platform.renderer.Renderer
 import software.amazon.app.platform.sample.template.SampleAppTemplate
@@ -22,12 +23,15 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 @ContributesBinding(UserScope::class)
 class UserPagePresenterImpl(
   private val user: User,
+  private val userManager: UserManager,
   private val userPageListPresenter: UserPageListPresenter,
   private val userPageDetailPresenter: UserPageDetailPresenter,
 ) : UserPagePresenter {
 
   @Composable
   override fun present(input: Unit): Model {
+    BackHandlerPresenter { userManager.logout() }
+
     // Note that listModel provides further input for the detail presenter.
     val listModel = userPageListPresenter.present(UserPageListPresenter.Input(user))
     val detailModel =

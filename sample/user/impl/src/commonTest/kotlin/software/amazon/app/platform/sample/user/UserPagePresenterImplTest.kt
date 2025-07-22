@@ -2,10 +2,15 @@ package software.amazon.app.platform.sample.user
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import kotlin.test.Test
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import software.amazon.app.platform.presenter.molecule.backgesture.withBackGestureDispatcher
 import software.amazon.app.platform.presenter.molecule.test
 import software.amazon.app.platform.scope.runTestWithScope
 
@@ -22,11 +27,12 @@ class UserPagePresenterImplTest {
     val presenter =
       UserPagePresenterImpl(
         user,
+        FakeUserManager(),
         UserPageListPresenter(sessionTimeout),
         UserPageDetailPresenter(sessionTimeout),
       )
 
-    presenter.test(this) {
+    presenter.withBackGestureDispatcher().test(this) {
       awaitItem().let { model ->
         assertThat((model.listModel as UserPageListPresenter.Model).selectedIndex).isEqualTo(0)
         assertThat((model.detailModel as UserPageDetailPresenter.Model).text)
@@ -57,11 +63,12 @@ class UserPagePresenterImplTest {
     val presenter =
       UserPagePresenterImpl(
         user,
+        userManager,
         UserPageListPresenter(sessionTimeout),
         UserPageDetailPresenter(sessionTimeout),
       )
 
-    presenter.test(this) {
+    presenter.withBackGestureDispatcher().test(this) {
       val model = awaitItem().detailModel as UserPageDetailPresenter.Model
       assertThat(model.timeoutProgress.value).isEqualTo(1f)
 
@@ -76,4 +83,33 @@ class UserPagePresenterImplTest {
       assertThat(model.timeoutProgress.value).isEqualTo(0.5f)
     }
   }
+
+  @Test
+  fun `the user logs out on back press`() =
+    runTestWithScope(UnconfinedTestDispatcher()) { scope ->
+      val userManager = FakeUserManager()
+      userManager.login(1L)
+      val user = checkNotNull(userManager.user.value)
+
+      val sessionTimeout = SessionTimeout(userManager, FakeAnimationHelper)
+      scope.register(sessionTimeout)
+
+      val presenter =
+        UserPagePresenterImpl(
+          user,
+          userManager,
+          UserPageListPresenter(sessionTimeout),
+          UserPageDetailPresenter(sessionTimeout),
+        )
+
+      val backEvent = MutableSharedFlow<Unit>()
+      presenter.withBackGestureDispatcher(backEvent).test(this) {
+        assertThat(awaitItem()).isNotNull()
+
+        backEvent.emit(Unit)
+
+        expectNoEvents()
+        assertThat(userManager.user.value).isNull()
+      }
+    }
 }

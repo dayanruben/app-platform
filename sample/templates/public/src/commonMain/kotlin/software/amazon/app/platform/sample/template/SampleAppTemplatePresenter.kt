@@ -5,10 +5,11 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.presenter.molecule.MoleculePresenter
+import software.amazon.app.platform.presenter.molecule.backgesture.BackGestureDispatcherPresenter
+import software.amazon.app.platform.presenter.molecule.backgesture.LocalBackGestureDispatcherPresenter
 import software.amazon.app.platform.presenter.molecule.returningCompositionLocalProvider
 import software.amazon.app.platform.presenter.template.ModelDelegate
 import software.amazon.app.platform.presenter.template.toTemplate
-import software.amazon.app.platform.sample.template.SampleAppTemplatePresenter.Factory
 
 /**
  * A presenter that wraps any other presenter and turns the emitted models from the other presenter
@@ -17,13 +18,14 @@ import software.amazon.app.platform.sample.template.SampleAppTemplatePresenter.F
  * Inject [Factory] to create a new instance of [SampleAppTemplatePresenter].
  */
 @Inject
-class SampleAppTemplatePresenter(@Assisted private val rootPresenter: MoleculePresenter<Unit, *>) :
-  MoleculePresenter<Unit, SampleAppTemplate> {
+class SampleAppTemplatePresenter(
+  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
+  @Assisted private val rootPresenter: MoleculePresenter<Unit, *>,
+) : MoleculePresenter<Unit, SampleAppTemplate> {
   @Composable
   override fun present(input: Unit): SampleAppTemplate {
-    @Suppress("RemoveEmptyParenthesesFromLambdaCall")
     return returningCompositionLocalProvider(
-      // Add local composition providers if needed.
+      LocalBackGestureDispatcherPresenter provides backGestureDispatcherPresenter
     ) {
       rootPresenter.present(Unit).toTemplate<SampleAppTemplate> {
         SampleAppTemplate.FullScreenTemplate(it)

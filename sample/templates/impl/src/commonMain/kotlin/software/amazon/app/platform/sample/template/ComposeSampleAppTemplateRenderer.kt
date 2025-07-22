@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import me.tatarka.inject.annotations.Inject
 import software.amazon.app.platform.inject.ContributesRenderer
 import software.amazon.app.platform.presenter.BaseModel
+import software.amazon.app.platform.presenter.molecule.backgesture.BackGestureDispatcherPresenter
+import software.amazon.app.platform.presenter.molecule.backgesture.ForwardBackPressEventsToPresenters
 import software.amazon.app.platform.renderer.ComposeRenderer
 import software.amazon.app.platform.renderer.Renderer
 import software.amazon.app.platform.renderer.RendererFactory
@@ -30,11 +32,15 @@ import software.amazon.app.platform.sample.template.animation.LocalSharedTransit
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Inject
 @ContributesRenderer
-class ComposeSampleAppTemplateRenderer(private val rendererFactory: RendererFactory) :
-  ComposeRenderer<SampleAppTemplate>() {
+class ComposeSampleAppTemplateRenderer(
+  private val rendererFactory: RendererFactory,
+  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
+) : ComposeRenderer<SampleAppTemplate>() {
 
   @Composable
   override fun Compose(model: SampleAppTemplate) {
+    backGestureDispatcherPresenter.ForwardBackPressEventsToPresenters()
+
     Box(Modifier.windowInsetsPadding(WindowInsets.safeDrawing)) {
       // Wrap all the the UI in a SharedTransitionLayout and AnimatedContent to support
       // shared element transitions across template updates. The scopes are exposed through

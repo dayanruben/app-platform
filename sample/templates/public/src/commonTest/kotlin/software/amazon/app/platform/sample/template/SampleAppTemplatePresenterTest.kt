@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.runTest
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.presenter.molecule.MoleculePresenter
+import software.amazon.app.platform.presenter.molecule.backgesture.BackGestureDispatcherPresenter
 import software.amazon.app.platform.presenter.molecule.test
 import software.amazon.app.platform.presenter.template.ModelDelegate
 import software.amazon.app.platform.presenter.template.Template
@@ -25,13 +26,14 @@ class SampleAppTemplatePresenterTest {
     val testPresenter = TestPresenter(trigger)
     val expectedTemplate = FullScreenTemplate(object : BaseModel {})
 
-    SampleAppTemplatePresenter(testPresenter).test(this) {
-      val defaultFullScreenTemplate = awaitItem() as FullScreenTemplate
-      assertThat(defaultFullScreenTemplate.model).isInstanceOf<Model>()
+    SampleAppTemplatePresenter(BackGestureDispatcherPresenter.createNewInstance(), testPresenter)
+      .test(this) {
+        val defaultFullScreenTemplate = awaitItem() as FullScreenTemplate
+        assertThat(defaultFullScreenTemplate.model).isInstanceOf<Model>()
 
-      trigger.value = expectedTemplate
-      assertThat(awaitItem()).isSameInstanceAs(expectedTemplate)
-    }
+        trigger.value = expectedTemplate
+        assertThat(awaitItem()).isSameInstanceAs(expectedTemplate)
+      }
   }
 
   private class TestPresenter(private val trigger: StateFlow<Template?>) :
