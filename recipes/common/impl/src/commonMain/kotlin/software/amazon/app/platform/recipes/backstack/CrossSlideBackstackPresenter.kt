@@ -3,6 +3,7 @@ package software.amazon.app.platform.recipes.backstack
 import androidx.compose.runtime.Composable
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.presenter.molecule.MoleculePresenter
+import software.amazon.app.platform.presenter.molecule.backgesture.BackHandlerPresenter
 import software.amazon.app.platform.recipes.appbar.AppBarConfig
 import software.amazon.app.platform.recipes.appbar.AppBarConfigModel
 import software.amazon.app.platform.recipes.backstack.CrossSlideBackstackPresenter.Model
@@ -18,6 +19,9 @@ class CrossSlideBackstackPresenter(
   @Composable
   override fun present(input: Unit): Model {
     return presenterBackstack(initialPresenter) { model ->
+      // Pop the top presenter on a back press event.
+      BackHandlerPresenter(enabled = lastBackstackChange.value.backstack.size > 1) { pop() }
+
       Model(delegate = model, backstackScope = this)
     }
   }
