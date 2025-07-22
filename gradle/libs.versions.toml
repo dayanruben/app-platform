@@ -25,11 +25,11 @@ assertk = "0.28.1"
 auto-service = "1.1.1"
 auto-service-ksp = "1.2.0"
 build-config = "5.6.7"
-compose-hot-reload-plugin = "1.0.0-beta03"
+compose-hot-reload-plugin = "1.0.0-beta04"
 # https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-compatibility-and-versioning.html#kotlin-compatibility
 # https://mvnrepository.com/artifact/org.jetbrains.compose/compose-gradle-plugin
 # https://github.com/JetBrains/compose-multiplatform/releases
-compose-plugin = "1.8.2"
+compose-multiplatform = "1.8.2"
 coroutines = "1.10.2"
 detekt = "1.23.8"
 graphviz-java = "0.18.1"
@@ -72,7 +72,8 @@ assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assert
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
 build-config-gradle-plugin = { module = "com.github.gmazzo.buildconfig:plugin", version.ref = "build-config" }
-compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-plugin" }
+compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+compose-ui-back-handler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-multiplatform" }
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "android-compose-version" }
 compose-ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-compose-version" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-compose-version" }

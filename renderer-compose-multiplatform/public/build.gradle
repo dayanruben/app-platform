@@ -14,11 +14,16 @@ dependencies {
     commonMainApi project(':renderer:public')
     commonMainApi project(':scope:public')
 
+    commonMainImplementation project(':presenter-molecule:public')
+    commonMainImplementation libs.compose.ui.back.handler
+
     androidMainApi project(':renderer-android-view:public')
 
     commonTestImplementation project(':scope:testing')
 
+    androidTestImplementation project(':presenter-molecule:impl')
     androidTestImplementation libs.androidx.activity.compose
+    androidTestImplementation libs.androidx.test.espresso
     androidTestImplementation libs.compose.ui.test.junit4
     androidTestImplementation libs.compose.ui.test.junit4.android
     androidTestImplementation libs.compose.ui.test.manifest
