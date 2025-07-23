@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import me.tatarka.inject.annotations.Inject
 import software.amazon.app.platform.inject.ContributesRenderer
 import software.amazon.app.platform.presenter.BaseModel
+import software.amazon.app.platform.presenter.molecule.backgesture.BackGestureDispatcherPresenter
+import software.amazon.app.platform.presenter.molecule.backgesture.ForwardBackPressEventsToPresenters
 import software.amazon.app.platform.recipes.appbar.AppBarConfig
 import software.amazon.app.platform.renderer.ComposeRenderer
 import software.amazon.app.platform.renderer.Renderer
@@ -44,10 +46,14 @@ import software.amazon.app.platform.renderer.getComposeRenderer
  */
 @Inject
 @ContributesRenderer
-class RootPresenterRenderer(private val rendererFactory: RendererFactory) :
-  ComposeRenderer<RecipesAppTemplate>() {
+class RootPresenterRenderer(
+  private val rendererFactory: RendererFactory,
+  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
+) : ComposeRenderer<RecipesAppTemplate>() {
   @Composable
   override fun Compose(model: RecipesAppTemplate) {
+    backGestureDispatcherPresenter.ForwardBackPressEventsToPresenters()
+
     when (model) {
       is RecipesAppTemplate.FullScreenTemplate -> FullScreen(model)
     }

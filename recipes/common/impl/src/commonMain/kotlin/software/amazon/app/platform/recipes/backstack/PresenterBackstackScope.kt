@@ -139,7 +139,7 @@ val LocalBackstackScope = compositionLocalOf<PresenterBackstackScope?> { null }
 @Composable
 fun <ModelT : BaseModel> presenterBackstack(
   initialPresenter: MoleculePresenter<Unit, out BaseModel>,
-  content: PresenterBackstackScope.(model: BaseModel) -> ModelT,
+  content: @Composable PresenterBackstackScope.(model: BaseModel) -> ModelT,
 ): ModelT {
   val scope = remember { PresenterBackstackScopeImpl(initialPresenter) }
   val saveableStateHolder = rememberReturningSaveableStateHolder()
