@@ -21,10 +21,10 @@ import software.amazon.app.platform.presenter.molecule.MoleculePresenter
 import software.amazon.app.platform.presenter.molecule.returningCompositionLocalProvider
 import software.amazon.app.platform.presenter.molecule.test
 
-class DefaultBackGestureDispatcherPresenterTest {
+class CommonBackGestureDispatcherPresenterTest {
   @Test
   fun `the back handler is invoked`() = runTest {
-    val dispatcher = DefaultBackGestureDispatcherPresenter()
+    val dispatcher = CommonBackGestureDispatcherPresenter()
 
     data class Model(val backPressCount: Int) : BaseModel
 
@@ -52,7 +52,7 @@ class DefaultBackGestureDispatcherPresenterTest {
 
   @Test
   fun `the predictive back handler is invoked`() = runTest {
-    val dispatcher = DefaultBackGestureDispatcherPresenter()
+    val dispatcher = CommonBackGestureDispatcherPresenter()
 
     data class Model(val lastEvent: BackEventPresenter?) : BaseModel
 
@@ -80,7 +80,7 @@ class DefaultBackGestureDispatcherPresenterTest {
 
   @Test
   fun `the last enabled handler wins`() = runTest {
-    val dispatcher = DefaultBackGestureDispatcherPresenter()
+    val dispatcher = CommonBackGestureDispatcherPresenter()
 
     data class Model(val backPressCount1: Int, val backPressCount2: Int) : BaseModel
 
@@ -145,7 +145,7 @@ class DefaultBackGestureDispatcherPresenterTest {
   @Test
   fun `the listener count increases with the number of enabled handlers`() =
     runTest(UnconfinedTestDispatcher()) {
-      val dispatcher = DefaultBackGestureDispatcherPresenter()
+      val dispatcher = CommonBackGestureDispatcherPresenter()
 
       var handlers by mutableIntStateOf(0)
       var disabledHandlers by mutableIntStateOf(0)
@@ -181,7 +181,7 @@ class DefaultBackGestureDispatcherPresenterTest {
   @Test
   fun `calling onPredictiveBack without a registered handler is an error`() =
     runTest(UnconfinedTestDispatcher()) {
-      val dispatcher = DefaultBackGestureDispatcherPresenter()
+      val dispatcher = CommonBackGestureDispatcherPresenter()
 
       var handlerEnabled by mutableStateOf(true)
 

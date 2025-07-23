@@ -42,6 +42,31 @@ public interface BackGestureDispatcherPresenter {
     enabled: Boolean,
     onBack: suspend (progress: Flow<BackEventPresenter>) -> Unit,
   )
+
+  public companion object {
+
+    /**
+     * Creates a new [BackGestureDispatcherPresenter] instance.
+     *
+     * Usually, calling this function is not necessary and a default instance of
+     * [BackGestureDispatcherPresenter] is provided by App Platform that can be injected, e.g.
+     *
+     * ```
+     * @Inject
+     * class RootPresenter(
+     *   private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
+     *   ...
+     * )
+     * ```
+     *
+     * This provided instance is a singleton that can be shared between presenters and renderers.
+     *
+     * This function [createNewInstance] is helpful if you need multiple instances that you want to
+     * manage yourself.
+     */
+    public fun createNewInstance(): BackGestureDispatcherPresenter =
+      CommonBackGestureDispatcherPresenter()
+  }
 }
 
 /**
