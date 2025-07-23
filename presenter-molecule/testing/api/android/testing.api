@@ -19,3 +19,9 @@ public final class software/amazon/app/platform/presenter/molecule/TestPresenter
 	public static synthetic fun test-Zzr-CC0$default (Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;Lkotlinx/coroutines/test/TestScope;Ljava/lang/Object;Lkotlin/coroutines/CoroutineContext;Lkotlin/time/Duration;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
+public final class software/amazon/app/platform/presenter/molecule/backgesture/TestBackGestureDispatcherPresenterKt {
+	public static final fun withBackGestureDispatcher (Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;Lkotlinx/coroutines/flow/SharedFlow;)Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;
+	public static final fun withBackGestureDispatcherUnit (Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;Lkotlinx/coroutines/flow/SharedFlow;)Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;
+	public static synthetic fun withBackGestureDispatcherUnit$default (Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;Lkotlinx/coroutines/flow/SharedFlow;ILjava/lang/Object;)Lsoftware/amazon/app/platform/presenter/molecule/MoleculePresenter;
+}
+

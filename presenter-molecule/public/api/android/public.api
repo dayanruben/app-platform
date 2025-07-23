@@ -46,9 +46,14 @@ public final class software/amazon/app/platform/presenter/molecule/backgesture/B
 }
 
 public abstract interface class software/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenter {
+	public static final field Companion Lsoftware/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenter$Companion;
 	public abstract fun PredictiveBackHandlerPresenter (ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 	public abstract fun getListenersCount ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun onPredictiveBack (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class software/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenter$Companion {
+	public final fun createNewInstance ()Lsoftware/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenter;
 }
 
 public final class software/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenterKt {

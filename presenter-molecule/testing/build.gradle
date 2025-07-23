@@ -10,4 +10,5 @@ appPlatformBuildSrc {
 dependencies {
     commonMainApi project(':presenter:public')
     commonTestImplementation project(':internal:testing')
+    commonTestImplementation project(':presenter-molecule:testing')
 }

@@ -15,7 +15,6 @@ dependencies {
     commonMainApi project(':scope:public')
 
     commonTestImplementation project(':kotlin-inject:impl')
-    commonTestImplementation project(':presenter-molecule:testing')
     commonTestImplementation libs.kotlin.inject.runtime.kmp
 }
 
