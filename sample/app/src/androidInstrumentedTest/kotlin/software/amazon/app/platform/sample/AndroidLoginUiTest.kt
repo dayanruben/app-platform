@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import kotlin.time.Duration.Companion.seconds
@@ -72,6 +73,27 @@ class AndroidLoginUiTest : ComposeInteractionsProvider {
 
       clickProfilePicture()
       seeProfilePicture(fullScreen = false)
+    }
+  }
+
+  @Test
+  fun a_back_press_logs_out_the_user_early() {
+    composeRobot<LoginRobot> {
+      seeLoginButton()
+      clickLoginButton()
+    }
+
+    waitUntilCatching("login finished", timeout = 4.seconds) {
+      composeRobot<UserPageRobot> {
+        seeUserId()
+        seeProfilePicture(fullScreen = false)
+      }
+    }
+
+    Espresso.pressBack()
+
+    waitUntilCatching("logout finished", timeout = 1.seconds) {
+      composeRobot<LoginRobot> { seeLoginButton() }
     }
   }
 
