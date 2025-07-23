@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicText
@@ -329,16 +328,6 @@ class ComposeAndroidRendererFactoryDeviceTest {
     val activityField = ViewRenderer::class.java.declaredFields.single { it.name == "activity" }
     activityField.isAccessible = true
     assertThat(activityField.get(innerRenderer)).isSameInstanceAs(activity)
-  }
-
-  // Borrowed from AndroidComposeTestRule.
-  private fun <A : ComponentActivity> getActivityFromTestRule(rule: ActivityScenarioRule<A>): A {
-    var activity: A? = null
-    rule.scenario.onActivity { activity = it }
-
-    return with(activity) {
-      checkNotNull(this) { "Activity was not set in the ActivityScenarioRule!" }
-    }
   }
 
   private val Activity.contentView: ViewGroup

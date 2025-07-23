@@ -1,3 +1,7 @@
+public final class software/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenterComposeKt {
+	public static final fun ForwardBackPressEventsToPresenters (Lsoftware/amazon/app/platform/presenter/molecule/backgesture/BackGestureDispatcherPresenter;Landroidx/compose/runtime/Composer;I)V
+}
+
 public abstract interface class software/amazon/app/platform/renderer/BaseComposeRenderer {
 	public abstract fun renderCompose (Lsoftware/amazon/app/platform/presenter/BaseModel;Landroidx/compose/runtime/Composer;I)V
 }

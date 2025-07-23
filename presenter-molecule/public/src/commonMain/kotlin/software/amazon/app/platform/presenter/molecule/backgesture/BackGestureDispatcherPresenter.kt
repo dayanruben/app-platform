@@ -99,6 +99,12 @@ public val LocalBackGestureDispatcherPresenter:
  * call to system back and invoke its lambda. The call will continue to propagate up until it finds
  * an enabled BackHandler.
  *
+ * **Important:** Back gestures can only be handled if a [BackGestureDispatcherPresenter] is
+ * provided as composition local in the presenter hierarchy. See
+ * [LocalBackGestureDispatcherPresenter] for more details. Further, back gestures need to be
+ * forwarded from the UI layer to the [BackGestureDispatcherPresenter], e.g. using
+ * `BackGestureDispatcherPresenter.ForwardBackPressEventsToPresenters()`.
+ *
  * @param enabled if this BackHandler should be enabled, true by default.
  * @param onBack the action invoked by back gesture.
  */
@@ -127,6 +133,12 @@ public fun MoleculePresenter<*, *>.PredictiveBackHandlerPresenter(
  * If this is called by nested composables, if enabled, the inner most composable will consume the
  * call to system back and invoke its lambda. The call will continue to propagate up until it finds
  * an enabled BackHandler.
+ *
+ * **Important:** Back gestures can only be handled if a [BackGestureDispatcherPresenter] is
+ * provided as composition local in the presenter hierarchy. See
+ * [LocalBackGestureDispatcherPresenter] for more details. Further, back gestures need to be
+ * forwarded from the UI layer to the [BackGestureDispatcherPresenter], e.g. using
+ * `BackGestureDispatcherPresenter.ForwardBackPressEventsToPresenters()`.
  *
  * @param enabled if this BackHandler should be enabled
  * @param onBack the action invoked by system back event
