@@ -107,7 +107,7 @@ public val LocalBackGestureDispatcherPresenter:
  * [BackEventPresenter] reflects the progress of current gesture back. The lambda content should
  * follow this structure:
  * ```
- * PredictiveBackHandler { progress: Flow<BackEventCompat> ->
+ * PredictiveBackHandlerPresenter { progress: Flow<BackEventCompat> ->
  *   // code for gesture back started
  *   try {
  *     progress.collect { backevent ->
