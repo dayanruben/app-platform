@@ -643,7 +643,7 @@ There are common scenarios you may encounter when using `Presenters`.
     implemented in the Recipes or Sample app. Please let us know if these solutions work for you or which use cases
     you're missing.
 
-    The [Recipes app](index#web-recipe-app) and [Sample app](index.md#web-clickable) can be tested in the browser.
+    The [Recipes app](index.md#web-recipe-app) and [Sample app](index.md#web-clickable) can be tested in the browser.
 
 ### Save `Presenter` state
 
