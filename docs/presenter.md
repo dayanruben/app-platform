@@ -429,7 +429,7 @@ fun present(input: Unit): Model {
     when called from a `Presenter`.
 
 Calling these functions requires `BackGestureDispatcherPresenter` to be setup as composition local. This is usually
-done in from the root presenter in your hierarchy. An instance of `BackGestureDispatcherPresenter` is provided by App
+done from the root presenter in your hierarchy. An instance of `BackGestureDispatcherPresenter` is provided by App
 Platform in the application scope and can be injected:
 
 ```kotlin hl_lines="3 7 8 9"
@@ -643,11 +643,13 @@ There are common scenarios you may encounter when using `Presenters`.
     implemented in the Recipes or Sample app. Please let us know if these solutions work for you or which use cases
     you're missing.
 
+    The [Recipes app](index#web-recipe-app) and [Sample app](index.md#web-clickable) can be tested in the browser.
+
 ### Save `Presenter` state
 
-`Presenter` can make fully use of the Compose runtime, e.g. using `remember { }` and `mutableStateOf()`. But when a 
+`Presenters` can make fully use of the Compose runtime, e.g. using `remember { }` and `mutableStateOf()`. But when a
 `Presenter` leaves the composition and no longer is part of the hierarchy, then it loses its state and would be called
-with a new state the next time.
+with the initial state the next time.
 
 ```kotlin
 @Composable
@@ -665,7 +667,7 @@ fun present(input: Unit): Model {
 ```
 
 Take this function for example. Every time `showLogin` is toggled then either `loginPresenter` or `registerPresenter`
-is called with a new state. These presenters only remember their state, if `showLogin` doesn't change.
+is called with their initial state. These presenters only remember their state, if `showLogin` doesn't change.
 
 The Compose runtime provides `rememberSaveable { }` and `SaveableStateHolder` as solution to save and restore instance
 state within a process or across process death. The Recipes app
@@ -695,7 +697,7 @@ fun present(input: Unit): Model {
 }
 ```
 
-With that state wrapped in `rememberSaveable { }` in `LoginPresenter` and `RegisterPresenter` will be preserved no
+State wrapped in `rememberSaveable { }` in `LoginPresenter` and `RegisterPresenter` will be preserved no
 matter how often `showLogin` is toggled.
 
 ### `Presenter` backstack
@@ -741,8 +743,8 @@ class NavigationPresenter(val navigationManager: NavigationManager) : MoleculePr
 This solution always shows the `Presenter` for which `navigateTo()` was called last. This function can be called from
 anywhere in the app.
 
-Another solution is a backstack of `Presenters`, that can be pushed to the stack and the top most `Presenter` can be
-popped from the stack. The Recipes app
+Another solution is a backstack of `Presenters`, where `Presenters` can be pushed to the stack and the top
+most `Presenter` can be popped from the stack. The Recipes app
 [implemented this navigation pattern](https://github.com/amzn/app-platform/blob/main/recipes/common/impl/src/commonMain/kotlin/software/amazon/app/platform/recipes/backstack/PresenterBackstackScope.kt)
 with an easy to use `presenterBackstack { }` function:
 
@@ -786,19 +788,19 @@ override fun present(input: Unit): Model {
 
 [`CrossSlideBackstackPresenter`](https://github.com/amzn/app-platform/blob/main/recipes/common/impl/src/commonMain/kotlin/software/amazon/app/platform/recipes/backstack/CrossSlideBackstackPresenter.kt)
 from the Recipe app goes one step further and integrates the `BackHandlerPresenter { }` API to pop presenters from the
-stack. It's
+stack when the back button is pressed. Its
 [`Renderer`](https://github.com/amzn/app-platform/blob/main/recipes/common/impl/src/commonMain/kotlin/software/amazon/app/platform/recipes/backstack/CrossSlideBackstackRenderer.kt)
 implements a slide animation whenever a presenter is pushed to the stack or popped from the stack.
 
 ### `CompositionLocal`
 
-Both the `BackHandlerPresenter { }` integration for back button presses and backstack recipe for navigation leverage
+Both the `BackHandlerPresenter { }` integration for back button presses and the backstack recipe for navigation leverage
 [Compose's `CompositionLocal` feature](https://developer.android.com/develop/ui/compose/compositionlocal#creating).
 This is a powerful mechanism to provide state from a parent presenter to nested child presenters even deep down in
 the stack without relying on the `Input` parameter of presenters or providing
 dependencies through the constructor. Another benefit is that `CompositionLocals` are embedded in the presenter tree
 and multiple instances can be provided for different parts of the tree or even be overridden, e.g. a parent presenter
-may use a backstack, but then a child presenter may provide its own backstack within this stack.
+may use a backstack, but then a child presenter may provide its own backstack for its child presenters.
 
 A common implementation may look like this:
 
@@ -891,7 +893,8 @@ class MenuPresenter : MoleculePresenter<Unit, Model> {
 
 If a `BaseModel` implementing `AppBarConfigModel` bubbles all the way up to the
 [`RootPresenter`](https://github.com/amzn/app-platform/blob/main/recipes/common/impl/src/commonMain/kotlin/software/amazon/app/platform/recipes/template/RootPresenter.kt),
-then it'll provide this config in the `Template` or otherwise will provide a default:
+then the `BaseModel` from the child `Presenter` will provide the config for the `Template` or otherwise the
+`RootPresenter` will provide a default:
 
 ```kotlin
 return contentModel.toTemplate { model ->
