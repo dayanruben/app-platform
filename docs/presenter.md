@@ -396,6 +396,116 @@ The `test()` function uses the `TestScope.backgroundScope` to run the presenter.
     [`NavigationPresenterImplTest`](https://github.com/amzn/app-platform/blob/main/sample/navigation/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/navigation/NavigationPresenterImplTest.kt)
     and [`UserPagePresenterImplTest`](https://github.com/amzn/app-platform/blob/main/sample/user/impl/src/commonTest/kotlin/software/amazon/app/platform/sample/user/UserPagePresenterImplTest.kt).
 
+## Back gestures
+
+`Presenters` support back gestures with a similar API in terms of syntax and semantic to Compose Multiplatform. Any
+`Presenter` can call these functions:
+
+```kotlin
+@Composable
+fun present(input: Unit): Model {
+  BackHandlerPresenter {
+    // Handle a back press.  
+  }
+
+  PredictiveBackHandlerPresenter { progress: Flow<BackEventCompat> ->
+    // code for gesture back started
+    try {
+      progress.collect { backevent ->
+        // code for progress
+      }
+      // code for completion
+    } catch (e: CancellationException) {
+      // code for cancellation
+    }
+  }  
+}
+```
+
+!!! warning
+
+    Notice `Presenter` suffix in these function names. These functions should not be confused with `BackHandler {}` and
+    `PredictiveBackHandler {}` coming from Compose Multiplatform or Compose UI Android, which would fail at runtime 
+    when called from a `Presenter`.
+
+Calling these functions requires `BackGestureDispatcherPresenter` to be setup as composition local. This is usually
+done in from the root presenter in your hierarchy. An instance of `BackGestureDispatcherPresenter` is provided by App
+Platform in the application scope and can be injected:
+
+```kotlin hl_lines="3 7 8 9"
+@Inject
+class RootPresenter(
+  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
+) : MoleculePresenter<Unit, Model> {
+  @Composable
+  override fun present(input: Unit): Model {
+    return returningCompositionLocalProvider(
+      LocalBackGestureDispatcherPresenter provides backGestureDispatcherPresenter
+    ) {
+      // Call other child presenters.
+    }
+  }
+}
+```
+
+The last step is to forward back gestures from the UI layer to `Presenters` to invoke the callbacks in the
+`Presenters`. Here again it's recommended to do this in from the root `Renderer`:
+
+```kotlin hl_lines="4 8"
+@Inject
+@ContributesRenderer
+class RootPresenterRenderer(
+  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
+) : ComposeRenderer<Model>() {
+  @Composable
+  override fun Compose(model: Model) {
+    backGestureDispatcherPresenter.ForwardBackPressEventsToPresenters()
+
+    // Call other child renderers.
+  }
+}
+```
+
+A similar built-in integration is provided for Android Views. There it's recommended to call this function from each
+Android `Activity`:
+
+```kotlin hl_lines="8 12 20 25 28"
+class MainActivity : ComponentActivity() {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    backGestureDispatcherPresenter.forwardBackPressEventsToPresenters(this)
+    // ...
+  }
+}
+```
+
+Unit tests verifying the behavior of a `Presenter` using the back handler APIs need to provide the composition local
+as well. This can be achieved by wrapping the `Presenter` with `withBackGestureDispatcher()`:
+
+```kotlin
+class MyPresenterTest {
+
+  @Test
+  fun `test back handler`() = runTest {
+    val presenter = MyPresenter()
+
+    presenter.withBackGestureDispatcher().test(this) {
+      // Verify the produced models from the presenter.
+    }
+  }
+}
+```
+
+??? example "Sample"
+
+    The `BackHandlerPresenter {}` call has been integrated in the sample application with this recommended setup. All
+    necessary changes are part of this [commit](https://github.com/amzn/app-platform/pull/84/commits/a807a5673973eae26940cd1130dad836cb3dbd43).
+
+    The same setup has been integrated in the recipes app part of this [commit](https://github.com/amzn/app-platform/pull/82/commits/fce1b3fbc0b2683ec6a93a499694f914bac34b18)
+    as well. 
+
 ## Compose runtime
 
 One of the major benefits of using Compose through Molecule is how the framework turns reactive streams such as
@@ -527,112 +637,63 @@ details see [here](https://developer.android.com/jetpack/compose/side-effects#re
 
 There are common scenarios you may encounter when using `Presenters`.
 
-### Back gestures
+!!! info
 
-`Presenters` support back gestures with a similar API in terms of syntax and semantic to Compose Multiplatform. Any
-`Presenter` can call these functions:
+    The recipes below are not part of the App Platform API and we look for feedback. The solutions are either
+    implemented in the Recipes or Sample app. Please let us know if these solutions work for you or which use cases
+    you're missing.
+
+### Save `Presenter` state
+
+`Presenter` can make fully use of the Compose runtime, e.g. using `remember { }` and `mutableStateOf()`. But when a 
+`Presenter` leaves the composition and no longer is part of the hierarchy, then it loses its state and would be called
+with a new state the next time.
 
 ```kotlin
 @Composable
 fun present(input: Unit): Model {
-  BackHandlerPresenter {
-    // Handle a back press.  
+  val showLogin = ...
+
+  val model = if (showLogin) {
+    loginPresenter.present(Unit)
+  } else {
+    registerPresenter.present(Unit)
   }
 
-  PredictiveBackHandlerPresenter { progress: Flow<BackEventCompat> ->
-    // code for gesture back started
-    try {
-      progress.collect { backevent ->
-        // code for progress
-      }
-      // code for completion
-    } catch (e: CancellationException) {
-      // code for cancellation
-    }
-  }  
+  return model
 }
 ```
 
-!!! warning
+Take this function for example. Every time `showLogin` is toggled then either `loginPresenter` or `registerPresenter`
+is called with a new state. These presenters only remember their state, if `showLogin` doesn't change.
 
-    Notice `Presenter` suffix in these function names. These functions should not be confused with `BackHandler {}` and
-    `PredictiveBackHandler` coming from Compose Multiplatform or Compose UI Android, which would fail at runtime when
-    called from a `Presenter`.
-
-Calling these functions requires `BackGestureDispatcherPresenter` to be setup as composition local. This is usually 
-done in from the root presenter of your hierarchy. An instance of `BackGestureDispatcherPresenter` is provided by App
-Platform in the application scope and can be injected:
-
-```kotlin hl_lines="3 7 8 9"
-@Inject
-class RootPresenter(
-  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
-) : MoleculePresenter<Unit, Model> {
-  @Composable
-  override fun present(input: Unit): Model {
-    return returningCompositionLocalProvider(
-      LocalBackGestureDispatcherPresenter provides backGestureDispatcherPresenter
-    ) {
-      // Call other child presenters.
-    }
-  }
-}
-```
-
-The last step is to forward back gestures from the UI layer to `Presenters` to invoke the callbacks in the 
-`Presenters`. Here again it's recommended to do this in from the root `Renderer`:
-
-```kotlin hl_lines="4 8"
-@Inject
-@ContributesRenderer
-class RootPresenterRenderer(
-  private val backGestureDispatcherPresenter: BackGestureDispatcherPresenter,
-) : ComposeRenderer<Model>() {
-  @Composable
-  override fun Compose(model: Model) {
-    backGestureDispatcherPresenter.ForwardBackPressEventsToPresenters()
-
-    // Call other child renderers.
-  }
-}
-```
-
-A similar built-in integration is provided for Android Views. There it's recommended to call this function from each
-Android `Activity`:
-
-```kotlin hl_lines="8 12 20 25 28"
-class MainActivity : ComponentActivity() {
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    backGestureDispatcherPresenter.forwardBackPressEventsToPresenters(this)
-    // ...
-  }
-}
-```
-
-Unit tests verifying the behavior of a `Presenter` using the back handler APIs need to provide the composition local
-as well. This can be achieved by wrapping the `Presenter` with `withBackGestureDispatcher()`:
+The Compose runtime provides `rememberSaveable { }` and `SaveableStateHolder` as solution to save and restore instance
+state within a process or across process death. The Recipes app
+[ported `SaveableStateHolder`](https://github.com/amzn/app-platform/blob/main/recipes/common/impl/src/commonMain/kotlin/software/amazon/app/platform/recipes/saveable/ReturningSaveableStateHolder.kt)
+to work for `@Composable` functions that must return a value. `Presenters` wrapped with a
+`ReturningSaveableStateHolder` can use `rememberSaveable { }` to restore state even after they weren't part of the
+hierarchy anymore:
 
 ```kotlin
-class MyPresenterTest {
+@Composable
+fun present(input: Unit): Model {
+  val showLogin = ...
 
-  @Test
-  fun `test back handler`() = runTest {
-    val presenter = MyPresenter()
+  val model = if (showLogin) {
+    loginPresenter.present(Unit)
+  } else {
+    registerPresenter.present(Unit)
+  }
 
-    presenter.withBackGestureDispatcher().test(this) {
-      // Verify the produced models from the presenter.
-    }
+  val saveableStateHolder = rememberReturningSaveableStateHolder()
+
+  val presenter = if (showLogin) loginPresenter else registerPresenter
+
+  return saveableStateHolder.SaveableStateProvider(key = presenter) {
+    presenter.present(Unit)
   }
 }
 ```
 
-??? example "Sample"
-
-    The `BackHandlerPresetner {}` call has been integrated in the sample application with this recommended setup. All
-    necessary changes are part of this [commit](https://github.com/amzn/app-platform/pull/84/commits/a807a5673973eae26940cd1130dad836cb3dbd43).
-
-    The same setup has been integrated in the recipes app part of this [commit](https://github.com/amzn/app-platform/pull/82/commits/fce1b3fbc0b2683ec6a93a499694f914bac34b18)
-    as well. 
+With that state wrapped in `rememberSaveable { }` in `LoginPresenter` and `RegisterPresenter` will be preserved no
+matter how often `showLogin` is toggled.
