@@ -17,6 +17,18 @@
 ### Other Notes & Contributions
 
 
+## [0.0.5] - 2025-08-15
+
+### Added
+
+- Added support for the new [Android-KMP library plugin](https://developer.android.com/kotlin/multiplatform/plugin) in App Platform's Gradle plugin.
+- Added a [recipe](https://amzn.github.io/app-platform/presenter/#navigation-3) for how to use the Navigation 3 library with App Platform.
+
+### Changed
+
+- Upgraded Kotlin to `2.2.10`.
+
+
 ## [0.0.4] - 2025-07-25
 
 ### Added
@@ -71,7 +83,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/amzn/app-platform/compare/0.0.4...HEAD
+[Unreleased]: https://github.com/amzn/app-platform/compare/0.0.5...HEAD
+[0.0.5]: https://github.com/amzn/app-platform/compare/0.0.5
 [0.0.4]: https://github.com/amzn/app-platform/compare/0.0.4
 [0.0.3]: https://github.com/amzn/app-platform/compare/0.0.3
 [0.0.2]: https://github.com/amzn/app-platform/compare/0.0.2
