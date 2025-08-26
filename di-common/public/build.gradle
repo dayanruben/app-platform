@@ -1,0 +1,8 @@
+plugins {
+    id 'software.amazon.app.platform.lib'
+}
+
+appPlatformBuildSrc {
+    enableDi true
+    enablePublishing true
+}

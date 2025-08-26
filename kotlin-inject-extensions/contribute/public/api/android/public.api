@@ -1,8 +1,3 @@
-public abstract interface annotation class software/amazon/app/platform/inject/ContributesRenderer : java/lang/annotation/Annotation {
-	public abstract fun includeSealedSubtypes ()Z
-	public abstract fun modelType ()Ljava/lang/Class;
-}
-
 public abstract interface annotation class software/amazon/app/platform/inject/mock/ContributesMockImpl : java/lang/annotation/Annotation {
 	public abstract fun boundType ()Ljava/lang/Class;
 	public abstract fun scope ()Ljava/lang/Class;
@@ -25,9 +20,5 @@ public abstract interface annotation class software/amazon/app/platform/inject/m
 }
 
 public abstract interface annotation class software/amazon/app/platform/inject/mock/RealImpl : java/lang/annotation/Annotation {
-}
-
-public abstract interface annotation class software/amazon/app/platform/inject/robot/ContributesRobot : java/lang/annotation/Annotation {
-	public abstract fun scope ()Ljava/lang/Class;
 }
 

@@ -3,7 +3,6 @@ plugins {
 }
 
 appPlatformBuildSrc {
-    enableDi true
     enablePublishing true
 }
 

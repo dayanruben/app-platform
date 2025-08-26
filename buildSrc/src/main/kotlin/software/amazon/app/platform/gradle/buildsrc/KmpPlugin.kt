@@ -202,7 +202,9 @@ public open class KmpPlugin : Plugin<Project> {
           implementation(
             libs.findLibrary("kotlin.inject.anvil.runtime.optional").get().get().toString()
           )
-          if (path != ":kotlin-inject:public") {
+
+          if (path != ":di-common:public" && path != ":kotlin-inject:public") {
+            implementation(project(":di-common:public"))
             implementation(project(":kotlin-inject:public"))
             if (!path.startsWith(":kotlin-inject-extensions:contribute:")) {
               implementation(project(":kotlin-inject-extensions:contribute:public"))
@@ -222,7 +224,8 @@ public open class KmpPlugin : Plugin<Project> {
           "implementation",
           libs.findLibrary("kotlin.inject.anvil.runtime.optional").get().get().toString(),
         )
-        if (path != ":kotlin-inject:public") {
+        if (path != ":di-common:public" && path != ":kotlin-inject:public") {
+          dependencies.add("implementation", project(":di-common:public"))
           dependencies.add("implementation", project(":kotlin-inject:public"))
           if (!path.startsWith(":kotlin-inject-extensions:contribute:")) {
             dependencies.add(
@@ -242,7 +245,8 @@ public open class KmpPlugin : Plugin<Project> {
 
         // Avoid creating a circular dependency.
         if (
-          path != ":kotlin-inject:public" &&
+          path != ":di-common:public" &&
+            path != ":kotlin-inject:public" &&
             !path.startsWith(":kotlin-inject-extensions:contribute:")
         ) {
           add(kspConfigurationName, project(":kotlin-inject-extensions:contribute:public"))
