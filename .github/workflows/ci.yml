@@ -240,11 +240,18 @@ jobs:
       # The destination id was printed in the Github Action console
       #
       #   { platform:iOS Simulator, id:77D15A8A-0E47-4200-A192-A0C6311C808D, OS:18.2, name:iPhone SE (3rd generation) }
+      #
+      #
+      # Downloading the iOS platform is needed with the latest macos runners. This is quite slow, so we should see
+      # if can we avoid this in the future.
+      # See: https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
       - name: Build swift
         run: |
           /usr/bin/xcodebuild -version
+          /usr/bin/xcodebuild -showsdks
           /usr/bin/xcrun simctl list devices
-          export DESTINATION_DEVICE=`/usr/bin/xcrun simctl list devices | grep -A 1 "iOS 18.2" | grep -oE '\([0-9A-F-]+\)' | head -1 | tr -d '()'`
+          /usr/bin/xcodebuild -downloadPlatform iOS
+          export DESTINATION_DEVICE=`/usr/bin/xcrun simctl list devices | grep -A 1 "iOS 26.0" | grep -oE '\([0-9A-F-]+\)' | head -1 | tr -d '()'`
           echo "Using simulator $DESTINATION_DEVICE"
           /usr/bin/xcodebuild -project sample/iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug OBJROOT=build/ios SYMROOT=build/ios -destination id=$DESTINATION_DEVICE -allowProvisioningDeviceRegistration -allowProvisioningUpdates
 
