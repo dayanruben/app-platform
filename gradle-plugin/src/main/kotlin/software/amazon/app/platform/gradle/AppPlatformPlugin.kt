@@ -117,6 +117,7 @@ public open class AppPlatformPlugin : Plugin<Project> {
           "kotlin-inject-contribute-public",
           "kotlin-inject-impl",
           "kotlin-inject-public",
+          "metro-public",
           "presenter-molecule-impl",
           "presenter-molecule-public",
           "presenter-public",

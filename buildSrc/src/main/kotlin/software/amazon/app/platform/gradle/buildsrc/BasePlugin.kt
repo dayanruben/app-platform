@@ -62,6 +62,7 @@ public open class BasePlugin : Plugin<Project> {
         "${APP_PLATFORM_GROUP}:kotlin-inject-contribute-public" to
           ":kotlin-inject-extensions:contribute:public",
         "${APP_PLATFORM_GROUP}:kotlin-inject-impl" to ":kotlin-inject:impl",
+        "${APP_PLATFORM_GROUP}:metro-public" to ":metro:public",
         "${APP_PLATFORM_GROUP}:presenter-public" to ":presenter:public",
         "${APP_PLATFORM_GROUP}:presenter-molecule-public" to ":presenter-molecule:public",
         "${APP_PLATFORM_GROUP}:presenter-molecule-impl" to ":presenter-molecule:impl",
