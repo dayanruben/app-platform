@@ -24,11 +24,18 @@ internal object SdkPlugin {
     // :presenter:testing -> ${group}:presenter-testing:${version}
     val parent = requireNotNull(parent)
     val artifactId =
-      if (parent.name == "contribute" && parent.parent?.name == "kotlin-inject-extensions") {
-        // Change the artifact ID, because "contribute" alone is a weird name.
-        artifactId(libraryName = "kotlin-inject-contribute")
-      } else {
-        artifactId()
+      when {
+        parent.name == "contribute" && parent.parent?.name == "kotlin-inject-extensions" -> {
+          // Change the artifact ID, because "contribute" alone is a weird name.
+          artifactId(libraryName = "kotlin-inject-contribute")
+        }
+        parent.name == "contribute" && parent.parent?.name == "metro-extensions" -> {
+          // Change the artifact ID, because "contribute" alone is a weird name.
+          artifactId(libraryName = "metro-contribute")
+        }
+        else -> {
+          artifactId()
+        }
       }
     mavenPublish.coordinates(artifactId = artifactId)
     mavenPublish.pom { pom ->

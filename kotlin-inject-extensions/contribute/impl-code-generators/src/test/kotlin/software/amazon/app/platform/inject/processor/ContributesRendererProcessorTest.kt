@@ -237,7 +237,7 @@ class ContributesRendererProcessorTest {
   }
 
   @Test
-  fun `the model type can be interred from the class hierarchy`() {
+  fun `the model type can be inferred from the class hierarchy`() {
     compile(
       """
             package software.amazon.test
@@ -261,7 +261,7 @@ class ContributesRendererProcessorTest {
   }
 
   @Test
-  fun `the model type can be interred from the class hierarchy with multiple levels`() {
+  fun `the model type can be inferred from the class hierarchy with multiple levels`() {
     compile(
       """
             package software.amazon.test
