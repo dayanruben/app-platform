@@ -9,7 +9,7 @@ import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.coroutine.addCoroutineScopeScoped
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 import software.amazon.app.platform.scope.register
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
@@ -50,7 +50,7 @@ class UserManagerImpl(
 
     val userScope =
       rootScopeProvider.rootScope.buildChild("user-$userId") {
-        addDiComponent(userComponent)
+        addKotlinInjectComponent(userComponent)
 
         addCoroutineScopeScoped(userComponent.userScopeCoroutineScopeScoped)
       }

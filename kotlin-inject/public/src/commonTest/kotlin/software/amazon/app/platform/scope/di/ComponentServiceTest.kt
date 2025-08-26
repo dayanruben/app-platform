@@ -16,9 +16,9 @@ class ComponentServiceTest {
   fun `a DI component can be registered in a scope`() {
     val component = ParentComponentImpl()
 
-    val scope = Scope.buildRootScope { addDiComponent(component) }
+    val scope = Scope.buildRootScope { addKotlinInjectComponent(component) }
 
-    assertThat(scope.diComponent<ParentComponent>()).isSameInstanceAs(component)
+    assertThat(scope.kotlinInjectComponent<ParentComponent>()).isSameInstanceAs(component)
   }
 
   @Test
@@ -27,10 +27,11 @@ class ComponentServiceTest {
     val parentComponent = ParentComponentImpl()
     val childComponent = ChildComponentImpl()
 
-    val parentScope = Scope.buildRootScope { addDiComponent(parentComponent) }
-    val childScope = parentScope.buildChild("child") { addDiComponent(childComponent) }
+    val parentScope = Scope.buildRootScope { addKotlinInjectComponent(parentComponent) }
+    val childScope = parentScope.buildChild("child") { addKotlinInjectComponent(childComponent) }
 
-    val exception = assertFailsWith<NoSuchElementException> { childScope.diComponent<Unit>() }
+    val exception =
+      assertFailsWith<NoSuchElementException> { childScope.kotlinInjectComponent<Unit>() }
 
     val kotlinReflectWarning =
       when (platform) {
@@ -55,14 +56,16 @@ class ComponentServiceTest {
     val parentComponent = ParentComponentImpl()
     val childComponent = ChildComponentImpl()
 
-    val parentScope = Scope.buildRootScope { addDiComponent(parentComponent) }
-    val childScope = parentScope.buildChild("child") { addDiComponent(childComponent) }
+    val parentScope = Scope.buildRootScope { addKotlinInjectComponent(parentComponent) }
+    val childScope = parentScope.buildChild("child") { addKotlinInjectComponent(childComponent) }
 
-    assertThat(childScope.diComponent<ChildComponent>()).isSameInstanceAs(childComponent)
-    assertThat(childScope.diComponent<ParentComponent>()).isSameInstanceAs(parentComponent)
+    assertThat(childScope.kotlinInjectComponent<ChildComponent>()).isSameInstanceAs(childComponent)
+    assertThat(childScope.kotlinInjectComponent<ParentComponent>())
+      .isSameInstanceAs(parentComponent)
 
-    assertThat(parentScope.diComponent<ParentComponent>()).isSameInstanceAs(parentComponent)
-    assertFailsWith<NoSuchElementException> { parentScope.diComponent<ChildComponent>() }
+    assertThat(parentScope.kotlinInjectComponent<ParentComponent>())
+      .isSameInstanceAs(parentComponent)
+    assertFailsWith<NoSuchElementException> { parentScope.kotlinInjectComponent<ChildComponent>() }
   }
 
   private interface ParentComponent

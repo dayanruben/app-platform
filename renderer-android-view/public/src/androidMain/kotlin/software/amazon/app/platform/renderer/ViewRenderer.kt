@@ -15,7 +15,7 @@ import kotlinx.coroutines.cancel
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.coroutine.MainCoroutineDispatcher
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
@@ -86,7 +86,9 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
   private fun createView(model: ModelT): View {
     val rootScopeProvider = activity.application as RootScopeProvider
     coroutineScope =
-      CoroutineScope(rootScopeProvider.rootScope.diComponent<Component>().dispatcher + Job())
+      CoroutineScope(
+        rootScopeProvider.rootScope.kotlinInjectComponent<Component>().dispatcher + Job()
+      )
     return inflate(activity, parent, inflater, model).also { view = it }
   }
 

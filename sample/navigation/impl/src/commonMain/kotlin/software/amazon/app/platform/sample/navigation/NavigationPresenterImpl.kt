@@ -12,7 +12,7 @@ import software.amazon.app.platform.sample.user.UserManager
 import software.amazon.app.platform.sample.user.UserPagePresenter
 import software.amazon.app.platform.sample.user.UserScope
 import software.amazon.app.platform.scope.Scope
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
@@ -42,7 +42,8 @@ class NavigationPresenterImpl(
     // A user is logged in. Use the user component to get an instance of UserPagePresenter, which is
     // only
     // part of the user scope.
-    val userPresenter = remember(scope) { scope.diComponent<UserComponent>().userPresenter }
+    val userPresenter =
+      remember(scope) { scope.kotlinInjectComponent<UserComponent>().userPresenter }
     return userPresenter.present(Unit)
   }
 

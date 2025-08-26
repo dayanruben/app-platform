@@ -8,7 +8,7 @@ import software.amazon.app.platform.renderer.ComposeRendererFactory
 import software.amazon.app.platform.renderer.getComposeRenderer
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.Scope
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
@@ -24,7 +24,7 @@ class DesktopApp(private val component: (RootScopeProvider) -> AppComponent) : R
   private val demoApplication = DemoApplication().apply { create(component(this)) }
 
   private val templateProvider =
-    rootScope.diComponent<Component>().templateProviderFactory.createTemplateProvider()
+    rootScope.kotlinInjectComponent<Component>().templateProviderFactory.createTemplateProvider()
 
   /** Call this composable function to start rendering templates on the screen. */
   @Composable

@@ -2,7 +2,7 @@ package software.amazon.app.platform.robot
 
 import software.amazon.app.platform.inject.robot.ContributesRobot
 import software.amazon.app.platform.scope.Scope
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 
 /**
  * Test robots are an abstraction between test interactions and the underlying implementation. They
@@ -84,7 +84,7 @@ public inline fun <reified T : Robot> robot(
   rootScope: Scope = software.amazon.app.platform.robot.internal.rootScope,
   noinline block: T.() -> Unit,
 ) {
-  val robot = rootScope.diComponent<RobotComponent>().robots[T::class]?.invoke() as? T
+  val robot = rootScope.kotlinInjectComponent<RobotComponent>().robots[T::class]?.invoke() as? T
 
   checkNotNull(robot) {
     "Could not find Robot of type ${T::class}. Did you forget to add the @ContributesRobot " +

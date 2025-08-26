@@ -5,7 +5,7 @@ import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.scope.RootScopeProvider
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 
 /**
  * Default implementation for [RendererFactory]. Implementations usually override [createRenderer]
@@ -14,7 +14,9 @@ import software.amazon.app.platform.scope.di.diComponent
 public open class BaseRendererFactory(rootScopeProvider: RootScopeProvider) : RendererFactory {
 
   private val rendererComponent =
-    rootScopeProvider.rootScope.diComponent<RendererComponent.Parent>().rendererComponent(this)
+    rootScopeProvider.rootScope
+      .kotlinInjectComponent<RendererComponent.Parent>()
+      .rendererComponent(this)
 
   private val renderers: Map<KClass<out BaseModel>, () -> Renderer<*>> = rendererComponent.renderers
 

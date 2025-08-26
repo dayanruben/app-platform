@@ -6,7 +6,7 @@ import androidx.test.espresso.Root
 import androidx.test.espresso.ViewInteraction
 import org.hamcrest.Matcher
 import software.amazon.app.platform.robot.internal.rootScope
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
@@ -29,7 +29,7 @@ public abstract class AndroidViewRobot : Robot {
    * assertions, e.g. this is needed for other windows such as dialogs.
    */
   protected open val rootMatcher: Matcher<Root>
-    get() = rootScope.diComponent<Component>().rootMatcherProvider.rootMatcher
+    get() = rootScope.kotlinInjectComponent<Component>().rootMatcherProvider.rootMatcher
 
   /**
    * Convenience function that automatically sets [rootMatcher] as root for the assertion. It's
