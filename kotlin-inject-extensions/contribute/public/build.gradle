@@ -6,7 +6,3 @@ appPlatformBuildSrc {
     enableKotlinInject true
     enablePublishing true
 }
-
-dependencies {
-    commonMainApi project(':scope:public')
-}

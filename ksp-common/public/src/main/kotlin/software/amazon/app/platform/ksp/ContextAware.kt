@@ -1,4 +1,4 @@
-package software.amazon.app.platform.inject
+package software.amazon.app.platform.ksp
 
 import com.google.devtools.ksp.getVisibility
 import com.google.devtools.ksp.processing.KSPLogger
@@ -12,32 +12,25 @@ import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeAlias
 import com.google.devtools.ksp.symbol.Visibility
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
-import me.tatarka.inject.annotations.Inject
-import me.tatarka.inject.annotations.Scope
 import software.amazon.app.platform.scope.Scoped
 
 @Suppress("TooManyFunctions")
-internal interface ContextAware {
-  val logger: KSPLogger
+public interface ContextAware {
+  public val logger: KSPLogger
 
   private val anyFqName
     get() = Any::class.requireQualifiedName()
 
-  val injectFqName
-    get() = Inject::class.requireQualifiedName()
-
-  private val scopeFqName
-    get() = Scope::class.requireQualifiedName()
-
-  val scopedFqName
+  public val scopedFqName: String
     get() = Scoped::class.requireQualifiedName()
 
-  val scopedClassName
+  public val scopedClassName: ClassName
     get() = Scoped::class.asClassName()
 
-  fun <T : Any> requireNotNull(value: T?, symbol: KSNode?, lazyMessage: () -> String): T {
+  public fun <T : Any> requireNotNull(value: T?, symbol: KSNode?, lazyMessage: () -> String): T {
     if (value == null) {
       val message = lazyMessage()
       logger.error(message, symbol)
@@ -47,7 +40,7 @@ internal interface ContextAware {
     return value
   }
 
-  fun check(condition: Boolean, symbol: KSNode?, lazyMessage: () -> String) {
+  public fun check(condition: Boolean, symbol: KSNode?, lazyMessage: () -> String) {
     if (!condition) {
       val message = lazyMessage()
       logger.error(message, symbol)
@@ -55,18 +48,18 @@ internal interface ContextAware {
     }
   }
 
-  fun checkIsPublic(clazz: KSClassDeclaration) {
+  public fun checkIsPublic(clazz: KSClassDeclaration) {
     check(clazz.getVisibility() == Visibility.PUBLIC, clazz) {
       "Contributed component interfaces must be public."
     }
   }
 
-  fun checkHasScope(clazz: KSClassDeclaration) {
+  public fun checkHasScope(clazz: KSClassDeclaration) {
     // Ensures that the value is non-null.
     clazz.scope()
   }
 
-  fun KSClassDeclaration.scope(): MergeScope {
+  public fun KSClassDeclaration.scope(): MergeScope {
     return requireNotNull(scopeOrNull(), this) { "Couldn't find scope for $this." }
   }
 
@@ -80,16 +73,6 @@ internal interface ContextAware {
         }
 
     return scopeForAnnotationsWithScopeParameters(this, annotationsWithScopeParameter)
-  }
-
-  fun KSAnnotation.isKotlinInjectScopeAnnotation(): Boolean {
-    return annotationType.resolve().isKotlinInjectScopeAnnotation()
-  }
-
-  private fun KSType.isKotlinInjectScopeAnnotation(): Boolean {
-    return declaration.annotations.any {
-      it.annotationType.resolve().declaration.requireQualifiedName() == scopeFqName
-    }
   }
 
   private fun KSAnnotation.hasScopeParameter(): Boolean {
@@ -126,10 +109,12 @@ internal interface ContextAware {
     return arguments.firstOrNull { it.name?.asString() == "scope" }?.let { it.value as? KSType }
   }
 
-  fun KSClassDeclaration.findAnnotation(annotation: KClass<out Annotation>): KSAnnotation =
+  public fun KSClassDeclaration.findAnnotation(annotation: KClass<out Annotation>): KSAnnotation =
     findAnnotations(annotation).single()
 
-  fun KSClassDeclaration.findAnnotations(annotation: KClass<out Annotation>): List<KSAnnotation> {
+  public fun KSClassDeclaration.findAnnotations(
+    annotation: KClass<out Annotation>
+  ): List<KSAnnotation> {
     val fqName = annotation.requireQualifiedName()
     return annotations
       .filter { it.isAnnotation(fqName) }
@@ -141,35 +126,35 @@ internal interface ContextAware {
       }
   }
 
-  fun KSAnnotation.isAnnotation(fqName: String): Boolean {
+  public fun KSAnnotation.isAnnotation(fqName: String): Boolean {
     return annotationType.resolve().declaration.requireQualifiedName() == fqName
   }
 
-  fun KSDeclaration.requireContainingFile(): KSFile =
+  public fun KSDeclaration.requireContainingFile(): KSFile =
     requireNotNull(containingFile, this) { "Containing file was null for $this" }
 
-  fun KSDeclaration.requireQualifiedName(): String =
+  public fun KSDeclaration.requireQualifiedName(): String =
     requireNotNull(qualifiedName?.asString(), this) { "Qualified name was null for $this" }
 
-  fun KClass<*>.requireQualifiedName(): String =
+  public fun KClass<*>.requireQualifiedName(): String =
     requireNotNull(qualifiedName) { "Qualified name was null for $this" }
 
-  fun Resolver.getSymbolsWithAnnotation(annotation: KClass<*>): Sequence<KSAnnotated> =
+  public fun Resolver.getSymbolsWithAnnotation(annotation: KClass<*>): Sequence<KSAnnotated> =
     getSymbolsWithAnnotation(annotation.requireQualifiedName())
 
-  fun KSDeclaration.innerClassNames(separator: String = ""): String {
+  public fun KSDeclaration.innerClassNames(separator: String = ""): String {
     val classNames = requireQualifiedName().substring(packageName.asString().length + 1)
     return classNames.replace(".", separator)
   }
 
-  fun KSType.isScoped(): Boolean {
+  public fun KSType.isScoped(): Boolean {
     return declaration.requireQualifiedName() == scopedFqName ||
       (declaration as? KSTypeAlias)?.type?.resolve()?.declaration?.requireQualifiedName() ==
         scopedFqName
   }
 
   @Suppress("ReturnCount")
-  fun boundType(clazz: KSClassDeclaration, annotation: KSAnnotation): KSType {
+  public fun boundType(clazz: KSClassDeclaration, annotation: KSAnnotation): KSType {
     boundTypeFromAnnotation(annotation)?.let {
       return it
     }
@@ -215,14 +200,17 @@ internal interface ContextAware {
     }
   }
 
-  fun boundTypeFromAnnotation(annotation: KSAnnotation): KSType? {
+  public fun boundTypeFromAnnotation(annotation: KSAnnotation): KSType? {
     return annotation.arguments
       .firstOrNull { it.name?.asString() == "boundType" }
       ?.let { it.value as? KSType }
       ?.takeIf { it.declaration.requireQualifiedName() != Unit::class.requireQualifiedName() }
   }
 
-  fun checkNoDuplicateBoundTypes(clazz: KSClassDeclaration, annotations: List<KSAnnotation>) {
+  public fun checkNoDuplicateBoundTypes(
+    clazz: KSClassDeclaration,
+    annotations: List<KSAnnotation>,
+  ) {
     annotations
       .mapNotNull { boundTypeFromAnnotation(it) }
       .map { it.declaration.requireQualifiedName() }
@@ -234,7 +222,7 @@ internal interface ContextAware {
       }
   }
 
-  fun KSClassDeclaration.findAnnotationsAtLeastOne(
+  public fun KSClassDeclaration.findAnnotationsAtLeastOne(
     annotation: KClass<out Annotation>
   ): List<KSAnnotation> {
     return findAnnotations(annotation).also {
@@ -245,6 +233,6 @@ internal interface ContextAware {
   }
 
   /** Return `software.amazon.Test` into `ComAmazonTest`. */
-  val KSClassDeclaration.safeClassName: String
+  public val KSClassDeclaration.safeClassName: String
     get() = requireQualifiedName().split(".").joinToString(separator = "") { it.capitalize() }
 }

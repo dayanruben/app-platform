@@ -22,10 +22,10 @@ import org.junit.jupiter.api.Test
 import software.amazon.app.platform.inject.APP_PLATFORM_LOOKUP_PACKAGE
 import software.amazon.app.platform.inject.compile
 import software.amazon.app.platform.inject.componentInterface
-import software.amazon.app.platform.inject.inner
-import software.amazon.app.platform.inject.isAnnotatedWith
 import software.amazon.app.platform.inject.newComponent
 import software.amazon.app.platform.inject.origin
+import software.amazon.app.platform.ksp.inner
+import software.amazon.app.platform.ksp.isAnnotatedWith
 import software.amazon.app.platform.renderer.RendererComponent
 import software.amazon.app.platform.renderer.RendererScope
 import software.amazon.lastmile.kotlin.inject.anvil.ForScope

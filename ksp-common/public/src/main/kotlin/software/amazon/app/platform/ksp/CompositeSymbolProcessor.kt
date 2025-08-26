@@ -1,11 +1,10 @@
-package software.amazon.app.platform.inject
+package software.amazon.app.platform.ksp
 
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 
-internal class CompositeSymbolProcessor(vararg symbolProcessors: SymbolProcessor) :
-  SymbolProcessor {
+public class CompositeSymbolProcessor(vararg symbolProcessors: SymbolProcessor) : SymbolProcessor {
 
   private val symbolProcessors = symbolProcessors.sortedBy { it::class.qualifiedName }
 

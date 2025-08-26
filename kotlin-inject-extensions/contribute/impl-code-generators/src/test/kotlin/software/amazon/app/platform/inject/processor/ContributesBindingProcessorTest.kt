@@ -15,10 +15,10 @@ import org.junit.jupiter.api.Test
 import software.amazon.app.platform.inject.OPEN_SOURCE_LOOKUP_PACKAGE
 import software.amazon.app.platform.inject.compile
 import software.amazon.app.platform.inject.generatedComponent
-import software.amazon.app.platform.inject.inner
-import software.amazon.app.platform.inject.isAnnotatedWith
-import software.amazon.app.platform.inject.isNotAnnotatedWith
 import software.amazon.app.platform.inject.origin
+import software.amazon.app.platform.ksp.inner
+import software.amazon.app.platform.ksp.isAnnotatedWith
+import software.amazon.app.platform.ksp.isNotAnnotatedWith
 
 class ContributesBindingProcessorTest {
 

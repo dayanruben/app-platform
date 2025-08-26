@@ -1,0 +1,8 @@
+plugins {
+    id 'software.amazon.app.platform.lib.jvm'
+}
+
+dependencies {
+    api libs.assertk
+    api libs.kotlin.compile.testing.core
+}

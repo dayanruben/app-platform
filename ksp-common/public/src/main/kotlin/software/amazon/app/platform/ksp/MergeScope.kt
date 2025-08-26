@@ -1,4 +1,4 @@
-package software.amazon.app.platform.inject
+package software.amazon.app.platform.ksp
 
 import com.google.devtools.ksp.symbol.KSType
 
@@ -17,4 +17,4 @@ import com.google.devtools.ksp.symbol.KSType
  *
  * Where `AppScope` would represent the "MergeScope".
  */
-internal data class MergeScope(val type: KSType)
+public data class MergeScope(val type: KSType)

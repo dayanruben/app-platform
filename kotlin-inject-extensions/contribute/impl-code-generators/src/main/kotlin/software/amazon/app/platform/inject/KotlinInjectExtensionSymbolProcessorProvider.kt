@@ -10,6 +10,7 @@ import software.amazon.app.platform.inject.processor.ContributesMockImplProcesso
 import software.amazon.app.platform.inject.processor.ContributesRealImplProcessor
 import software.amazon.app.platform.inject.processor.ContributesRendererProcessor
 import software.amazon.app.platform.inject.processor.ContributesRobotProcessor
+import software.amazon.app.platform.ksp.CompositeSymbolProcessor
 
 /** Entry point for KSP to pick up our [SymbolProcessor]. */
 @AutoService(SymbolProcessorProvider::class)

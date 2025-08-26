@@ -5,13 +5,11 @@ package software.amazon.app.platform.inject
 import com.tschuchort.compiletesting.JvmCompilationResult
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.descriptors.runtime.structure.primitiveByWrapper
+import software.amazon.app.platform.ksp.capitalize
 import software.amazon.lastmile.kotlin.inject.anvil.internal.Origin
 
 internal val JvmCompilationResult.componentInterface: Class<*>
   get() = classLoader.loadClass("software.amazon.test.ComponentInterface")
-
-internal val Class<*>.inner: Class<*>
-  get() = classes.single { it.simpleName == "Inner" }
 
 internal val Class<*>.origin: Class<*>
   get() = getAnnotation(Origin::class.java).value.java

@@ -18,10 +18,10 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 import software.amazon.app.platform.inject.APP_PLATFORM_LOOKUP_PACKAGE
-import software.amazon.app.platform.inject.ContextAware
+import software.amazon.app.platform.inject.KotlinInjectContextAware
 import software.amazon.app.platform.inject.OPEN_SOURCE_LOOKUP_PACKAGE
 import software.amazon.app.platform.inject.addOriginAnnotation
-import software.amazon.app.platform.inject.decapitalize
+import software.amazon.app.platform.ksp.decapitalize
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.ForScope
@@ -60,7 +60,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ForScope
 internal class ContributesBindingScopedProcessor(
   private val codeGenerator: CodeGenerator,
   override val logger: KSPLogger,
-) : SymbolProcessor, ContextAware {
+) : SymbolProcessor, KotlinInjectContextAware {
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
     resolver
