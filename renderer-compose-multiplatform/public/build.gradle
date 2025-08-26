@@ -4,8 +4,8 @@ plugins {
 
 appPlatformBuildSrc {
     enableCompose true
-    enableDi true
     enableInstrumentedTests true
+    enableKotlinInject true
     enablePublishing true
 }
 

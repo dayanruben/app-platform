@@ -3,6 +3,6 @@ plugins {
 }
 
 appPlatformBuildSrc {
-    enableDi true
+    enableKotlinInject true
     enablePublishing true
 }

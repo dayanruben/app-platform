@@ -177,7 +177,7 @@ public open class KmpPlugin : Plugin<Project> {
       allPlatforms().forEach { platform -> platform.configureCompose() }
     }
 
-    fun Project.enableDi() {
+    fun Project.enableKotlinInject() {
       plugins.apply(Plugins.KSP)
 
       val kspExtension = extensions.getByType(KspExtension::class.java)
