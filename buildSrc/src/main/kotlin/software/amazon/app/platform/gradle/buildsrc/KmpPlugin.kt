@@ -178,7 +178,7 @@ public open class KmpPlugin : Plugin<Project> {
     }
 
     fun Project.enableKotlinInject() {
-      plugins.apply(Plugins.KSP)
+      enableKsp()
 
       val kspExtension = extensions.getByType(KspExtension::class.java)
 
@@ -188,12 +188,6 @@ public open class KmpPlugin : Plugin<Project> {
         "software.amazon.lastmile.kotlin.inject.anvil.processor." + "ContributesBindingProcessor",
         "disabled",
       )
-
-      tasks.withType(KspTask::class.java).configureEach { kspTask ->
-        if (kspTask is KotlinCompile) {
-          kspTask.compilerOptions.jvmTarget.set(javaTarget)
-        }
-      }
 
       if (isKmpModule) {
         kmpExtension.sourceSets.getByName("commonMain").dependencies {
@@ -266,6 +260,47 @@ public open class KmpPlugin : Plugin<Project> {
         }
       } else {
         dependencies.addKspProcessorDependencies("ksp")
+      }
+    }
+
+    fun Project.enableMetro() {
+      plugins.apply(Plugins.METRO)
+
+      // Enable KSP for our custom extensions.
+      enableKsp()
+
+      if (isKmpModule) {
+        kmpExtension.sourceSets.getByName("commonMain").dependencies {
+          implementation(project(":di-common:public"))
+          implementation(project(":metro:public"))
+        }
+      } else {
+        dependencies.add("implementation", project(":metro:public"))
+      }
+
+      fun DependencyHandler.addKspProcessorDependencies(kspConfigurationName: String) {
+        add(kspConfigurationName, project(":metro-extensions:contribute:impl-code-generators"))
+      }
+
+      if (isKmpModule) {
+        kmpExtension.targets.configureEach {
+          if (it.name != "metadata") {
+            dependencies.addKspProcessorDependencies("ksp${it.name.capitalize()}")
+            dependencies.addKspProcessorDependencies("ksp${it.name.capitalize()}Test")
+          }
+        }
+      } else {
+        dependencies.addKspProcessorDependencies("ksp")
+      }
+    }
+
+    private fun Project.enableKsp() {
+      plugins.apply(Plugins.KSP)
+
+      tasks.withType(KspTask::class.java).configureEach { kspTask ->
+        if (kspTask is KotlinCompile) {
+          kspTask.compilerOptions.jvmTarget.set(javaTarget)
+        }
       }
     }
 
