@@ -6,3 +6,7 @@ appPlatformBuildSrc {
     enableKotlinInject true
     enablePublishing true
 }
+
+dependencies {
+    commonMainImplementation libs.metro.runtime
+}
