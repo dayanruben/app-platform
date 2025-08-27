@@ -8,16 +8,10 @@ import androidx.core.view.children
 import androidx.core.view.doOnAttach
 import androidx.core.view.doOnDetach
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import software.amazon.app.platform.presenter.BaseModel
-import software.amazon.app.platform.scope.RootScopeProvider
-import software.amazon.app.platform.scope.coroutine.MainCoroutineDispatcher
-import software.amazon.app.platform.scope.di.kotlinInjectComponent
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
 /**
  * An implementation of [Renderer] that is specific to Android View based UI. This renderer provides
@@ -84,11 +78,7 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
   }
 
   private fun createView(model: ModelT): View {
-    val rootScopeProvider = activity.application as RootScopeProvider
-    coroutineScope =
-      CoroutineScope(
-        rootScopeProvider.rootScope.kotlinInjectComponent<Component>().dispatcher + Job()
-      )
+    coroutineScope = MainScope()
     return inflate(activity, parent, inflater, model).also { view = it }
   }
 
@@ -201,12 +191,5 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
         .takeWhile { it.id != android.R.id.content }
 
     return parents.none { it is RecyclerView }
-  }
-
-  /** DI component that provides objects from the dependency graph. */
-  @ContributesTo(AppScope::class)
-  public interface Component {
-    /** The coroutine dispatcher using the main thread. */
-    @MainCoroutineDispatcher public val dispatcher: CoroutineDispatcher
   }
 }

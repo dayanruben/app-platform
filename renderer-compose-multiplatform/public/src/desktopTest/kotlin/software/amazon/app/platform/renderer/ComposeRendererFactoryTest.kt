@@ -6,6 +6,8 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.messageContains
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.provider
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlinx.coroutines.test.TestScope
@@ -14,7 +16,7 @@ import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.buildTestScope
-import software.amazon.app.platform.scope.di.addKotlinInjectComponent
+import software.amazon.app.platform.scope.di.metro.addMetroDependencyGraph
 
 class ComposeRendererFactoryTest {
 
@@ -60,14 +62,14 @@ class ComposeRendererFactoryTest {
   private fun TestScope.rootScopeProvider(): RootScopeProvider {
     val scope =
       Scope.buildTestScope(this) {
-        addKotlinInjectComponent(
-          object : RendererComponent.Parent {
-            override fun rendererComponent(factory: RendererFactory): RendererComponent {
-              return object : RendererComponent {
-                override val renderers: Map<KClass<out BaseModel>, () -> Renderer<*>> =
+        addMetroDependencyGraph(
+          object : RendererGraph.Factory {
+            override fun createRendererGraph(factory: RendererFactory): RendererGraph {
+              return object : RendererGraph {
+                override val renderers: Map<KClass<out BaseModel>, Provider<Renderer<*>>> =
                   mapOf(
-                    ComposeModel::class to { TestComposeRenderer() },
-                    AndroidModel::class to { AndroidRenderer() },
+                    ComposeModel::class to provider { TestComposeRenderer() },
+                    AndroidModel::class to provider { AndroidRenderer() },
                   )
                 override val modelToRendererMapping:
                   Map<KClass<out BaseModel>, KClass<out Renderer<*>>> =

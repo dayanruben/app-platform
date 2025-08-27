@@ -5,7 +5,6 @@ plugins {
 appPlatformBuildSrc {
     enableCompose true
     enableInstrumentedTests true
-    enableKotlinInject true
     enablePublishing true
 }
 
@@ -19,12 +18,16 @@ dependencies {
 
     androidMainApi project(':renderer-android-view:public')
 
+    commonTestImplementation project(':metro:public')
     commonTestImplementation project(':scope:testing')
+    commonTestImplementation libs.metro.runtime
 
+    androidTestImplementation project(':metro:public')
     androidTestImplementation project(':presenter-molecule:impl')
     androidTestImplementation libs.androidx.activity.compose
     androidTestImplementation libs.androidx.test.espresso
     androidTestImplementation libs.compose.ui.test.junit4
     androidTestImplementation libs.compose.ui.test.junit4.android
     androidTestImplementation libs.compose.ui.test.manifest
+    androidTestImplementation libs.metro.runtime
 }
