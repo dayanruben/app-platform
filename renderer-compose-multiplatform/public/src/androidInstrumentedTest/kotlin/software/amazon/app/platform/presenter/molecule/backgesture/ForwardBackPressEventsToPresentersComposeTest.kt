@@ -32,7 +32,7 @@ class ForwardBackPressEventsToPresentersComposeTest {
 
   @Test
   fun back_press_events_are_forwarded_to_presenters() {
-    val backGestureDispatcherPresenter = DefaultBackGestureDispatcherPresenter()
+    val backGestureDispatcherPresenter = BackGestureDispatcherPresenter.createNewInstance()
 
     val testPresenter = TestPresenter(backGestureDispatcherPresenter)
     val testRenderer = TestRenderer()
