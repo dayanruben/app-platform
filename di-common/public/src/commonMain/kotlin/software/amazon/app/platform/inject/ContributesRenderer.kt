@@ -12,7 +12,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.extend.ContributingAnnotatio
  * class IncrementRenderer : Renderer<IncrementPresenter.Model>()
  * ```
  *
- * This annotation would generated following component interface:
+ * This annotation would generated following component interface for kotlin-inject:
  * ```
  * @ContributesTo(RendererScope::class)
  * interface IncrementRendererComponent {
@@ -27,27 +27,31 @@ import software.amazon.lastmile.kotlin.inject.anvil.extend.ContributingAnnotatio
  * }
  * ```
  *
+ * Or following graph for Metro:
+ * ```
+ * @ContributesTo(RendererScope::class)
+ * interface IncrementRendererGraph {
+ *     @Provides
+ *     @IntoMap
+ *     @RendererKey(IncrementPresenter.Model::class)
+ *     fun provideIncrementRendererIncrementPresenterModel(
+ *         renderer: Provider<IncrementRenderer>,
+ *     ): Renderer<*> = renderer()
+ *
+ *     @Provides
+ *     fun provideIncrementRenderer(): IncrementRenderer = IncrementRenderer()
+ * }
+ * ```
+ *
  * Although strongly discouraged, your renderer is allowed to have an `@Inject constructor`. The
- * only valid use case is for injecting other renderers.
+ * only valid use case is for injecting other renderers returned by the `RendererFactory`.
  *
  * ```
  * @Inject
  * @ContributesRenderer
  * class IncrementRenderer(
- *     private val otherRenderer: OtherRenderer
+ *     private val rendererFactory: RendererFactory
  * ) : Renderer<IncrementPresenter.Model>() {
- * ```
- *
- * In this case following module would be generated:
- * ```
- * @ContributesTo(RendererScope::class)
- * abstract class IncrementRendererModule {
- *     @Provides
- *     @IntoMap
- *     fun provideIncrementRendererIntoMap(
- *         renderer: () -> IncrementRenderer,
- *     ): Pair<KClass<out BaseModel>, () -> Renderer<*>> = IncrementRenderer.Model::class to renderer
- * }
  * ```
  *
  * If the model type is a sealed hierarchy, then for each explicit type a binding method will be

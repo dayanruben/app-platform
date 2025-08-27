@@ -5,7 +5,9 @@ import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.scope.RootScopeProvider
+import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.di.kotlinInjectComponent
+import software.amazon.app.platform.scope.di.metro.metroDependencyGraph
 
 /**
  * Default implementation for [RendererFactory]. Implementations usually override [createRenderer]
@@ -15,13 +17,21 @@ public open class BaseRendererFactory(rootScopeProvider: RootScopeProvider) : Re
 
   private val rendererComponent =
     rootScopeProvider.rootScope
-      .kotlinInjectComponent<RendererComponent.Parent>()
-      .rendererComponent(this)
+      .kotlinInjectComponentOrNull<RendererComponent.Parent>()
+      ?.rendererComponent(this)
 
-  private val renderers: Map<KClass<out BaseModel>, () -> Renderer<*>> = rendererComponent.renderers
+  private val rendererGraph =
+    rootScopeProvider.rootScope
+      .metroDependencyGraphOrNull<RendererGraph.Factory>()
+      ?.createRendererGraph(this)
+
+  private val renderers: Map<KClass<out BaseModel>, () -> Renderer<*>> =
+    rendererComponent?.renderers.orEmpty() +
+      rendererGraph?.renderers.orEmpty().mapValues { { it.value() } }
 
   private val cacheKeys: Map<KClass<out BaseModel>, KClass<out Renderer<*>>> =
-    rendererComponent.modelToRendererMapping
+    rendererComponent?.modelToRendererMapping.orEmpty() +
+      rendererGraph?.modelToRendererMapping.orEmpty()
 
   private val rendererCache = mutableMapOf<CacheKey, Renderer<*>>()
   private val lock = SynchronizedObject()
@@ -52,4 +62,22 @@ public open class BaseRendererFactory(rootScopeProvider: RootScopeProvider) : Re
   }
 
   private data class CacheKey(val clazz: KClass<out Renderer<*>>, val rendererId: Int)
+
+  private companion object {
+    inline fun <reified T : Any> Scope.metroDependencyGraphOrNull(): T? {
+      return try {
+        metroDependencyGraph<T>()
+      } catch (_: NoSuchElementException) {
+        null
+      }
+    }
+
+    inline fun <reified T : Any> Scope.kotlinInjectComponentOrNull(): T? {
+      return try {
+        kotlinInjectComponent<T>()
+      } catch (_: NoSuchElementException) {
+        null
+      }
+    }
+  }
 }
