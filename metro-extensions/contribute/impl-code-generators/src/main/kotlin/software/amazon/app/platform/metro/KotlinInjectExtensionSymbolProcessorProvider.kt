@@ -6,6 +6,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import software.amazon.app.platform.ksp.CompositeSymbolProcessor
 import software.amazon.app.platform.metro.processor.ContributesRendererProcessor
+import software.amazon.app.platform.metro.processor.ContributesRobotProcessor
 
 /** Entry point for KSP to pick up our [SymbolProcessor]. */
 @AutoService(SymbolProcessorProvider::class)
@@ -16,7 +17,11 @@ public class KotlinInjectExtensionSymbolProcessorProvider : SymbolProcessorProvi
       ContributesRendererProcessor(
         codeGenerator = environment.codeGenerator,
         logger = environment.logger,
-      )
+      ),
+      ContributesRobotProcessor(
+        codeGenerator = environment.codeGenerator,
+        logger = environment.logger,
+      ),
     )
   }
 }
