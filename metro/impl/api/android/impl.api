@@ -1,15 +1,3 @@
-public final class metro/hints/SoftwareAmazonAppPlatformPresenterMetroPresenterCoroutineScopeGraphAppScopeKt {
-	public static final fun AppScope (Lsoftware/amazon/app/platform/presenter/metro/PresenterCoroutineScopeGraph;)V
-}
-
-public final class metro/hints/SoftwareAmazonAppPlatformScopeCoroutineMetroAppScopeCoroutineScopeGraphAppScopeKt {
-	public static final fun AppScope (Lsoftware/amazon/app/platform/scope/coroutine/metro/AppScopeCoroutineScopeGraph;)V
-}
-
-public final class metro/hints/SoftwareAmazonAppPlatformScopeCoroutineMetroCoroutineDispatcherGraphAppScopeKt {
-	public static final fun AppScope (Lsoftware/amazon/app/platform/scope/coroutine/metro/CoroutineDispatcherGraph;)V
-}
-
 public abstract interface class software/amazon/app/platform/presenter/metro/PresenterCoroutineScopeGraph {
 	public fun providePresenterCoroutineScope (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;)Lkotlinx/coroutines/CoroutineScope;
 }

@@ -1,11 +1,3 @@
-public final class metro/hints/SoftwareAmazonAppPlatformPresenterMoleculeAndroidMoleculeScopeFactoryGraphAppScopeKt {
-	public static final fun AppScope (Lsoftware/amazon/app/platform/presenter/molecule/AndroidMoleculeScopeFactoryGraph;)V
-}
-
-public final class metro/hints/SoftwareAmazonAppPlatformPresenterMoleculeBackgestureDefaultBackGestureDispatcherPresenterGraphAppScopeKt {
-	public static final fun AppScope (Lsoftware/amazon/app/platform/presenter/molecule/backgesture/DefaultBackGestureDispatcherPresenterGraph;)V
-}
-
 public final class software/amazon/app/platform/presenter/molecule/AndroidMoleculeScopeFactory : software/amazon/app/platform/presenter/molecule/MoleculeScopeFactory {
 	public static final field $stable I
 	public fun <init> (Lkotlin/jvm/functions/Function0;)V

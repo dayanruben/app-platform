@@ -1,7 +1,3 @@
-public final class metro/hints/SoftwareAmazonAppPlatformRendererRendererGraphFactoryAppScopeKt {
-	public static final fun AppScope (Lsoftware/amazon/app/platform/renderer/RendererGraph$Factory;)V
-}
-
 public class software/amazon/app/platform/renderer/BaseRendererFactory : software/amazon/app/platform/renderer/RendererFactory {
 	public fun <init> (Lsoftware/amazon/app/platform/scope/RootScopeProvider;)V
 	public fun createRenderer (Lkotlin/reflect/KClass;)Lsoftware/amazon/app/platform/renderer/Renderer;
