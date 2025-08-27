@@ -13,6 +13,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import software.amazon.app.platform.gradle.ModuleStructurePlugin.Companion.testingSourceSets
 
 /**
@@ -20,6 +21,7 @@ import software.amazon.app.platform.gradle.ModuleStructurePlugin.Companion.testi
  * ```
  * appPlatform {
  *   enableKotlinInject true // false is the default
+ *   enableMetro true // false is the default
  *
  *   enableMoleculePresenters true // false is the default
  *   enableModuleStructure true // false is the default
@@ -51,6 +53,24 @@ constructor(objects: ObjectFactory, private val project: Project) {
   }
 
   internal fun isKotlinInjectEnabled(): Property<Boolean> = enableKotlinInject
+
+  private val enableMetro: Property<Boolean> =
+    objects.property(Boolean::class.java).convention(false)
+
+  /** Adds Metro as dependency. */
+  public fun enableMetro(enabled: Boolean) {
+    if (enabled == enableMetro.get()) return
+
+    enableMetro.set(enabled)
+    enableMetro.disallowChanges()
+
+    if (enabled) {
+      addPublicModuleDependencies(true)
+      project.enableMetro()
+    }
+  }
+
+  internal fun isMetroEnabled(): Property<Boolean> = enableMetro
 
   private val enableMoleculePresenters: Property<Boolean> =
     objects.property(Boolean::class.java).convention(false)
@@ -185,41 +205,8 @@ private fun Project.enableKotlinInject() {
     }
 
     kmpExtension.targets.configureEach { target ->
-      // Skip the metadata, because we want to run KSP only for the concrete platforms.
-      if (target.name != "metadata") {
-        target.compilations.configureEach { compilation ->
-          fun configExists(name: String): Boolean = configurations.any { it.name == name }
-
-          // The implementationConfigurationName name is
-          // 'iosSimulatorArm64CompilationImplementation', 'wasmJsTestCompileClasspath' or
-          // 'desktopCompileClasspath'.
-          //
-          // E.g. 'desktopCompileClasspath' with give use 'kspDesktop'
-          var configName =
-            "ksp" +
-              compilation.implementationConfigurationName
-                .substringBefore("Compilation")
-                .capitalize()
-
-          if (!configExists(configName) && target.platformType == KotlinPlatformType.androidJvm) {
-            // Android has different naming for some reason.
-            //
-            // E.g. for instrumentation tests 'kspAndroidDebugAndroidTest' should actually be
-            // 'kspAndroidAndroidTestDebug', but we will use 'kspAndroidAndroidTest'.
-            //
-            // For unit tests 'kspAndroidDebugUnitTest' should actually be 'kspAndroidTestDebug',
-            // but we will use 'kspAndroidTest'.
-            when {
-              configName.endsWith("AndroidTest") -> configName = "kspAndroidAndroidTest"
-              configName.endsWith("UnitTest") -> configName = "kspAndroidTest"
-            }
-          }
-
-          // Check again if the config exists.
-          if (configExists(configName)) {
-            dependencies.addKspProcessorDependencies(configName)
-          }
-        }
+      addKspDependenciesWhenConfigExists(target) { configName ->
+        dependencies.addKspProcessorDependencies(configName)
       }
     }
   }
@@ -246,6 +233,41 @@ private fun Project.enableKotlinInject() {
       "implementation",
       "me.tatarka.inject:kotlin-inject-runtime:$KOTLIN_INJECT_VERSION",
     )
+    dependencies.addKspProcessorDependencies("ksp")
+  }
+}
+
+private fun Project.enableMetro() {
+  plugins.apply(PluginIds.METRO)
+
+  // Enable KSP for our custom extensions.
+  plugins.apply(PluginIds.KSP)
+
+  fun DependencyHandler.addKspProcessorDependencies(kspConfigurationName: String) {
+    add(
+      kspConfigurationName,
+      "$APP_PLATFORM_GROUP:metro-contribute-impl-code-generators:$APP_PLATFORM_VERSION",
+    )
+  }
+
+  plugins.withId(PluginIds.KOTLIN_MULTIPLATFORM) {
+    kmpExtension.sourceSets.getByName("commonMain").dependencies {
+      implementation("$APP_PLATFORM_GROUP:di-common-public:$APP_PLATFORM_VERSION")
+      implementation("$APP_PLATFORM_GROUP:metro-public:$APP_PLATFORM_VERSION")
+
+      kmpExtension.targets.configureEach { target ->
+        addKspDependenciesWhenConfigExists(target) { configName ->
+          dependencies.addKspProcessorDependencies(configName)
+        }
+      }
+    }
+  }
+
+  plugins.withIds(PluginIds.KOTLIN_ANDROID, PluginIds.KOTLIN_JVM) {
+    dependencies.add("implementation", "$APP_PLATFORM_GROUP:di-common-public:$APP_PLATFORM_VERSION")
+
+    dependencies.add("implementation", "$APP_PLATFORM_GROUP:metro-public:$APP_PLATFORM_VERSION")
+
     dependencies.addKspProcessorDependencies("ksp")
   }
 }
@@ -332,6 +354,45 @@ private fun Project.enableComposeUi() {
         "androidTestImplementation",
         "$APP_PLATFORM_GROUP:robot-compose-multiplatform-public:$APP_PLATFORM_VERSION",
       )
+    }
+  }
+}
+
+private fun Project.addKspDependenciesWhenConfigExists(
+  target: KotlinTarget,
+  block: (String) -> Unit,
+) {
+  if (target.name != "metadata") {
+    target.compilations.configureEach { compilation ->
+      fun configExists(name: String): Boolean = configurations.any { it.name == name }
+
+      // The implementationConfigurationName name is
+      // 'iosSimulatorArm64CompilationImplementation', 'wasmJsTestCompileClasspath' or
+      // 'desktopCompileClasspath'.
+      //
+      // E.g. 'desktopCompileClasspath' with give use 'kspDesktop'
+      var configName =
+        "ksp" +
+          compilation.implementationConfigurationName.substringBefore("Compilation").capitalize()
+
+      if (!configExists(configName) && target.platformType == KotlinPlatformType.androidJvm) {
+        // Android has different naming for some reason.
+        //
+        // E.g. for instrumentation tests 'kspAndroidDebugAndroidTest' should actually be
+        // 'kspAndroidAndroidTestDebug', but we will use 'kspAndroidAndroidTest'.
+        //
+        // For unit tests 'kspAndroidDebugUnitTest' should actually be 'kspAndroidTestDebug',
+        // but we will use 'kspAndroidTest'.
+        when {
+          configName.endsWith("AndroidTest") -> configName = "kspAndroidAndroidTest"
+          configName.endsWith("UnitTest") -> configName = "kspAndroidTest"
+        }
+      }
+
+      // Check again if the config exists.
+      if (configExists(configName)) {
+        block(configName)
+      }
     }
   }
 }
