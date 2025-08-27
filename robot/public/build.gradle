@@ -4,6 +4,7 @@ plugins {
 
 appPlatformBuildSrc {
     enableKotlinInject true
+    enableMetro true
     enablePublishing true
 }
 

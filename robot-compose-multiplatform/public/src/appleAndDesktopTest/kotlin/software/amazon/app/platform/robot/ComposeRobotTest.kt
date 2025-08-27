@@ -14,10 +14,12 @@ import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import assertk.assertions.messageContains
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.provider
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import software.amazon.app.platform.scope.Scope
-import software.amazon.app.platform.scope.di.addKotlinInjectComponent
+import software.amazon.app.platform.scope.di.metro.addMetroDependencyGraph
 
 // Note that this class has to be duplicated and cannot be moved into commonTest, because Android
 // unit tests don't have access to `runComposeUiTest`.
@@ -61,7 +63,7 @@ class ComposeRobotTest {
   }
 
   private fun rootScope(vararg robots: Robot): Scope =
-    Scope.buildRootScope { addKotlinInjectComponent(Component(*robots)) }
+    Scope.buildRootScope { addMetroDependencyGraph(Component(*robots)) }
 
   private fun ComposeUiTest.interactionProvider(): ComposeInteractionsProvider {
     val interactionsProvider = this
@@ -71,9 +73,9 @@ class ComposeRobotTest {
     }
   }
 
-  private class Component(vararg robots: Robot) : RobotComponent {
-    override val robots: Map<KClass<out Robot>, () -> Robot> =
-      robots.map { robot -> robot::class to { robot } }.toMap()
+  private class Component(vararg robots: Robot) : RobotGraph {
+    override val robots: Map<KClass<*>, Provider<Robot>> =
+      robots.associate { robot -> robot::class to provider { robot } }
   }
 
   private class TestRobot : ComposeRobot() {
