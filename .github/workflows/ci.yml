@@ -250,8 +250,7 @@ jobs:
           /usr/bin/xcodebuild -version
           /usr/bin/xcodebuild -showsdks
           /usr/bin/xcrun simctl list devices
-          /usr/bin/xcodebuild -downloadPlatform iOS
-          export DESTINATION_DEVICE=`/usr/bin/xcrun simctl list devices | grep -A 1 "iOS 26.0" | grep -oE '\([0-9A-F-]+\)' | head -1 | tr -d '()'`
+          export DESTINATION_DEVICE=`/usr/bin/xcrun simctl list devices | grep -A 1 "iOS 18.6" | grep -oE '\([0-9A-F-]+\)' | head -1 | tr -d '()'`
           echo "Using simulator $DESTINATION_DEVICE"
           /usr/bin/xcodebuild -project sample/iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug OBJROOT=build/ios SYMROOT=build/ios -destination id=$DESTINATION_DEVICE -allowProvisioningDeviceRegistration -allowProvisioningUpdates
 
