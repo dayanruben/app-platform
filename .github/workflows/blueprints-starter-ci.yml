@@ -12,6 +12,9 @@ on:
       - 'blueprints/starter/**'
       - '.github/**'
 
+permissions:
+  contents: read
+
 jobs:
   build-ios-starter-app:
     runs-on: macos-latest-xlarge

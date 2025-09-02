@@ -115,6 +115,11 @@ public open class BasePlugin : Plugin<Project> {
       with(extensions.getByType(BaseYarnRootExtension::class.java)) {
         // Force the newer version due to https://github.com/amzn/app-platform/security/dependabot/5
         resolution("webpack-dev-server", "5.2.1")
+        // Force the newer version due to https://github.com/amzn/app-platform/security/dependabot/8
+        resolution("on-headers", "1.1.0")
+        // Force the newer version due to
+        // https://github.com/amzn/app-platform/security/dependabot/10
+        resolution("tmp", "0.2.4")
       }
     }
   }
