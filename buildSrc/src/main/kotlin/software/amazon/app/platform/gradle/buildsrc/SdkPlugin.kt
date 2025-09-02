@@ -64,7 +64,8 @@ internal object SdkPlugin {
 
     // These packages only contain generated code that is picked up by compiler plugins.
     // They don't need to be part of the API dumps.
-    apiValidation.ignoredPackages += setOf("app.platform.inject", "amazon.lastmile.inject")
+    apiValidation.ignoredPackages +=
+      setOf("app.platform.inject", "amazon.lastmile.inject", "metro.hints")
   }
 
   private fun Project.configureExplicitApi() {

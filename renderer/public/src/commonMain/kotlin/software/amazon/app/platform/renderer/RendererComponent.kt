@@ -7,7 +7,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesSubcomponent
 import software.amazon.lastmile.kotlin.inject.anvil.ForScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-/** Component that provides all [Renderer] instance from the dependency graph. */
+/** Component that provides all [Renderer] instance from the kotlin-inject dependency graph. */
 @ContributesSubcomponent(RendererScope::class)
 @SingleIn(RendererScope::class)
 public interface RendererComponent {

@@ -7,7 +7,7 @@ import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.renderer.Renderer
 import software.amazon.app.platform.renderer.RendererScope
 
-interface TestRendererComponent {
+interface TestRendererGraph {
   val renderers: Map<KClass<out BaseModel>, Provider<Renderer<*>>>
 
   @ForScope(RendererScope::class)
