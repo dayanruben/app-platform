@@ -5,6 +5,9 @@ on:
     tags:
       - '*.*.*'
 
+permissions:
+  contents: read
+
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
@@ -13,6 +16,10 @@ concurrency:
 
 jobs:
   publish-release:
+    # Needed for creating the release: https://github.com/softprops/action-gh-release?tab=readme-ov-file#permissions
+    permissions:
+      contents: write
+
     runs-on: macos-latest-xlarge
     if: github.repository == 'amzn/app-platform'
     timeout-minutes: 60
