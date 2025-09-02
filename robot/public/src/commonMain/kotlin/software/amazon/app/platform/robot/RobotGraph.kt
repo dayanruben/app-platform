@@ -2,6 +2,7 @@ package software.amazon.app.platform.robot
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provider
 import kotlin.reflect.KClass
 
@@ -9,5 +10,5 @@ import kotlin.reflect.KClass
 @ContributesTo(AppScope::class)
 public interface RobotGraph {
   /** All [Robot]s provided in the Metro dependency graph. */
-  public val robots: Map<KClass<*>, Provider<Robot>>
+  @Multibinds(allowEmpty = true) public val robots: Map<KClass<*>, Provider<Robot>>
 }
