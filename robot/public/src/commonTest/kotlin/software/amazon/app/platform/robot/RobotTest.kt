@@ -11,7 +11,7 @@ import kotlin.test.assertFailsWith
 import software.amazon.app.platform.internal.Platform
 import software.amazon.app.platform.internal.platform
 import software.amazon.app.platform.scope.Scope
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 
 class RobotTest {
 
@@ -55,7 +55,7 @@ class RobotTest {
   fun `a new robot is instantiated every time the robot function is invoked`() {
     val rootScope =
       Scope.buildRootScope {
-        addDiComponent(
+        addKotlinInjectComponent(
           object : RobotComponent {
             override val robots: Map<KClass<out Robot>, () -> Robot> =
               mapOf(TestRobot::class to { TestRobot() })
@@ -81,7 +81,7 @@ class RobotTest {
   }
 
   private fun rootScope(vararg robots: Robot): Scope =
-    Scope.buildRootScope { addDiComponent(Component(*robots)) }
+    Scope.buildRootScope { addKotlinInjectComponent(Component(*robots)) }
 
   private class Component(vararg robots: Robot) : RobotComponent {
     override val robots: Map<KClass<out Robot>, () -> Robot> =

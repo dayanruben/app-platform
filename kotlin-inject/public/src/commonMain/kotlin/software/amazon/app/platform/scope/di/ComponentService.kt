@@ -5,6 +5,14 @@ import software.amazon.app.platform.scope.parents
 
 @PublishedApi internal const val DI_COMPONENT_KEY: String = "diComponent"
 
+/** This function is deprecated. [kotlinInjectComponent] is a one to one replacement. */
+@Deprecated(
+  message = "",
+  replaceWith = ReplaceWith("kotlinInjectComponent<T>()"),
+  level = DeprecationLevel.WARNING,
+)
+public inline fun <reified T : Any> Scope.diComponent(): T = kotlinInjectComponent()
+
 /**
  * Provides the DI component that has been added to this [Scope]. A common pattern is to use this
  * function to look up component interfaces in static contexts like test methods, static functions
@@ -20,7 +28,7 @@ import software.amazon.app.platform.scope.parents
  *
  * The given component type [T] of the DI component can be provided by this scope or a parent scope.
  */
-public inline fun <reified T : Any> Scope.diComponent(): T {
+public inline fun <reified T : Any> Scope.kotlinInjectComponent(): T {
   parents(includeSelf = true)
     .firstNotNullOfOrNull { scope ->
       val component = scope.getService<T>(DI_COMPONENT_KEY)
@@ -49,10 +57,20 @@ public inline fun <reified T : Any> Scope.diComponent(): T {
   )
 }
 
+/** This function is deprecated. [addKotlinInjectComponent] is a one to one replacement. */
+@Deprecated(
+  message = "",
+  replaceWith = ReplaceWith("addKotlinInjectComponent(component)"),
+  level = DeprecationLevel.WARNING,
+)
+public fun Scope.Builder.addDiComponent(component: Any) {
+  addKotlinInjectComponent(component)
+}
+
 /**
  * Adds the given [component] to this builder. The instance can be later retrieved with
- * [diComponent].
+ * [kotlinInjectComponent].
  */
-public fun Scope.Builder.addDiComponent(component: Any) {
+public fun Scope.Builder.addKotlinInjectComponent(component: Any) {
   addService(DI_COMPONENT_KEY, component)
 }

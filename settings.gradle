@@ -38,11 +38,16 @@ develocity {
 
 rootProject.name = 'app-platform'
 
+include ':di-common:public'
 include ':internal:testing'
 include ':kotlin-inject:impl'
 include ':kotlin-inject:public'
 include ':kotlin-inject-extensions:contribute:impl-code-generators'
 include ':kotlin-inject-extensions:contribute:public'
+include ':ksp-common:public'
+include ':ksp-common:testing'
+include ':metro:public'
+include ':metro-extensions:contribute:impl-code-generators'
 include ':presenter:public'
 include ':presenter-molecule:impl'
 include ':presenter-molecule:public'

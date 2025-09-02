@@ -17,6 +17,7 @@ test {
 }
 
 dependencies {
+    implementation project(':ksp-common:public')
     implementation libs.ksp.api
 
     implementation libs.kotlin.poet
@@ -26,15 +27,17 @@ dependencies {
     ksp libs.auto.service.ksp
 
     // Gives us access to annotations.
+    implementation project(':di-common:public')
+    implementation project(':scope:public')
     implementation libs.kotlin.inject.runtime
     implementation libs.kotlin.inject.anvil.runtime
     implementation libs.kotlin.inject.anvil.runtime.optional
 
     testImplementation project(':kotlin-inject:public')
+    testImplementation project(':ksp-common:testing')
     testImplementation project(':presenter:public')
     testImplementation project(':renderer:public')
     testImplementation project(':robot:public')
-    testImplementation project(':scope:public')
     testImplementation libs.kotlin.compile.testing.core
     testImplementation libs.kotlin.compile.testing.ksp
 

@@ -141,7 +141,7 @@ jobs:
           gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Test
-        run: ./gradlew :kotlin-inject-extensions:contribute:impl-code-generators:test --stacktrace --show-version --continue -Pksp.useKSP2=${{ matrix.use-ksp2 }}
+        run: ./gradlew :kotlin-inject-extensions:contribute:impl-code-generators:test :metro-extensions:contribute:impl-code-generators:test --stacktrace --show-version --continue -Pksp.useKSP2=${{ matrix.use-ksp2 }}
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4

@@ -15,11 +15,11 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.descriptors.runtime.structure.parameterizedTypeArguments
 import org.junit.jupiter.api.Test
 import software.amazon.app.platform.inject.APP_PLATFORM_LOOKUP_PACKAGE
-import software.amazon.app.platform.inject.capitalize
 import software.amazon.app.platform.inject.compile
-import software.amazon.app.platform.inject.inner
 import software.amazon.app.platform.inject.mock.MockMode
 import software.amazon.app.platform.inject.mock.RealImpl
+import software.amazon.app.platform.ksp.capitalize
+import software.amazon.app.platform.ksp.inner
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.ForScope

@@ -113,9 +113,11 @@ public open class AppPlatformPlugin : Plugin<Project> {
     @JvmStatic
     public fun exportedDependencies(): Set<String> =
       setOf(
+          "di-common-public",
           "kotlin-inject-contribute-public",
           "kotlin-inject-impl",
           "kotlin-inject-public",
+          "metro-public",
           "presenter-molecule-impl",
           "presenter-molecule-public",
           "presenter-public",

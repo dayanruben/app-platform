@@ -26,10 +26,10 @@ import me.tatarka.inject.annotations.Inject
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import software.amazon.app.platform.inject.APP_PLATFORM_LOOKUP_PACKAGE
-import software.amazon.app.platform.inject.ContextAware
+import software.amazon.app.platform.inject.KotlinInjectContextAware
 import software.amazon.app.platform.inject.addOriginAnnotation
-import software.amazon.app.platform.inject.decapitalize
 import software.amazon.app.platform.inject.robot.ContributesRobot
+import software.amazon.app.platform.ksp.decapitalize
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
@@ -59,7 +59,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 internal class ContributesRobotProcessor(
   private val codeGenerator: CodeGenerator,
   override val logger: KSPLogger,
-) : SymbolProcessor, ContextAware {
+) : SymbolProcessor, KotlinInjectContextAware {
 
   private val robotClassName = ClassName("software.amazon.app.platform.robot", "Robot")
   private val robotFqName = robotClassName.canonicalName

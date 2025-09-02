@@ -172,6 +172,7 @@ private fun Project.enableKotlinInject() {
   plugins.withId(PluginIds.KOTLIN_MULTIPLATFORM) {
     kmpExtension.sourceSets.getByName("commonMain").dependencies {
       implementation("me.tatarka.inject:kotlin-inject-runtime:$KOTLIN_INJECT_VERSION")
+      implementation("$APP_PLATFORM_GROUP:di-common-public:$APP_PLATFORM_VERSION")
       implementation("$APP_PLATFORM_GROUP:kotlin-inject-public:$APP_PLATFORM_VERSION")
       implementation("$APP_PLATFORM_GROUP:kotlin-inject-contribute-public:$APP_PLATFORM_VERSION")
       implementation(
@@ -224,6 +225,7 @@ private fun Project.enableKotlinInject() {
   }
 
   plugins.withIds(PluginIds.KOTLIN_ANDROID, PluginIds.KOTLIN_JVM) {
+    dependencies.add("implementation", "$APP_PLATFORM_GROUP:di-common-public:$APP_PLATFORM_VERSION")
     dependencies.add(
       "implementation",
       "$APP_PLATFORM_GROUP:kotlin-inject-public:$APP_PLATFORM_VERSION",

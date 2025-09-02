@@ -10,7 +10,7 @@ import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.coroutine.CoroutineScopeScoped
 import software.amazon.app.platform.scope.coroutine.addCoroutineScopeScoped
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 
 class TestApplication : Application(), RootScopeProvider {
 
@@ -18,7 +18,7 @@ class TestApplication : Application(), RootScopeProvider {
 
   override val rootScope: Scope =
     Scope.buildRootScope {
-      addDiComponent(Component())
+      addKotlinInjectComponent(Component())
       addCoroutineScopeScoped(CoroutineScopeScoped(Job() + CoroutineName("test")))
     }
 

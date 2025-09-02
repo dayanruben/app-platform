@@ -16,8 +16,8 @@ import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.Scoped
 import software.amazon.app.platform.scope.buildTestScope
 import software.amazon.app.platform.scope.coroutine.CoroutineScopeScoped
-import software.amazon.app.platform.scope.di.addDiComponent
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 
 class UserManagerImplTest {
 
@@ -64,7 +64,10 @@ class UserManagerImplTest {
   }
 
   private fun userManager(rootScopeProvider: RootScopeProvider): UserManagerImpl =
-    UserManagerImpl(rootScopeProvider, rootScopeProvider.rootScope.diComponent())
+    UserManagerImpl(
+      rootScopeProvider,
+      rootScopeProvider.rootScope.kotlinInjectComponent<UserComponent.Factory>(),
+    )
 
   private fun TestScope.appComponent(): Any =
     object : UserComponent.Factory {
@@ -80,7 +83,7 @@ class UserManagerImplTest {
   private fun TestScope.rootScopeProvider(appComponent: Any = appComponent()): RootScopeProvider {
     return object : RootScopeProvider {
       override val rootScope: Scope =
-        Scope.buildTestScope(this@rootScopeProvider) { addDiComponent(appComponent) }
+        Scope.buildTestScope(this@rootScopeProvider) { addKotlinInjectComponent(appComponent) }
     }
   }
 }

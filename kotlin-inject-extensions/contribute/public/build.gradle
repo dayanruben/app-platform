@@ -3,10 +3,6 @@ plugins {
 }
 
 appPlatformBuildSrc {
-    enableDi true
+    enableKotlinInject true
     enablePublishing true
-}
-
-dependencies {
-    commonMainApi project(':scope:public')
 }

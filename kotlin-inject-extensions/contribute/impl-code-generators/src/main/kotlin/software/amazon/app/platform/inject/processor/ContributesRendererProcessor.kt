@@ -29,8 +29,8 @@ import me.tatarka.inject.annotations.Inject
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import software.amazon.app.platform.inject.APP_PLATFORM_LOOKUP_PACKAGE
-import software.amazon.app.platform.inject.ContextAware
 import software.amazon.app.platform.inject.ContributesRenderer
+import software.amazon.app.platform.inject.KotlinInjectContextAware
 import software.amazon.app.platform.inject.addOriginAnnotation
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.ForScope
@@ -76,7 +76,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 internal class ContributesRendererProcessor(
   private val codeGenerator: CodeGenerator,
   override val logger: KSPLogger,
-) : SymbolProcessor, ContextAware {
+) : SymbolProcessor, KotlinInjectContextAware {
 
   private val baseModel = ClassName("software.amazon.app.platform.presenter", "BaseModel")
   private val baseModelFqName = baseModel.canonicalName

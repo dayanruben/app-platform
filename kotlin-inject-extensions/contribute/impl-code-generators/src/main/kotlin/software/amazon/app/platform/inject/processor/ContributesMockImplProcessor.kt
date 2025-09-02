@@ -21,7 +21,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 import software.amazon.app.platform.inject.APP_PLATFORM_LOOKUP_PACKAGE
-import software.amazon.app.platform.inject.ContextAware
+import software.amazon.app.platform.inject.KotlinInjectContextAware
 import software.amazon.app.platform.inject.addOriginAnnotation
 import software.amazon.app.platform.inject.mock.ContributesMockImpl
 import software.amazon.app.platform.inject.mock.MockMode
@@ -61,7 +61,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ForScope
 internal class ContributesMockImplProcessor(
   private val codeGenerator: CodeGenerator,
   override val logger: KSPLogger,
-) : SymbolProcessor, ContextAware {
+) : SymbolProcessor, KotlinInjectContextAware {
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
     resolver

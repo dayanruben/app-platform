@@ -7,7 +7,8 @@ import org.gradle.api.provider.Property
 import software.amazon.app.platform.gradle.AppPlatformExtension as AppPlatformExtensionGradlePlugin
 import software.amazon.app.platform.gradle.buildsrc.BaseAndroidPlugin.Companion.enableInstrumentedTests
 import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.enableCompose
-import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.enableDi
+import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.enableKotlinInject
+import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.enableMetro
 import software.amazon.app.platform.gradle.buildsrc.KmpPlugin.Companion.enableMolecule
 import software.amazon.app.platform.gradle.buildsrc.SdkPlugin.publishSdk
 
@@ -29,18 +30,33 @@ constructor(objects: ObjectFactory, private val project: Project) {
 
   internal fun isComposeEnabled(): Property<Boolean> = enableCompose
 
-  private val enableDi: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+  private val enableKotlinInject: Property<Boolean> =
+    objects.property(Boolean::class.java).convention(false)
 
-  public fun enableDi(enabled: Boolean) {
-    enableDi.set(enabled)
-    enableDi.disallowChanges()
+  public fun enableKotlinInject(enabled: Boolean) {
+    enableKotlinInject.set(enabled)
+    enableKotlinInject.disallowChanges()
 
     if (enabled) {
-      project.enableDi()
+      project.enableKotlinInject()
     }
   }
 
-  internal fun isDiEnabled(): Property<Boolean> = enableDi
+  internal fun isKotlinInjectEnabled(): Property<Boolean> = enableKotlinInject
+
+  private val enableMetro: Property<Boolean> =
+    objects.property(Boolean::class.java).convention(false)
+
+  public fun enableMetro(enabled: Boolean) {
+    enableMetro.set(enabled)
+    enableMetro.disallowChanges()
+
+    if (enabled) {
+      project.enableMetro()
+    }
+  }
+
+  internal fun isMetroEnabled(): Property<Boolean> = enableMetro
 
   private val enableMolecule: Property<Boolean> =
     objects.property(Boolean::class.java).convention(false)

@@ -17,7 +17,7 @@ import assertk.assertions.messageContains
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import software.amazon.app.platform.scope.Scope
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 
 // Note that this class has to be duplicated and cannot be moved into commonTest, because Android
 // unit tests don't have access to `runComposeUiTest`.
@@ -61,7 +61,7 @@ class ComposeRobotTest {
   }
 
   private fun rootScope(vararg robots: Robot): Scope =
-    Scope.buildRootScope { addDiComponent(Component(*robots)) }
+    Scope.buildRootScope { addKotlinInjectComponent(Component(*robots)) }
 
   private fun ComposeUiTest.interactionProvider(): ComposeInteractionsProvider {
     val interactionsProvider = this

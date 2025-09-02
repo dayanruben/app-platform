@@ -14,7 +14,7 @@ import software.amazon.app.platform.presenter.BaseModel
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.buildTestScope
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 
 class ComposeRendererFactoryTest {
 
@@ -60,7 +60,7 @@ class ComposeRendererFactoryTest {
   private fun TestScope.rootScopeProvider(): RootScopeProvider {
     val scope =
       Scope.buildTestScope(this) {
-        addDiComponent(
+        addKotlinInjectComponent(
           object : RendererComponent.Parent {
             override fun rendererComponent(factory: RendererFactory): RendererComponent {
               return object : RendererComponent {

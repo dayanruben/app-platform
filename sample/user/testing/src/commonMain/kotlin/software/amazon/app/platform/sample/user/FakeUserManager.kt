@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.TestScope
 import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.buildTestScope
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 
 /**
  * Fake implementation of [UserManager], which is useful in unit tests.
@@ -24,7 +24,10 @@ class FakeUserManager(override val user: MutableStateFlow<User?> = MutableStateF
    */
   fun login(userId: Long, scope: TestScope, component: Any) {
     user.value =
-      FakeUser(userId = userId, scope = Scope.buildTestScope(scope) { addDiComponent(component) })
+      FakeUser(
+        userId = userId,
+        scope = Scope.buildTestScope(scope) { addKotlinInjectComponent(component) },
+      )
   }
 
   override fun logout() {

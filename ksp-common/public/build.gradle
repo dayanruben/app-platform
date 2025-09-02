@@ -1,0 +1,26 @@
+plugins {
+    id 'software.amazon.app.platform.lib.jvm'
+}
+
+appPlatformBuildSrc {
+    enablePublishing true
+}
+
+dependencies {
+    api libs.ksp.api
+
+    api libs.kotlin.poet
+    api libs.kotlin.poet.ksp
+
+    // Gives us access to annotations.
+    api project(':di-common:public')
+    api project(':scope:public')
+}
+
+// We don't need the apiCheck in this module.
+tasks.named('apiCheck').configure {
+    it.enabled = false
+}
+tasks.named('apiDump').configure {
+    it.enabled = false
+}
