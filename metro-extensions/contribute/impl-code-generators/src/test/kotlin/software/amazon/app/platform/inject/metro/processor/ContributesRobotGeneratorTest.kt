@@ -22,12 +22,13 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.Test
 import software.amazon.app.platform.inject.metro.compile
 import software.amazon.app.platform.inject.metro.graphInterface
-import software.amazon.app.platform.inject.metro.newTestRobotGraph
+import software.amazon.app.platform.inject.metro.newMetroGraph
 import software.amazon.app.platform.ksp.capitalize
 import software.amazon.app.platform.ksp.isAnnotatedWith
 import software.amazon.app.platform.metro.METRO_LOOKUP_PACKAGE
 import software.amazon.app.platform.renderer.metro.RobotKey
 import software.amazon.app.platform.robot.Robot
+import software.amazon.test.TestRobotGraph
 
 class ContributesRobotGeneratorTest {
 
@@ -66,7 +67,8 @@ class ContributesRobotGeneratorTest {
         assertThat(getAnnotation(RobotKey::class.java).value.java).isEqualTo(testRobot)
       }
 
-      assertThat(graphInterface.newTestRobotGraph().robots.keys).containsOnly(testRobot.kotlin)
+      assertThat(graphInterface.newMetroGraph<TestRobotGraph>().robots.keys)
+        .containsOnly(testRobot.kotlin)
     }
   }
 
@@ -102,7 +104,8 @@ class ContributesRobotGeneratorTest {
         assertThat(getAnnotation(RobotKey::class.java).value.java).isEqualTo(testRobot)
       }
 
-      assertThat(graphInterface.newTestRobotGraph().robots.keys).containsOnly(testRobot.kotlin)
+      assertThat(graphInterface.newMetroGraph<TestRobotGraph>().robots.keys)
+        .containsOnly(testRobot.kotlin)
     }
   }
 
@@ -213,10 +216,8 @@ class ContributesRobotGeneratorTest {
         import dev.zacsweers.metro.createGraph
         import dev.zacsweers.metro.DependencyGraph
         import dev.zacsweers.metro.SingleIn
-        import software.amazon.app.platform.renderer.RendererGraph
-        import software.amazon.test.TestRendererGraph
 
-        @DependencyGraph(AppScope::class, excludes = [RendererGraph::class])
+        @DependencyGraph(AppScope::class)
         @SingleIn(AppScope::class)
         interface GraphInterface : TestRobotGraph {
             companion object {

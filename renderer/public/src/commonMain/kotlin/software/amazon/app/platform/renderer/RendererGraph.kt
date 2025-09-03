@@ -4,6 +4,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.ForScope
 import dev.zacsweers.metro.GraphExtension
+import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -15,6 +16,7 @@ import software.amazon.app.platform.presenter.BaseModel
 @SingleIn(RendererScope::class)
 public interface RendererGraph {
   /** All [Renderer]s provided in the dependency graph. */
+  @Multibinds(allowEmpty = true)
   public val renderers: Map<KClass<out BaseModel>, Provider<Renderer<*>>>
 
   /**
@@ -28,6 +30,7 @@ public interface RendererGraph {
    * all keys pointing to the same renderer class.
    */
   @ForScope(RendererScope::class)
+  @Multibinds(allowEmpty = true)
   public val modelToRendererMapping: Map<KClass<out BaseModel>, KClass<out Renderer<*>>>
 
   /** The parent interface to create a [RendererGraph]. */

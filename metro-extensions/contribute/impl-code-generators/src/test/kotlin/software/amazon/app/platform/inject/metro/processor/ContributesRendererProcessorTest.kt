@@ -23,13 +23,14 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.Test
 import software.amazon.app.platform.inject.metro.compile
 import software.amazon.app.platform.inject.metro.graphInterface
-import software.amazon.app.platform.inject.metro.newTestRendererGraph
+import software.amazon.app.platform.inject.metro.newMetroGraph
 import software.amazon.app.platform.ksp.inner
 import software.amazon.app.platform.ksp.isAnnotatedWith
 import software.amazon.app.platform.metro.METRO_LOOKUP_PACKAGE
 import software.amazon.app.platform.renderer.Renderer
 import software.amazon.app.platform.renderer.RendererScope
 import software.amazon.app.platform.renderer.metro.RendererKey
+import software.amazon.test.TestRendererGraph
 
 class ContributesRendererProcessorTest {
 
@@ -90,12 +91,13 @@ class ContributesRendererProcessorTest {
         assertThat(getAnnotation(RendererKey::class.java).value).isEqualTo(model)
       }
 
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys).containsOnly(model)
-
-      assertThat(graphInterface.newTestRendererGraph().modelToRendererMapping.keys)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
         .containsOnly(model)
 
-      assertThat(graphInterface.newTestRendererGraph().modelToRendererMapping.values)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().modelToRendererMapping.keys)
+        .containsOnly(model)
+
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().modelToRendererMapping.values)
         .containsOnly(testRenderer.kotlin)
     }
   }
@@ -148,7 +150,8 @@ class ContributesRendererProcessorTest {
         assertThat(getAnnotation(RendererKey::class.java).value).isEqualTo(model)
       }
 
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys).containsOnly(model)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
+        .containsOnly(model)
     }
   }
 
@@ -197,7 +200,7 @@ class ContributesRendererProcessorTest {
         assertThat(this).isAnnotatedWith(IntoMap::class)
       }
 
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
         .containsOnly(presenter.model.kotlin)
     }
   }
@@ -222,7 +225,8 @@ class ContributesRendererProcessorTest {
       """,
       graphInterfaceSource,
     ) {
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys).containsOnly(model)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
+        .containsOnly(model)
     }
   }
 
@@ -371,7 +375,7 @@ class ContributesRendererProcessorTest {
         assertThat(it).isAnnotatedWith(RendererKey::class)
       }
 
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
         .containsExactlyInAnyOrder(
           presenter.model.kotlin,
           presenter.model.inner.kotlin,
@@ -402,7 +406,7 @@ class ContributesRendererProcessorTest {
         assertThat(it).isAnnotatedWith(ForScope::class)
       }
 
-      assertThat(graphInterface.newTestRendererGraph().modelToRendererMapping.keys)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().modelToRendererMapping.keys)
         .containsExactlyInAnyOrder(
           presenter.model.kotlin,
           presenter.model.inner.kotlin,
@@ -411,7 +415,9 @@ class ContributesRendererProcessorTest {
           presenter.model.model2.kotlin,
         )
 
-      assertThat(graphInterface.newTestRendererGraph().modelToRendererMapping.values.distinct())
+      assertThat(
+          graphInterface.newMetroGraph<TestRendererGraph>().modelToRendererMapping.values.distinct()
+        )
         .containsOnly(testRenderer.kotlin)
     }
   }
@@ -459,13 +465,13 @@ class ContributesRendererProcessorTest {
         )
         .containsOnly("provideSoftwareAmazonTestTestRendererPresenterModelKey")
 
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
         .containsOnly(presenter.model.kotlin)
 
-      assertThat(graphInterface.newTestRendererGraph().modelToRendererMapping.keys)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().modelToRendererMapping.keys)
         .containsOnly(presenter.model.kotlin)
 
-      assertThat(graphInterface.newTestRendererGraph().modelToRendererMapping.values)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().modelToRendererMapping.values)
         .containsOnly(testRenderer.kotlin)
     }
   }
@@ -501,7 +507,8 @@ class ContributesRendererProcessorTest {
           "provideSoftwareAmazonTestTestRendererModelKey",
         )
 
-      assertThat(graphInterface.newTestRendererGraph().renderers.keys).containsOnly(model)
+      assertThat(graphInterface.newMetroGraph<TestRendererGraph>().renderers.keys)
+        .containsOnly(model)
     }
   }
 
