@@ -1,7 +1,7 @@
 # App Platform
 
 [![Maven Central](https://img.shields.io/maven-central/v/software.amazon.app.platform/gradle-plugin.svg?label=Maven%20Central)](https://central.sonatype.com/search?smo=true&namespace=software.amazon.app.platform)
-[![CI](https://github.com/amzn/app-platform/workflows/CI/badge.svg)](https://github.com/amzn/app-platform/actions?query=branch%3Amain)
+[![CI](https://github.com/amzn/app-platform/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/amzn/app-platform/actions/workflows/ci.yml)
 
 <img src="docs/images/app-platform-logo.png" alt="App Platform" style="width:150px" align="left"/>
 
