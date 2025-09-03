@@ -26,6 +26,17 @@ public abstract interface class software/amazon/app/platform/robot/RobotComponen
 	public abstract fun getRobots ()Ljava/util/Map;
 }
 
+public abstract interface class software/amazon/app/platform/robot/RobotGraph {
+	public abstract fun getRobots ()Ljava/util/Map;
+}
+
+public abstract interface class software/amazon/app/platform/robot/RobotGraph$$$MetroContributionToAppScope : software/amazon/app/platform/robot/RobotGraph {
+}
+
+public final class software/amazon/app/platform/robot/RobotKt {
+	public static final fun getAllRobots (Lsoftware/amazon/app/platform/scope/Scope;)Ljava/util/Map;
+}
+
 public abstract interface class software/amazon/app/platform/robot/RootMatcherProvider {
 	public abstract fun getRootMatcher ()Lorg/hamcrest/Matcher;
 }

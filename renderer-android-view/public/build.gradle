@@ -3,7 +3,6 @@ plugins {
 }
 
 appPlatformBuildSrc {
-    enableKotlinInject true
     enablePublishing true
     enableInstrumentedTests true
 }
@@ -38,6 +37,7 @@ dependencies {
     androidMainApi libs.recyclerView
     androidMainImplementation libs.androidx.core
 
+    androidInstrumentedTestImplementation project(':kotlin-inject:public')
     androidInstrumentedTestImplementation libs.androidx.test.espresso
     // Use the version aligned with AGP in tests.
     androidInstrumentedTestImplementation libs.viewbinding.agp

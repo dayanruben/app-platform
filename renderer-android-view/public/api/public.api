@@ -55,10 +55,6 @@ public abstract class software/amazon/app/platform/renderer/ViewRenderer : softw
 	protected fun renderModel (Lsoftware/amazon/app/platform/presenter/BaseModel;Lsoftware/amazon/app/platform/presenter/BaseModel;)V
 }
 
-public abstract interface class software/amazon/app/platform/renderer/ViewRenderer$Component {
-	public abstract fun getDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
-}
-
 public abstract class software/amazon/app/platform/renderer/template/AndroidTemplateRenderer : software/amazon/app/platform/renderer/ViewRenderer {
 	public fun <init> (Lsoftware/amazon/app/platform/renderer/RendererFactory;)V
 }

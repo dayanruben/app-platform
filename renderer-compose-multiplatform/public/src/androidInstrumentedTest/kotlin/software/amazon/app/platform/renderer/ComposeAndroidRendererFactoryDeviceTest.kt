@@ -31,6 +31,8 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.messageContains
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.provider
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
@@ -53,7 +55,7 @@ class ComposeAndroidRendererFactoryDeviceTest {
 
   @Before
   fun prepare() {
-    testApplication.rendererComponent = TestRendererComponent { factory }
+    testApplication.rendererGraph = TestRendererGraph { factory }
 
     activityRule.scenario.onActivity {
       activity = it
@@ -80,7 +82,7 @@ class ComposeAndroidRendererFactoryDeviceTest {
       childAt
     }
 
-    testApplication.rendererComponent = null
+    testApplication.rendererGraph = null
   }
 
   @Test
@@ -420,12 +422,12 @@ class ComposeAndroidRendererFactoryDeviceTest {
     }
   }
 
-  private inner class TestRendererComponent(private val rendererFactory: () -> RendererFactory) :
-    RendererComponent {
-    override val renderers: Map<KClass<out BaseModel>, () -> Renderer<*>> =
+  private inner class TestRendererGraph(private val rendererFactory: () -> RendererFactory) :
+    RendererGraph {
+    override val renderers: Map<KClass<out BaseModel>, Provider<Renderer<*>>> =
       mapOf(
-        ViewModel::class to { TestViewRenderer(rendererFactory()) },
-        ComposeModel::class to { TestComposeRenderer(rendererFactory()) },
+        ViewModel::class to provider { TestViewRenderer(rendererFactory()) },
+        ComposeModel::class to provider { TestComposeRenderer(rendererFactory()) },
       )
     override val modelToRendererMapping: Map<KClass<out BaseModel>, KClass<out Renderer<*>>> =
       mapOf(
