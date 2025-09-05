@@ -1,6 +1,8 @@
 package software.amazon.app.platform.renderer
 
 import android.app.Activity
+import android.app.Application
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,9 +57,18 @@ import software.amazon.app.platform.presenter.BaseModel
  */
 public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRenderer<ModelT> {
 
+  /**
+   * The [Activity] that was provided to the [AndroidRendererFactory]. The same [Activity] is passed
+   * as argument to [inflate].
+   */
   protected lateinit var activity: Activity
     private set
 
+  /**
+   * A [CoroutineScope] gets created before the view gets inflated in [inflate]. In can be used to
+   * register UI related background work. This [CoroutineScope] gets canceled when the view is
+   * removed from the view hierarchy or [activity] gets destroyed.
+   */
   protected lateinit var coroutineScope: CoroutineScope
     private set
 
@@ -101,7 +112,10 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
   }
 
   private fun createView(model: ModelT): View {
-    coroutineScope = MainScope()
+    val mainCoroutineScope = MainScope().also { coroutineScope = it }
+
+    activity.doOnDestroy { mainCoroutineScope.cancel() }
+
     return inflate(activity, parent, activity.layoutInflater, model).also { view = it }
   }
 
@@ -222,5 +236,37 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
         .takeWhile { it.id != android.R.id.content }
 
     return parents.none { it is RecyclerView }
+  }
+
+  private companion object {
+    fun Activity.doOnDestroy(block: (Activity) -> Unit) {
+      if (isDestroyed) {
+        block(this)
+        return
+      }
+
+      application.registerActivityLifecycleCallbacks(
+        object : Application.ActivityLifecycleCallbacks {
+          override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+
+          override fun onActivityStarted(activity: Activity) = Unit
+
+          override fun onActivityResumed(activity: Activity) = Unit
+
+          override fun onActivityPaused(activity: Activity) = Unit
+
+          override fun onActivityStopped(activity: Activity) = Unit
+
+          override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+
+          override fun onActivityDestroyed(activity: Activity) {
+            if (activity == this@doOnDestroy) {
+              application.unregisterActivityLifecycleCallbacks(this)
+              block(this@doOnDestroy)
+            }
+          }
+        }
+      )
+    }
   }
 }

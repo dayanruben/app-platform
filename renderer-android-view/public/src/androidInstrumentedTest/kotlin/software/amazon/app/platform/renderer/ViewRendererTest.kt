@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import assertk.assertFailure
 import assertk.assertThat
@@ -169,6 +170,73 @@ class ViewRendererTest {
       assertThat(coroutineScope.isActive).isTrue()
       assertThat(coroutineScope).isNotSameInstanceAs(oldScope)
     }
+  }
+
+  @Test
+  fun the_coroutine_scope_is_canceled_when_the_view_was_never_attached() {
+    lateinit var coroutineScope: CoroutineScope
+
+    activityRule.scenario.onActivity { activity ->
+      val renderer =
+        object : ViewRenderer<TestModel>() {
+          override fun inflate(
+            activity: Activity,
+            parent: ViewGroup,
+            layoutInflater: LayoutInflater,
+            initialModel: TestModel,
+          ): View {
+            coroutineScope = this.coroutineScope
+            return View(activity)
+          }
+        }
+
+      // Note that this parent is never attached to the view hierarchy and therefore onDetach
+      // never gets called.
+      val parent = FrameLayout(activity)
+      renderer.init(activity, parent)
+
+      renderer.render(TestModel(1))
+      assertThat(coroutineScope.isActive).isTrue()
+
+      activity.finish()
+    }
+
+    activityRule.scenario.moveToState(Lifecycle.State.DESTROYED)
+
+    assertThat(coroutineScope.isActive).isFalse()
+  }
+
+  @Test
+  fun the_coroutine_scope_is_canceled_when_the_view_is_not_released_on_detach() {
+    lateinit var coroutineScope: CoroutineScope
+
+    activityRule.scenario.onActivity { activity ->
+      val renderer =
+        object : ViewRenderer<TestModel>() {
+          override fun inflate(
+            activity: Activity,
+            parent: ViewGroup,
+            layoutInflater: LayoutInflater,
+            initialModel: TestModel,
+          ): View {
+            coroutineScope = this.coroutineScope
+            return View(activity)
+          }
+
+          override fun releaseViewOnDetach(): Boolean = false
+        }
+
+      renderer.init(activity, activity.contentView)
+
+      renderer.render(TestModel(1))
+      assertThat(coroutineScope.isActive).isTrue()
+    }
+
+    activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
+    assertThat(coroutineScope.isActive).isTrue()
+
+    activityRule.scenario.moveToState(Lifecycle.State.DESTROYED)
+    assertThat(coroutineScope.isActive).isFalse()
   }
 
   @Test
