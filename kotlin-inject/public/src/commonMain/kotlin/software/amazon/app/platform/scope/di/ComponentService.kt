@@ -7,7 +7,7 @@ import software.amazon.app.platform.scope.parents
 
 /** This function is deprecated. [kotlinInjectComponent] is a one to one replacement. */
 @Deprecated(
-  message = "",
+  message = "Use kotlinInjectComponent instead.",
   replaceWith = ReplaceWith("kotlinInjectComponent<T>()"),
   level = DeprecationLevel.WARNING,
 )
@@ -59,7 +59,7 @@ public inline fun <reified T : Any> Scope.kotlinInjectComponent(): T {
 
 /** This function is deprecated. [addKotlinInjectComponent] is a one to one replacement. */
 @Deprecated(
-  message = "",
+  message = "Use addKotlinInjectComponent instead.",
   replaceWith = ReplaceWith("addKotlinInjectComponent(component)"),
   level = DeprecationLevel.WARNING,
 )
