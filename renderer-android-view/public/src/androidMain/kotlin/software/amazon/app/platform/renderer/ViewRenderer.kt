@@ -62,7 +62,6 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
     private set
 
   private lateinit var parent: ViewGroup
-  private lateinit var inflater: LayoutInflater
 
   private var view: View? = null
   private var lastModel: ModelT? = null
@@ -80,17 +79,30 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
     }
 
   final override fun init(activity: Activity, parent: ViewGroup) {
-    // Renderer is not assigned an initialized Activity or Parent has changed
-    if (!this::activity.isInitialized || this.parent != parent) {
+    if (!this::activity.isInitialized) {
+      // Renderer is not initialized.
       this.activity = activity
       this.parent = parent
-      inflater = activity.layoutInflater
+    }
+
+    // We don't want to allow changing the parent. However, during the initialization procedure
+    // we call init() with the default parent from the RendererFactory and eventually init()
+    // again with the parent provided getRenderer() call. If no view has been created yet and the
+    // parent hasn't been used yet, then it is okay to update the value.
+
+    if (view == null) {
+      this.parent = parent
+    }
+
+    check(this.activity == activity && this.parent == parent) {
+      "A ViewRenderer should ever be only attached to one parent view. Current parent is " +
+        "${this.parent}, new parent is $parent"
     }
   }
 
   private fun createView(model: ModelT): View {
     coroutineScope = MainScope()
-    return inflate(activity, parent, inflater, model).also { view = it }
+    return inflate(activity, parent, activity.layoutInflater, model).also { view = it }
   }
 
   private fun onViewAttached(view: View) {

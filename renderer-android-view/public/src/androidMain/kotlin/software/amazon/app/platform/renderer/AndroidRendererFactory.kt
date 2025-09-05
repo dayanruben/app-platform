@@ -51,7 +51,11 @@ public open class AndroidRendererFactory(
     parent: ViewGroup,
     rendererId: Int = 0,
   ): Renderer<T> {
-    val renderer = super.getRenderer(modelType, rendererId)
+    // For different parents we must return unique renderers. Therefore, include the parent in the
+    // rendererId.
+    val finalRendererId = parent.hashCode() + rendererId
+
+    val renderer = super.getRenderer(modelType, finalRendererId)
 
     if (renderer is BaseAndroidViewRenderer<*>) {
       renderer.init(activity, parent)
@@ -106,6 +110,11 @@ public fun <T : BaseModel> RendererFactory.getRenderer(
  * and their identity is determined by the position in the layout or on other words by the [parent]
  * view.
  */
+@Deprecated(
+  message = "getRenderer() takes the parent into account for caching.",
+  replaceWith = ReplaceWith("getRenderer(modelType, parent)"),
+  level = DeprecationLevel.WARNING,
+)
 public fun <T : BaseModel> RendererFactory.getChildRendererForParent(
   modelType: KClass<out T>,
   parent: ViewGroup,
@@ -131,7 +140,12 @@ public fun <T : BaseModel> RendererFactory.getChildRendererForParent(
  * and their identity is determined by the position in the layout or on other words by the [parent]
  * view.
  */
+@Deprecated(
+  message = "getRenderer() takes the parent into account for caching.",
+  replaceWith = ReplaceWith("getRenderer(model, parent)"),
+  level = DeprecationLevel.WARNING,
+)
 public fun <T : BaseModel> RendererFactory.getChildRendererForParent(
   model: T,
   parent: ViewGroup,
-): Renderer<T> = getChildRendererForParent(model::class, parent)
+): Renderer<T> = getRenderer(model::class, parent)

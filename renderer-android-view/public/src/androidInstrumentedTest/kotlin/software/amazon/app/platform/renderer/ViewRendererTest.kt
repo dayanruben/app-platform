@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import assertk.assertions.messageContains
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.isActive
 import org.junit.Rule
@@ -210,6 +212,26 @@ class ViewRendererTest {
       assertThat(renderer.inflateCalled).isEqualTo(1)
       assertThat(renderer.renderCalled).isEqualTo(2)
       assertThat(renderer.onDetachCalled).isEqualTo(1)
+    }
+  }
+
+  @Test
+  fun it_is_forbidden_to_change_the_parent() {
+    activityRule.scenario.onActivity { activity ->
+      val parent1 = FrameLayout(activity)
+      val parent2 = FrameLayout(activity)
+
+      val renderer = TestViewRenderer()
+
+      renderer.init(activity, parent1)
+      // It is allowed to change the parent before the view gets created.
+      renderer.init(activity, parent2)
+
+      // This creates the view.
+      renderer.render(TestModel(1))
+
+      assertFailure { renderer.init(activity, parent1) }
+        .messageContains("A ViewRenderer should ever be only attached to one parent view.")
     }
   }
 
