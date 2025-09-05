@@ -9,9 +9,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.messageContains
 import kotlin.reflect.KClass
@@ -114,19 +114,36 @@ class AndroidRendererFactoryTest {
       val renderer1 = factory.getRenderer(TestModel::class, frameLayout1)
       renderer1.render(TestModel(1))
 
-      assertFailure {
-          // This call returns the same renderer as renderer1 above, which is still attached.
-          // But because a different parent view is used, it leads to this crash.
-          factory.getRenderer(TestModel::class, frameLayout2).render(TestModel(2))
-        }
-        .messageContains("The specified child already has a parent.")
-
-      // Now we use a different ID for the renderer and the same crash doesn't happen again.
-      val renderer2 = factory.getChildRendererForParent(TestModel::class, frameLayout2)
+      val renderer2 = factory.getRenderer(TestModel::class, frameLayout2)
       renderer2.render(TestModel(2))
+
+      assertThat(renderer1).isNotSameInstanceAs(renderer2)
+      assertThat(renderer1).isSameInstanceAs(factory.getRenderer(TestModel::class, frameLayout1))
+      assertThat(renderer2).isSameInstanceAs(factory.getRenderer(TestModel::class, frameLayout2))
 
       assertThat(frameLayout1.testView.text.toString()).isEqualTo("Test: 1")
       assertThat(frameLayout2.testView.text.toString()).isEqualTo("Test: 2")
+    }
+  }
+
+  @Test
+  fun android_renderer_factory_uses_a_different_cache_key_for_different_renderer_ids() {
+    activityRule.scenario.onActivity { activity ->
+      val linearLayout = LinearLayout(activity)
+
+      val factory: BaseRendererFactory =
+        AndroidRendererFactory(
+          rootScopeProvider = testApplication,
+          activity = activity,
+          parent = activity.contentView,
+        )
+
+      val renderer1 = factory.getRenderer(TestModel::class, linearLayout, rendererId = 1)
+      val renderer2 = factory.getRenderer(TestModel::class, linearLayout, rendererId = 1)
+      val renderer3 = factory.getRenderer(TestModel::class, linearLayout, rendererId = 2)
+
+      assertThat(renderer1).isSameInstanceAs(renderer2)
+      assertThat(renderer1).isNotSameInstanceAs(renderer3)
     }
   }
 

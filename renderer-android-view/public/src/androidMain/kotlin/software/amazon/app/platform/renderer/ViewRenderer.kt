@@ -1,11 +1,12 @@
 package software.amazon.app.platform.renderer
 
 import android.app.Activity
+import android.app.Application
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
-import androidx.core.view.doOnAttach
 import androidx.core.view.doOnDetach
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -56,56 +57,98 @@ import software.amazon.app.platform.presenter.BaseModel
  */
 public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRenderer<ModelT> {
 
+  /**
+   * The [Activity] that was provided to the [AndroidRendererFactory]. The same [Activity] is passed
+   * as argument to [inflate].
+   */
   protected lateinit var activity: Activity
     private set
 
+  /**
+   * A [CoroutineScope] gets created before the view gets inflated in [inflate]. In can be used to
+   * register UI related background work. This [CoroutineScope] gets canceled when the view is
+   * removed from the view hierarchy or [activity] gets destroyed.
+   */
   protected lateinit var coroutineScope: CoroutineScope
     private set
 
   private lateinit var parent: ViewGroup
-  private lateinit var inflater: LayoutInflater
 
   private var view: View? = null
   private var lastModel: ModelT? = null
 
+  private val onAttachListener =
+    object : View.OnAttachStateChangeListener {
+      override fun onViewAttachedToWindow(v: View) {
+        // Invoke this callback only once.
+        v.removeOnAttachStateChangeListener(this)
+
+        onViewAttached(v)
+      }
+
+      override fun onViewDetachedFromWindow(v: View) = Unit
+    }
+
   final override fun init(activity: Activity, parent: ViewGroup) {
-    // Renderer is not assigned an initialized Activity or Parent has changed
-    if (!this::activity.isInitialized || this.parent != parent) {
+    if (!this::activity.isInitialized) {
+      // Renderer is not initialized.
       this.activity = activity
       this.parent = parent
-      inflater = activity.layoutInflater
+    }
+
+    // We don't want to allow changing the parent. However, during the initialization procedure
+    // we call init() with the default parent from the RendererFactory and eventually init()
+    // again with the parent provided getRenderer() call. If no view has been created yet and the
+    // parent hasn't been used yet, then it is okay to update the value.
+
+    if (view == null) {
+      this.parent = parent
+    }
+
+    check(this.activity == activity && this.parent == parent) {
+      "A ViewRenderer should ever be only attached to one parent view. Current parent is " +
+        "${this.parent}, new parent is $parent"
     }
   }
 
   private fun createView(model: ModelT): View {
-    coroutineScope = MainScope()
-    return inflate(activity, parent, inflater, model).also { view = it }
+    val mainCoroutineScope = MainScope().also { coroutineScope = it }
+
+    activity.doOnDestroy { mainCoroutineScope.cancel() }
+
+    return inflate(activity, parent, activity.layoutInflater, model).also { view = it }
   }
 
-  private fun resetView() {
+  private fun onViewAttached(view: View) {
+    lastModel = null
+
+    // Wait for the view to be attached first, otherwise doOnDetach gets
+    // called immediately.
+    view.doOnDetach {
+      if (releaseViewOnDetach()) {
+        // call onDetach first so view is still available during cleanup tasks
+        onDetach()
+        resetView(view)
+      }
+    }
+  }
+
+  private fun resetView(view: View) {
     coroutineScope.cancel()
+
+    // Allows us to reclaim the memory. Reset all cached value before calling removeView() in case
+    // there are any recursive calls with doOnDetach for child views.
+    this.view = null
+
+    // Reset the last model, because we want to re-render when the view is attached again even
+    // for the same model.
+    lastModel = null
 
     // Remove the view from the parent. In case the Renderer is reused we inflate a new
     // View and add it to the parent.
-    view?.let {
-      try {
-        parent.removeView(it)
-      } catch (_: NullPointerException) {
-        // This shouldn't happen, yet it does sporadically.
-        // Specifically:
-        // java.lang.NullPointerException: Attempt to write to field 'android.view.ViewParent
-        // android.view.View.mParent'
-        //                                 on a null object reference
-        // at android.view.ViewGroup.removeFromArray(ViewGroup.java:5372)
-        // at android.view.ViewGroup.removeViewInternal(ViewGroup.java:5569)
-        // at android.view.ViewGroup.removeViewInternal(ViewGroup.java:5531)
-        // at android.view.ViewGroup.removeView(ViewGroup.java:5462)
-        // at software.amazon.app.platform.renderer.ViewRenderer.resetView(ViewRenderer.kt:101)
-      }
+    if (view.parent === parent) {
+      parent.removeView(view)
     }
-
-    // Allows us to reclaim the memory.
-    view = null
   }
 
   final override fun render(model: ModelT) {
@@ -114,17 +157,19 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
     if (parent.children.none { it === view }) {
       parent.addView(view)
 
-      view.doOnAttach {
-        lastModel = null
-        // Wait for the view to be attached first, otherwise doOnDetach gets
-        // called immediately.
-        view.doOnDetach {
-          if (releaseViewOnDetach()) {
-            // call onDetach first so view is still available during cleanup tasks
-            onDetach()
-            resetView()
-          }
-        }
+      // In case we registered the callback before, remove it first. There is no API to check
+      // whether this callback has been registered before. The callback should only be registered
+      // once.
+      view.removeOnAttachStateChangeListener(onAttachListener)
+
+      // This implementation below is similar to `doOnAttach {}`, which we used to use. However,
+      // this extension function didn't allow us to unregister the previous callback and we
+      // accidentally registered too many. That's why we had to extract `onAttachListener` into
+      // a variable.
+      if (view.isAttachedToWindow) {
+        onViewAttached(view)
+      } else {
+        view.addOnAttachStateChangeListener(onAttachListener)
       }
     }
 
@@ -191,5 +236,37 @@ public abstract class ViewRenderer<in ModelT : BaseModel> : BaseAndroidViewRende
         .takeWhile { it.id != android.R.id.content }
 
     return parents.none { it is RecyclerView }
+  }
+
+  private companion object {
+    fun Activity.doOnDestroy(block: (Activity) -> Unit) {
+      if (isDestroyed) {
+        block(this)
+        return
+      }
+
+      application.registerActivityLifecycleCallbacks(
+        object : Application.ActivityLifecycleCallbacks {
+          override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+
+          override fun onActivityStarted(activity: Activity) = Unit
+
+          override fun onActivityResumed(activity: Activity) = Unit
+
+          override fun onActivityPaused(activity: Activity) = Unit
+
+          override fun onActivityStopped(activity: Activity) = Unit
+
+          override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+
+          override fun onActivityDestroyed(activity: Activity) {
+            if (activity == this@doOnDestroy) {
+              application.unregisterActivityLifecycleCallbacks(this)
+              block(this@doOnDestroy)
+            }
+          }
+        }
+      )
+    }
   }
 }
