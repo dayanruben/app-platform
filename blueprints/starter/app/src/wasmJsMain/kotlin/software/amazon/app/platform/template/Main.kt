@@ -9,7 +9,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import kotlinx.browser.document
 import software.amazon.app.platform.renderer.ComposeRendererFactory
-import software.amazon.app.platform.scope.di.diComponent
+import software.amazon.app.platform.scope.di.kotlinInjectComponent
 
 /** The entry point of our sample app. */
 @OptIn(ExperimentalComposeUiApi::class)
@@ -26,7 +26,7 @@ private fun AppPlatform() {
   // Create a single instance.
   val templateProvider = remember {
     application.rootScope
-      .diComponent<WasmJsAppComponent>()
+      .kotlinInjectComponent<WasmJsAppComponent>()
       .templateProviderFactory
       .createTemplateProvider()
   }

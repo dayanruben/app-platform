@@ -3,7 +3,7 @@ package software.amazon.app.platform.template
 import software.amazon.app.platform.scope.RootScopeProvider
 import software.amazon.app.platform.scope.Scope
 import software.amazon.app.platform.scope.coroutine.addCoroutineScopeScoped
-import software.amazon.app.platform.scope.di.addDiComponent
+import software.amazon.app.platform.scope.di.addKotlinInjectComponent
 import software.amazon.app.platform.scope.register
 
 /**
@@ -22,7 +22,7 @@ class Application : RootScopeProvider {
 
     _rootScope =
       Scope.buildRootScope {
-        addDiComponent(appComponent)
+        addKotlinInjectComponent(appComponent)
 
         addCoroutineScopeScoped(appComponent.appScopeCoroutineScopeScoped)
       }
