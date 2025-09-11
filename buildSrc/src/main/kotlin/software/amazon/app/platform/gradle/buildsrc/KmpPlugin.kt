@@ -3,6 +3,7 @@ package software.amazon.app.platform.gradle.buildsrc
 import com.google.devtools.ksp.gradle.KspExtension
 import com.google.devtools.ksp.gradle.KspTask
 import com.ncorti.ktfmt.gradle.KtfmtExtension
+import com.ncorti.ktfmt.gradle.TrailingCommaManagementStrategy
 import guru.nidi.graphviz.engine.Format
 import io.github.terrakok.KmpHierarchyConfig
 import io.gitlab.arturbosch.detekt.Detekt
@@ -316,7 +317,7 @@ public open class KmpPlugin : Plugin<Project> {
 
       extensions.getByType(KtfmtExtension::class.java).apply {
         googleStyle()
-        manageTrailingCommas.set(true)
+        trailingCommaManagementStrategy.set(TrailingCommaManagementStrategy.COMPLETE)
         removeUnusedImports.set(true)
       }
 
