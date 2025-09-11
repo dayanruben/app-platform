@@ -567,12 +567,6 @@ and generated wrong code. This ticket is [metro/997](https://github.com/ZacSweer
 
 Other IC issues are reported under [KT-75865](https://youtrack.jetbrains.com/issue/KT-75865).
 
-#### `exclude` / `replaces` not support
-
-`kotlin-inject-anvil` allows you to exclude and replace contribution that use custom annotations like 
-`@ContributesRenderer`. Metro is missing this feature and the generated files have to be referenced instead. The 
-ticket is [metro/1020](https://github.com/ZacSweers/metro/issues/1020).
-
 #### Missing integrations
 
 Almost all App Platform specific custom extensions for `kotlin-inject-anvil` were migrated to Metro, including
