@@ -24,6 +24,7 @@ import dev.zacsweers.metro.IntoSet
 import software.amazon.app.platform.inject.metro.ContributesScoped
 import software.amazon.app.platform.metro.METRO_LOOKUP_PACKAGE
 import software.amazon.app.platform.metro.MetroContextAware
+import software.amazon.app.platform.metro.addMetroOriginAnnotation
 
 /**
  * Generates the necessary code in order to support [ContributesScoped].
@@ -78,6 +79,7 @@ internal class ContributesScopedProcessor(
         .addType(
           TypeSpec.interfaceBuilder(graphClassName)
             .addOriginatingKSFile(clazz.requireContainingFile())
+            .addMetroOriginAnnotation(clazz)
             .addAnnotation(
               AnnotationSpec.builder(ContributesTo::class)
                 .addMember("%T::class", scopeClassName)

@@ -29,6 +29,7 @@ import software.amazon.app.platform.inject.robot.ContributesRobot
 import software.amazon.app.platform.ksp.decapitalize
 import software.amazon.app.platform.metro.METRO_LOOKUP_PACKAGE
 import software.amazon.app.platform.metro.MetroContextAware
+import software.amazon.app.platform.metro.addMetroOriginAnnotation
 import software.amazon.app.platform.renderer.metro.RobotKey
 
 /**
@@ -90,6 +91,7 @@ internal class ContributesRobotProcessor(
         .addType(
           TypeSpec.interfaceBuilder(graphClassName)
             .addOriginatingKSFile(clazz.requireContainingFile())
+            .addMetroOriginAnnotation(clazz)
             .addAnnotation(
               AnnotationSpec.builder(ContributesTo::class)
                 .addMember("%T::class", clazz.scope().type.toClassName())

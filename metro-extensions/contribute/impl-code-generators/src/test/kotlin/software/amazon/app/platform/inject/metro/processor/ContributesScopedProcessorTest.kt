@@ -302,10 +302,8 @@ class ContributesScopedProcessorTest {
     }
   }
 
-  // This test should fail. Unfortunately, Metro doesn't support this yet and the generated
-  // interface needs to be excluded explicitly.
   @Test
-  fun `classes using @ContributesScoped cannot be excluded`() {
+  fun `classes using @ContributesScoped can be excluded`() {
     compile(
       """
       package software.amazon.test
@@ -338,14 +336,14 @@ class ContributesScopedProcessorTest {
           fun create(): GraphInterface = createGraph<GraphInterface>()
         }
       }
-      """
-      //      exitCode = COMPILATION_ERROR,
+      """,
+      exitCode = COMPILATION_ERROR,
     ) {
-      //      assertThat(messages)
-      //        .contains(
-      //          "Cannot find an @Inject constructor or @Provides-annotated " +
-      //            "function/property for: software.amazon.test.SuperType"
-      //        )
+      assertThat(messages)
+        .contains(
+          "Cannot find an @Inject constructor or @Provides-annotated " +
+            "function/property for: software.amazon.test.SuperType"
+        )
     }
   }
 
