@@ -12,7 +12,7 @@ plugins {
 
 ktfmt {
     googleStyle()
-    manageTrailingCommas.set(true)
+    trailingCommaManagementStrategy.set(com.ncorti.ktfmt.gradle.TrailingCommaManagementStrategy.COMPLETE)
     removeUnusedImports.set(true)
 }
 
