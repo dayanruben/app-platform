@@ -1,5 +1,5 @@
 [versions]
-agp = "8.12.0"
+agp = "8.13.0"
 android-compileSdk = "36"
 # https://developer.android.com/jetpack/androidx/releases/compose-ui
 # https://maven.google.com/web/index.html#androidx.compose.ui:ui
@@ -35,7 +35,7 @@ detekt = "1.23.8"
 graphviz-java = "0.18.1"
 jvm-compatibility = "11"
 jvm-gradle = "17"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 kotlin-atomicfu = "0.29.0"
 kotlin-compile-testing = "0.8.0"
 kotlin-hierarchy = "1.1"
@@ -44,9 +44,9 @@ kotlin-inject-anvil = "0.1.6"
 kotlin-poet = "2.2.0"
 kotlinx-binaryCompatibilityValidator = "0.18.1"
 ktfmt-gradle = "0.23.0"
-ksp = "2.2.10-2.0.2"
+ksp = "2.2.20-2.0.2"
 maven-publish = "0.34.0"
-metro = "0.6.5"
+metro = "0.6.6"
 molecule = "2.1.0"
 navigation3 = "1.0.0-alpha06"
 #noinspection GradleDependency

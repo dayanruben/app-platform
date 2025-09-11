@@ -30,14 +30,7 @@ public inline fun <reified T : Any> Scope.diComponent(): T = kotlinInjectCompone
  */
 public inline fun <reified T : Any> Scope.kotlinInjectComponent(): T {
   parents(includeSelf = true)
-    .firstNotNullOfOrNull { scope ->
-      val component = scope.getService<T>(DI_COMPONENT_KEY)
-      if (T::class.isInstance(component)) {
-        component
-      } else {
-        null
-      }
-    }
+    .firstNotNullOfOrNull { scope -> scope.getService<Any>(DI_COMPONENT_KEY) as? T }
     ?.let {
       return it
     }

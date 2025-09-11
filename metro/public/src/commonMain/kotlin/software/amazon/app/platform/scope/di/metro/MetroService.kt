@@ -22,14 +22,7 @@ import software.amazon.app.platform.scope.parents
  */
 public inline fun <reified T : Any> Scope.metroDependencyGraph(): T {
   parents(includeSelf = true)
-    .firstNotNullOfOrNull { scope ->
-      val graph = scope.getService<T>(METRO_DEPENDENCY_GRAPH_KEY)
-      if (T::class.isInstance(graph)) {
-        graph
-      } else {
-        null
-      }
-    }
+    .firstNotNullOfOrNull { scope -> scope.getService<Any>(METRO_DEPENDENCY_GRAPH_KEY) as? T }
     ?.let {
       return it
     }
