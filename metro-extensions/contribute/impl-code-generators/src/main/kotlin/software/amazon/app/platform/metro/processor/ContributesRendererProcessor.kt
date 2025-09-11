@@ -34,6 +34,7 @@ import kotlin.reflect.KClass
 import software.amazon.app.platform.inject.ContributesRenderer
 import software.amazon.app.platform.metro.METRO_LOOKUP_PACKAGE
 import software.amazon.app.platform.metro.MetroContextAware
+import software.amazon.app.platform.metro.addMetroOriginAnnotation
 import software.amazon.app.platform.renderer.metro.RendererKey
 
 /**
@@ -149,6 +150,7 @@ internal class ContributesRendererProcessor(
         .addType(
           TypeSpec.interfaceBuilder(graphClassName)
             .addOriginatingKSFile(clazz.requireContainingFile())
+            .addMetroOriginAnnotation(clazz)
             .addAnnotation(
               AnnotationSpec.builder(ContributesTo::class)
                 .addMember("%T::class", rendererScope)

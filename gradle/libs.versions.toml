@@ -46,7 +46,7 @@ kotlinx-binaryCompatibilityValidator = "0.18.1"
 ktfmt-gradle = "0.23.0"
 ksp = "2.2.10-2.0.2"
 maven-publish = "0.34.0"
-metro = "0.6.3"
+metro = "0.6.5"
 molecule = "2.1.0"
 navigation3 = "1.0.0-alpha06"
 #noinspection GradleDependency
