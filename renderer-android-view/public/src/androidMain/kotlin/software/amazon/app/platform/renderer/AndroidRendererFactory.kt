@@ -142,7 +142,7 @@ public fun <T : BaseModel> RendererFactory.getChildRendererForParent(
  */
 @Deprecated(
   message = "getRenderer() takes the parent into account for caching.",
-  replaceWith = ReplaceWith("getRenderer(model, parent)"),
+  replaceWith = ReplaceWith("getRenderer(modelType, parent)"),
   level = DeprecationLevel.WARNING,
 )
 public fun <T : BaseModel> RendererFactory.getChildRendererForParent(
