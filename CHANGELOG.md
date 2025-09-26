@@ -6,8 +6,6 @@
 
 ### Changed
 
-- Changed the min SDK from 21 to 23, see #149.
-
 ### Deprecated
 
 ### Removed
@@ -17,6 +15,17 @@
 ### Security
 
 ### Other Notes & Contributions
+
+
+## [0.0.7] - 2025-09-26
+
+### Changed
+
+- Changed the min SDK from 21 to 23, see #149.
+
+### Fixed
+
+- Fix NPE when removing Android Views from multiple child renderers with the same parent on activity destruction, see #150.
 
 
 ## [0.0.6] - 2025-09-05
@@ -107,7 +116,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/amzn/app-platform/compare/0.0.6...HEAD
+[Unreleased]: https://github.com/amzn/app-platform/compare/0.0.7...HEAD
+[0.0.7]: https://github.com/amzn/app-platform/compare/0.0.7
 [0.0.6]: https://github.com/amzn/app-platform/compare/0.0.6
 [0.0.5]: https://github.com/amzn/app-platform/compare/0.0.5
 [0.0.4]: https://github.com/amzn/app-platform/compare/0.0.4
