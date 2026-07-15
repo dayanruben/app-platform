@@ -17,6 +17,15 @@
 ### Other Notes & Contributions
 
 
+## [0.0.17] - 2026-07-15
+
+**IMPORTANT:** This is the last release under the `software.amazon` namespace. The next release will use `software.ralf`.
+
+### Changed
+
+- Upgrade Kotlin to `2.4.10`, KSP to `2.3.10`, Metro to `1.3.2`, Compose Multiplatform to `1.11.1`, and AndroidX Compose to `1.11.4`.
+- Clarify the project's independent ownership and remove obsolete Amazon contribution, conduct, and attribution files.
+
 ## [0.0.16] - 2026-07-02
 
 **IMPORTANT:** Ownership of this project was transferred from `amzn/app-platform` to `vRallev/app-platform`.
@@ -238,7 +247,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.0.16...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.0.17...HEAD
+[0.0.17]: https://github.com/vRallev/app-platform/compare/0.0.17
 [0.0.16]: https://github.com/vRallev/app-platform/compare/0.0.16
 [0.0.15]: https://github.com/vRallev/app-platform/compare/0.0.15
 [0.0.14]: https://github.com/vRallev/app-platform/compare/0.0.14
