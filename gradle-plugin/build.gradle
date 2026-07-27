@@ -69,13 +69,13 @@ test {
 }
 
 java {
-    sourceCompatibility = libs.versions.jvm.compatibility.get()
-    targetCompatibility = libs.versions.jvm.compatibility.get()
+    sourceCompatibility = libs.versions.jvm.gradle.plugin.get()
+    targetCompatibility = libs.versions.jvm.gradle.plugin.get()
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.jvm.compatibility.get()))
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(libs.versions.jvm.gradle.plugin.get()))
         allWarningsAsErrors.set(true)
     }
 
@@ -87,13 +87,13 @@ tasks.withType(ValidatePlugins).configureEach {
 }
 
 tasks.withType(dev.detekt.gradle.Detekt).configureEach {
-    it.jvmTarget.set(libs.versions.jvm.compatibility.get())
+    it.jvmTarget.set(libs.versions.jvm.gradle.plugin.get())
     it.setSource(layout.files("src"))
 }
 
 //noinspection UnnecessaryQualifiedReference
 tasks.withType(dev.detekt.gradle.DetektCreateBaselineTask).configureEach {
-    it.jvmTarget.set(libs.versions.jvm.compatibility.get())
+    it.jvmTarget.set(libs.versions.jvm.gradle.plugin.get())
     it.setSource(layout.files("src"))
 }
 

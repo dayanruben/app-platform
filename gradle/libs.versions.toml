@@ -1,6 +1,6 @@
 [versions]
 agp = "8.13.2"
-agp-gradle-plugin = "9.2.1"
+agp-gradle-plugin = "9.3.1"
 android-compileSdk = "37"
 # https://developer.android.com/jetpack/androidx/releases/compose-ui
 # https://maven.google.com/web/index.html#androidx.compose.ui:ui
@@ -42,6 +42,7 @@ jvm-compatibility = "11"
 # BuildSrc runs on the same JDK as CI. Metro requires at least JDK 21, and CI now uses JDK 25, so compile buildSrc
 # with 25.
 jvm-buildsrc = "25"
+jvm-gradle-plugin = "17"
 kotlin = "2.4.10"
 kotlin-atomicfu = "0.33.0"
 kotlin-compile-testing = "0.13.0"

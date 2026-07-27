@@ -11,6 +11,7 @@
 ### Changed
 
 - Update the starter blueprint to App Platform `0.1.0`, migrate it to the `software.ralf.app.platform` namespace, and align its shared dependency versions with the root build.
+- Compile the App Platform Gradle plugin against Android Gradle Plugin `9.3.1` APIs and raise the plugin's required JVM version and published bytecode target from Java 11 to Java 17.
 
 ### Deprecated
 
