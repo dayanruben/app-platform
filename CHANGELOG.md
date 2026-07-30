@@ -4,14 +4,7 @@
 
 ### Added
 
-- Add the advanced `blueprints/list-detail` Kotlin Multiplatform blueprint with a modular architecture, adaptive phone and tablet navigation, bundled character portraits, four platform shells, and dedicated CI.
-- Publish the list-detail blueprint as a horizontally resizable, interactive WebAssembly example in the documentation site.
-- Add an `enableDependencyCheck` module structure option that skips per-target dependency checks while preserving default module dependencies and lifecycle tasks.
-
 ### Changed
-
-- Update the starter blueprint to App Platform `0.1.0`, migrate it to the `software.ralf.app.platform` namespace, and align its shared dependency versions with the root build.
-- Compile the App Platform Gradle plugin against Android Gradle Plugin `9.3.1` APIs and raise the plugin's required JVM version and published bytecode target from Java 11 to Java 17.
 
 ### Deprecated
 
@@ -19,12 +12,25 @@
 
 ### Fixed
 
-- Give module-structured projects unique default archive names based on their artifact IDs while preserving explicitly configured archive names.
-
 ### Security
 
 ### Other Notes & Contributions
 
+
+## [0.1.1] - 2026-07-30
+
+### Added
+
+- Add the advanced `blueprints/list-detail` Kotlin Multiplatform blueprint with a modular architecture, adaptive phone and tablet navigation, bundled character portraits, four platform shells, and dedicated CI. The web app is available [in the docs](https://vrallev.github.io/app-platform/#web-list-detail-blueprint).
+- Add an `enableDependencyCheck` module structure option that skips per-target dependency checks while preserving default module dependencies and lifecycle tasks.
+
+### Changed
+
+- Compile the App Platform Gradle plugin against Android Gradle Plugin `9.3.1` APIs and raise the plugin's required JVM version and published bytecode target from Java 11 to Java 17.
+
+### Fixed
+
+- Give module-structured projects unique default archive names based on their artifact IDs while preserving explicitly configured archive names.
 
 ## [0.1.0] - 2026-07-17
 
@@ -262,7 +268,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/vRallev/app-platform/compare/0.1.1
 [0.1.0]: https://github.com/vRallev/app-platform/compare/0.1.0
 [0.0.17]: https://github.com/vRallev/app-platform/compare/0.0.17
 [0.0.16]: https://github.com/vRallev/app-platform/compare/0.0.16
