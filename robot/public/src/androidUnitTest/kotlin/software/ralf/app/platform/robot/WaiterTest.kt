@@ -9,6 +9,7 @@ import assertk.assertions.isGreaterThan
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isLessThan
 import assertk.assertions.isNotNull
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.messageContains
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
@@ -154,6 +155,37 @@ class WaiterTest {
   }
 
   @Test
+  fun `waitUntilCatching retries assertion failures until the assertion passes`() {
+    var counter = 0
+
+    waitUntilCatching(
+      condition = "Wait for test assertion",
+      timeout = 2.seconds,
+      delay = 20.milliseconds,
+    ) {
+      assertThat(++counter).isEqualTo(5)
+    }
+
+    assertThat(counter).isEqualTo(5)
+  }
+
+  @Test
+  fun `waitUntilCatching rethrows the original assertion failure after the timeout`() {
+    val assertionError = AssertionError("Test assertion")
+
+    assertFailure {
+        waitUntilCatching(
+          condition = "Wait for test assertion",
+          timeout = 100.milliseconds,
+          delay = 20.milliseconds,
+        ) {
+          throw assertionError
+        }
+      }
+      .isSameInstanceAs(assertionError)
+  }
+
+  @Test
   fun `waitUntilCatching throws an error when condition is never met`() {
     assertFailure {
       waitUntilCatching(
@@ -212,6 +244,27 @@ class WaiterTest {
   }
 
   @Test
+  fun `waitUntilCatching preserves the last assertion when a later attempt times out`() {
+    val assertionError = AssertionError("Last meaningful assertion")
+    var counter = 0
+
+    assertFailure {
+        waitUntilCatching(
+          condition = "Wait for suspended assertion",
+          timeout = 100.milliseconds,
+          delay = 10.milliseconds,
+        ) {
+          if (counter++ == 0) {
+            throw assertionError
+          }
+
+          delay(5.seconds)
+        }
+      }
+      .isSameInstanceAs(assertionError)
+  }
+
+  @Test
   fun `waitUntilCatching does not swallow coroutine cancellation`() {
     val cancellation = CancellationException("Test cancellation")
     var counter = 0
@@ -220,6 +273,26 @@ class WaiterTest {
       waitUntilCatching(condition = "Wait for canceled condition", delay = 10.milliseconds) {
         if (counter++ == 0) {
           error("Previous failure")
+        }
+
+        throw cancellation
+      }
+    }
+      .all {
+        isInstanceOf<CancellationException>()
+        messageContains("Test cancellation")
+      }
+  }
+
+  @Test
+  fun `waitUntilCatching preserves cancellation after a previous assertion failure`() {
+    val cancellation = CancellationException("Test cancellation")
+    var counter = 0
+
+    assertFailure {
+      waitUntilCatching(condition = "Wait for canceled assertion", delay = 10.milliseconds) {
+        if (counter++ == 0) {
+          throw AssertionError("Previous assertion")
         }
 
         throw cancellation
