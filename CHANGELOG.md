@@ -4,12 +4,7 @@
 
 ### Added
 
-- Allow robots to be contributed to any scope and find them automatically in child scopes during tests.
-
 ### Changed
-
-- Upgrade Gradle to `9.7.1` and replace deprecated raw `Project` dependency notation with explicit `ProjectDependency` declarations for Gradle 10 compatibility.
-- **Breaking binary change:** Robot waiting helpers accept suspending callbacks and enforce timeouts across callback execution and polling delays; existing Kotlin call sites remain source-compatible, but previously compiled consumers must recompile.
 
 ### Deprecated
 
@@ -17,13 +12,26 @@
 
 ### Fixed
 
-- Enforce module structure dependency rules for Android and JVM test fixtures while allowing fixtures to use test-only modules.
-- Preserve assertion failures when `waitUntilCatching` times out so test runners report failed assertions correctly.
-
 ### Security
 
 ### Other Notes & Contributions
 
+
+## [0.1.3] - 2026-08-21
+
+### Added
+
+- Allow robots to be contributed to any scope and find them automatically in child scopes during tests.
+
+### Changed
+
+- **Breaking binary change:** Robot waiting helpers accept suspending callbacks and enforce timeouts across callback execution and polling delays; existing Kotlin call sites remain source-compatible, but previously compiled consumers must recompile.
+- Upgrade Gradle to `9.7.1` and replace deprecated raw `Project` dependency notation with explicit `ProjectDependency` declarations for Gradle 10 compatibility.
+
+### Fixed
+
+- Enforce module structure dependency rules for Android and JVM test fixtures while allowing fixtures to use test-only modules.
+- Preserve assertion failures when `waitUntilCatching` times out so test runners report failed assertions correctly.
 
 ## [0.1.2] - 2026-08-13
 
@@ -282,7 +290,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.2...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.3...HEAD
+[0.1.3]: https://github.com/vRallev/app-platform/compare/0.1.3
 [0.1.2]: https://github.com/vRallev/app-platform/compare/0.1.2
 [0.1.1]: https://github.com/vRallev/app-platform/compare/0.1.1
 [0.1.0]: https://github.com/vRallev/app-platform/compare/0.1.0
