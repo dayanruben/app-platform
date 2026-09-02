@@ -10,7 +10,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.test.runTest
 import software.ralf.app.platform.internal.IgnoreWasm
 
@@ -52,6 +54,17 @@ class FakeMoleculeScopeFactoryTest {
 
     val name = scope.coroutineScope.coroutineContext[CoroutineName.Key]
     assertThat(name?.name).isEqualTo("test")
+  }
+
+  @Test
+  fun `a decorated TestScope does not create an unmanaged child`() = runTest {
+    val testJob = coroutineContext.job
+    val originalChildren = testJob.children.toList()
+
+    FakeMoleculeScopeFactory(this)
+      .createMoleculeScopeFromCoroutineScope(this + CoroutineName("decorated"))
+
+    assertThat(testJob.children.toList()).isEqualTo(originalChildren)
   }
 
   @Test
