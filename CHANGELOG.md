@@ -4,6 +4,8 @@
 
 ### Added
 
+- Add experimental `RetainedValuesStoreRegistry.returningRetainedValuesStoreProvider()` for retaining child `MoleculePresenter` state while it temporarily leaves the composition.
+
 ### Changed
 
 - Upgrade KSP to `2.3.11`.
