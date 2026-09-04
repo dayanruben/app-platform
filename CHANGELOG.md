@@ -4,6 +4,23 @@
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+### Other Notes & Contributions
+
+
+## [0.1.4] - 2026-09-03
+
+### Added
+
 - Add project-neutral coding agent skills for App Platform module structure, scopes, presenters, renderers, templates, and testing.
 - Add experimental `withLocalRetainedValuesStore()` for retaining child `MoleculePresenter` state with caller-owned managed stores while it temporarily leaves the composition.
 - Expose `String.moduleTypeFromProjectPath()` for parsing module types without a `Project` instance.
@@ -12,11 +29,8 @@
 
 - Mark `BaseModel` as stable so Compose treats `MoleculePresenter` models consistently through the shared interface.
 - Allow constructing `MoleculePresenter` instances with SAM syntax.
-- Clarify that `BaseModel` implementations can use observable mutable state that satisfies the Compose stability contract.
 - Upgrade KSP to `2.3.11`.
 - Upgrade Compose Multiplatform to `1.12.0`.
-
-### Deprecated
 
 ### Removed
 
@@ -25,11 +39,6 @@
 ### Fixed
 
 - Preserve decorated coroutine scope lifetimes in `FakeMoleculeScopeFactory` instead of creating unmanaged test jobs.
-
-### Security
-
-### Other Notes & Contributions
-
 
 ## [0.1.3] - 2026-08-21
 
@@ -304,7 +313,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.3...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.4...HEAD
+[0.1.4]: https://github.com/vRallev/app-platform/compare/0.1.4
 [0.1.3]: https://github.com/vRallev/app-platform/compare/0.1.3
 [0.1.2]: https://github.com/vRallev/app-platform/compare/0.1.2
 [0.1.1]: https://github.com/vRallev/app-platform/compare/0.1.1
