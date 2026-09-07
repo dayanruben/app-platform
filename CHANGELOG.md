@@ -6,8 +6,6 @@
 
 ### Changed
 
-- Upgrade Kotlin to `2.4.20`.
-
 ### Deprecated
 
 ### Removed
@@ -18,6 +16,12 @@
 
 ### Other Notes & Contributions
 
+
+## [0.1.5] - 2026-09-07
+
+### Changed
+
+- **Breaking change:** Upgrade Kotlin to `2.4.20`. This is a breaking change if you use Metro over kotlin-inject. Recompile your source code with Kotlin 2.4.20. 
 
 ## [0.1.4] - 2026-09-03
 
@@ -315,7 +319,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.4...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.1.5...HEAD
+[0.1.5]: https://github.com/vRallev/app-platform/compare/0.1.5
 [0.1.4]: https://github.com/vRallev/app-platform/compare/0.1.4
 [0.1.3]: https://github.com/vRallev/app-platform/compare/0.1.3
 [0.1.2]: https://github.com/vRallev/app-platform/compare/0.1.2
