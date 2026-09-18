@@ -4,6 +4,8 @@
 
 ### Added
 
+- Add `Scope.destroyAndWait()` to destroy a scope and its children and wait for their coroutine cleanup to finish.
+
 ### Changed
 
 - Upgrade Android Compose to `1.12.1`, KSP to `2.3.12`, and KotlinPoet to `2.4.0`.
