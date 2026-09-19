@@ -8,6 +8,7 @@
 
 ### Changed
 
+- Make the Metro compiler extension more resilient to Kotlin compiler upgrades by using Metro's compiler compat APIs.
 - Use Metro binding containers for presenter implementation providers.
 - Use Metro binding containers for KSP-generated renderer and scoped bindings.
 - Upgrade Android Compose to `1.12.1`, KSP to `2.3.12`, and KotlinPoet to `2.4.0`.
