@@ -4,11 +4,6 @@
 
 ### Added
 
-- Add `LocalRendererFactory` and `Render()` for rendering child models without injecting a factory; Compose renderer factories provide the local automatically.
-- Add `RendererFactory.renderCompose()` to look up and render a model in one call, with optional modifier and renderer ID.
-- Publish module classification APIs in `software.ralf.app.platform:module-structure`.
-- Add `enableModuleStructureNestingCheck` to validate library nesting from a root or folder project, with exact-path exceptions and an opt-out.
-
 ### Changed
 
 ### Deprecated
@@ -21,6 +16,15 @@
 
 ### Other Notes & Contributions
 
+
+## [0.2.1] - 2026-09-19
+
+### Added
+
+- Add `LocalRendererFactory` and `Render()` for rendering child models without injecting a factory; Compose renderer factories provide the local automatically.
+- Add `RendererFactory.renderCompose()` to look up and render a model in one call, with optional modifier and renderer ID.
+- Publish module structure APIs in `software.ralf.app.platform:module-structure`.
+- Add `enableModuleStructureNestingCheck` to validate library nesting from a root or folder project, with exact-path exceptions and an opt-out.
 
 ## [0.2.0] - 2026-09-18
 
@@ -343,7 +347,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.2.1...HEAD
+[0.2.1]: https://github.com/vRallev/app-platform/compare/0.2.1
 [0.2.0]: https://github.com/vRallev/app-platform/compare/0.2.0
 [0.1.5]: https://github.com/vRallev/app-platform/compare/0.1.5
 [0.1.4]: https://github.com/vRallev/app-platform/compare/0.1.4
