@@ -4,13 +4,7 @@
 
 ### Added
 
-- Add a `start` parameter to `Scope.launch()` to choose a `CoroutineStart` mode; previously compiled callers must recompile.
-
 ### Changed
-
-- Use `app-platform:<module-path>` Klib names for Wasm and native ABI validation.
-- Upgrade Metro to `1.4.5`.
-- Upgrade both blueprints to App Platform `0.2.1`, use the new Compose rendering helpers, and validate module nesting.
 
 ### Deprecated
 
@@ -18,13 +12,25 @@
 
 ### Fixed
 
-- Fix Metro compiler extension compatibility with Kotlin `2.5.0-Beta1` while retaining Kotlin `2.4.20` support.
-- Allow canceled `Scope.destroyAndWait()` calls to be retried.
-
 ### Security
 
 ### Other Notes & Contributions
 
+
+## [0.2.2] - 2026-09-25
+
+### Added
+
+- Add a `start` parameter to `Scope.launch()` to choose a `CoroutineStart` mode; previously compiled callers must recompile.
+
+### Changed
+
+- Upgrade Metro to `1.4.5`.
+
+### Fixed
+
+- Fix Metro compiler extension compatibility with Kotlin `2.5.0-Beta1` while retaining Kotlin `2.4.20` support.
+- Allow canceled `Scope.destroyAndWait()` calls to be retried.
 
 ## [0.2.1] - 2026-09-19
 
@@ -356,7 +362,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.2.1...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.2.2...HEAD
+[0.2.2]: https://github.com/vRallev/app-platform/compare/0.2.2
 [0.2.1]: https://github.com/vRallev/app-platform/compare/0.2.1
 [0.2.0]: https://github.com/vRallev/app-platform/compare/0.2.0
 [0.1.5]: https://github.com/vRallev/app-platform/compare/0.1.5
