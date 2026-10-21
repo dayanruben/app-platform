@@ -6,11 +6,22 @@
 
 ### Changed
 
-- Upgrade Kotlin to `2.4.21`.
-
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+### Security
+
+### Other Notes & Contributions
+
+
+## [0.2.3] - 2026-10-21
+
+### Changed
+
+- Upgrade Kotlin to `2.4.21`.
 
 ### Fixed
 
@@ -18,11 +29,6 @@
 - Preserve Kotlin metadata for generated Metro contribution functions so dependent Kotlin modules can call them.
 - Skip scopes destroyed during robot lookup.
 - Allow the default Metro compiler integration to use `@ContributesBinding` on `Scoped` classes with an explicit qualified set binding.
-
-### Security
-
-### Other Notes & Contributions
-
 
 ## [0.2.2] - 2026-09-25
 
@@ -369,7 +375,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/vRallev/app-platform/compare/0.2.2...HEAD
+[Unreleased]: https://github.com/vRallev/app-platform/compare/0.2.3...HEAD
+[0.2.3]: https://github.com/vRallev/app-platform/compare/0.2.3
 [0.2.2]: https://github.com/vRallev/app-platform/compare/0.2.2
 [0.2.1]: https://github.com/vRallev/app-platform/compare/0.2.1
 [0.2.0]: https://github.com/vRallev/app-platform/compare/0.2.0
